@@ -1,0 +1,6 @@
+respawn = "BASE";
+respawndelay = "3";
+
+author = [EPD] Brian;
+onLoadName = IED Sample Mission;
+onLoadMission = JUST A SIMPLE IED SAMPLE MISSION;
