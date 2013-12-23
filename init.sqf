@@ -12,21 +12,7 @@ removeAct = {
 //BIS_Effects_Burn=compile preprocessFileLineNumbers "\ca\Data\ParticleEffects\SCRIPTS\destruction\burn.sqf";
 if(isServer) then
 {
-	[[[	/*["Random1", 6, "West" ],
-		["Random2", 6, "West" ],
-		["Random3", 6, "West" ],
-		["Random4", 6, "West" ],
-		["Random5", 6, "West" ],
-		["Random6", 6, "West" ],
-		["Random7", 6, "West" ],
-		["Random8", 6, "West" ],
-		["Random9", 6, "West" ],
-		["Random10", 6, "West" ],
-		["Random11", 6, "West" ],
-		["Random12", 6, "West" ],
-		["Random13", 6, "West" ],
-		["Random14", 6, "West" ],*/
-		["Gravia", 15, "West" ]/*,
+	[[[	["Gravia", 15, "West" ]/*,
 		["Lakka", 2, "West" ],
 		["OreoKastro", 2, "West"],
 		["Abdera", 2, "West" ],
@@ -43,7 +29,7 @@ if(isServer) then
 		["Alikampos", 3, "West" ],
 		["Neochori", 4, "West" ],
 		["Stravos", 3, "West" ],
-		["Agios", 3, "West" ],
+		["Agios Dionysios", 3, "West" ],
 		["Athira", 4, "West" ],
 		["Frini", 2, "West" ],
 		["Rodopoli", 3, "West" ],

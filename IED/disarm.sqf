@@ -5,7 +5,7 @@
 t = (_this select 0);
 
 _array_item = items player;
-//[[[_unit], {(_this select 0) switchMove "AdvePercMstpSnonWnonDnon_godown";}], "BIS_fnc_call", nil, false, true] call BIS_fnc_MP;
+
 
 //25% chance of it exploding if you don't have a toolkit
 if ((_array_item find "ToolKit" > -1) or ((random 100) > 25)) then {
