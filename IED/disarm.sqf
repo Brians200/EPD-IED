@@ -12,7 +12,9 @@ if ((_array_item find "ToolKit" > -1) or ((random 100) > 25)) then {
 
 //player switchMove "AinvPknlMstpSlayWrflDnon_medic";
 [[[player], {(_this select 0) switchMove "AinvPknlMstpSlayWrflDnon_medic";}], "BIS_fnc_call", nil, false, true] call BIS_fnc_MP;
-sleep 5.5;
+disableUserInput true;
+sleep 6;
+disableUserInput false;
 deletevehicle (_this select 3);
 [[t],"removeAct", true, true] spawn BIS_fnc_MP;
 hint "Disarmed!";
@@ -22,15 +24,17 @@ hint "Disarmed!";
  else {
 
   
-  player switchMove "AinvPknlMstpSlayWrflDnon_medic";
-  sleep 2;
-  "M_Mo_82mm_AT_LG" createVehicle (position t);
-  "M_Mo_82mm_AT_LG" createVehicle (position t);
-  "M_Mo_82mm_AT_LG" createVehicle (position t);
-  deletevehicle (_this select 3);
-  [[t],"removeAct", true, true] spawn BIS_fnc_MP;
-  deletevehicle t;
-  };
+player switchMove "AinvPknlMstpSlayWrflDnon_medic";
+disableUserInput true;
+sleep 2;
+disableUserInput false;
+"M_Mo_82mm_AT_LG" createVehicle (position t);
+"M_Mo_82mm_AT_LG" createVehicle (position t);
+"M_Mo_82mm_AT_LG" createVehicle (position t);
+deletevehicle (_this select 3);
+[[t],"removeAct", true, true] spawn BIS_fnc_MP;
+deletevehicle t;
+};
  
   
 removeAct = {

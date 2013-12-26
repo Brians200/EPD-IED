@@ -61,6 +61,7 @@ class Mission
 					leader=1;
 					rank="LIEUTENANT";
 					skill=0.60000002;
+					init="player allowDamage false";
 				};
 				class Item1
 				{

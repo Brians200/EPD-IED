@@ -1,10 +1,9 @@
 /* adapted from:  Dynamic IED script by - Mantis and MAD_T -*/
 
 /* Rewritten by Brian Sweeney - [EPD] Brian*/
-
-IED_SMOKE = compile preprocessFileLineNumbers "IED\IedSmoke.sqf";
-Disarm = compile preprocessFileLineNumbers "IED\disarmAddAction.sqf";
 if(!isserver) exitwith {};
+
+if (isnil ("iedcounter")) then {iedcounter=0;} ;
 
 private["_origin", "_counter", "_amountToPlace", "_distance", "_side", "_iedSmallItems","_iedMediumItems","_iedLargeItems","_iedSizes","_paramArray", "_paramCounter", "_debug", "_size","_cityNames","_cityLocations","_citySizes"];
 
@@ -270,6 +269,7 @@ EPD_INITIAL_EXPLOSION = {
 	_iedPosition = _this select 0;
 	_explosiveSequence = _this select 1;
 	
+	[[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;	
 	for "_i" from 0 to (count _explosiveSequence) -1 do{
 		_explosive = (_explosiveSequence select _i);
 		_xCoord = random 2;
@@ -280,18 +280,10 @@ EPD_INITIAL_EXPLOSION = {
 		if((floor random 2) == 1) then { _zCoord = -1 * _zCoord};
 		_bomb = _explosive createVehicle _iedPosition;
 		_bomb setPos [(getPos _bomb select 0)+_xCoord,(getPos _bomb select 1)+_yCoord, 0];
-		
+		[[getPos _bomb] , "IED_ROCKS", true, false] spawn BIS_fnc_MP;
 		sleep .01;
 		addCamShake[1+random 5, 1+random 3, 5+random 15];
 	};
-	_x = [(_iedPosition select 0) + 0.75, (_iedPosition select 1) + 0.75, (_iedPosition select 2) + 0.75];
-	_y = [(_iedPosition select 0) - 0.75, (_iedPosition select 1) - 0.75, (_iedPosition select 2) - 0.75];
-	//[[_iedPosition],"EPD_CREATESMOKE",true,false] spawn BIS_fnc_MP;
-	//[[_x],"EPD_CREATESMOKE",false] spawn BIS_fnc_MP;
-	//[[_y],"EPD_CREATESMOKE",false] spawn BIS_fnc_MP;
-	
-	
-	[[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;
 	
 	if(50>random 100) then {
 		_sleepTime = 15 + random 25;
@@ -315,10 +307,10 @@ EPD_SECONDARY_EXPLOSIONS = {
 		if((floor random 2) == 1) then { _zCoord = -1 * _zCoord};
 		_bomb = _explosive createVehicle _iedPosition;
 		_bomb setPos [(getPos _bomb select 0)+_xCoord,(getPos _bomb select 1)+_yCoord, 0];
-		
+		[[getPos _bomb] , "IED_ROCKS", true, false] spawn BIS_fnc_MP;
 		_i = _i + floor random 7;
-		
-		sleep random 5;
 		addCamShake[1+random 5, 1+random 3, 5+random 15];
+		sleep random 5;
+		
 	};
 };
