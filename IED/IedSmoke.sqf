@@ -24,35 +24,44 @@ _c1 = _col select 0;
 _c2 = _col select 1;
 _c3 = _col select 2;
 
-//_PS2 setParticleRandom [0, [0, 0, 0], [0.33, 0.33, 0], 0, 0.25, [0.05, 0.05, 0.05, 0.05], 0, 0];
-//_PS2 setParticleParams [["\Ca\Data\ParticleEffects\FireAndSmokeAnim\SmokeAnim.p3d", 8, 0, 1], "", "Billboard", 1, 10, [0, 0, 0.5], [0, 0, 2.9], 1, 1.275, 1, 0.066, [4, 5, 10, 10], [[0.3, 0.3, 0.3, 0.33], [0.4, 0.4, 0.4, 0.33], [0.2, 0.2, 0, 0]], [0, 1], 1, 0, "", "", _obj];
-//_PS2 setDropInterval 0.5;
+_rocks1 = "#particlesource" createVehicle _sh;
+_rocks1 setposasl _sh;
+_rocks1 setParticleParams [["\A3\data_f\ParticleEffects\Universal\Mud.p3d", 1, 0, 1], "", "SpaceObject", 1, 12.5, [0, 0, 0], [0, 0, 15], 5, 100, 7.9, 1, [.75, .75], [[0.1, 0.1, 0.1, 1], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0.08], 1, 0, "", "", _sh,0,false,0.3];
+_rocks1 setParticleRandom [0, [1, 1, 0], [15, 15, 10], 3, 0.25, [0, 0, 0, 0.1], 0, 0];
+_rocks1 setDropInterval 0.01;
+_rocks1 setParticleCircle [0, [0, 0, 0]];
 
-_source = "#particlesource" createVehicle _sh;
-_source setposasl _sh;
-_source setParticleParams [["\A3\data_f\ParticleEffects\Universal\Universal", 8, 1, 6], "", "Billboard", 1, 8, [0, 0, 0], [0, 0, 0], 0, 10, 7.9, 0.5, [4, 12, 20], [[0.1, 0.1, 0.1, 0.8], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0.125], 1, 0, "", "", _sh];
-_source setParticleRandom [0, [0.5, 0.5, 0], [0.2, 0.2, 0], 0, 0.25, [0, 0, 0, 0.1], 0, 0];
-_source setDropInterval 0.1;
-_source setParticleCircle [0, [0, 0, 0]];
+_rocks2 = "#particlesource" createVehicle _sh;
+_rocks2 setposasl _sh;
+_rocks2 setParticleParams [["\A3\data_f\ParticleEffects\Universal\Mud.p3d", 1, 0, 1], "", "SpaceObject", 1, 12.5, [0, 0, 0], [0, 0, 15], 5, 100, 7.9, 1, [.45, .45], [[0.1, 0.1, 0.1, 1], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0.08], 1, 0, "", "", _sh,0,false,0.3];
+_rocks2 setParticleRandom [0, [1, 1, 0], [15, 15, 10], 3, 0.25, [0, 0, 0, 0.1], 0, 0];
+_rocks2 setDropInterval 0.01;
+_rocks2 setParticleCircle [0, [0, 0, 0]];
 
-//_PS3 setParticleCircle [0, [0, 0, 0]];
-//_PS3 setParticleRandom [0, [0, 0, 0], [0.5, 0.5, 0], 0, 0.25, [0.05, 0.05, 0.05, 0.05], 0, 0];
-//_PS3 setParticleParams [["\Ca\Data\ParticleEffects\FireAndSmokeAnim\SmokeAnim.p3d", 8, 3, 1], "", "Billboard", 1, 15, [0, 0, 0.5], [0, 0, 2.9], 1, 1.275, 1, 0.066, [4, 5, 10, 10], [[0.1, 0.1, 0.1, 0.75], [0.4, 0.4, 0.4, 0.5], [1, 1, 1, 0.2]], [0], 1, 0, "", "", _obj];
-//_PS3 setDropInterval 0.25;
+_rocks3 = "#particlesource" createVehicle _sh;
+_rocks3 setposasl _sh;
+_rocks3 setParticleParams [["\A3\data_f\ParticleEffects\Universal\Mud.p3d", 1, 0, 1], "", "SpaceObject", 1, 12.5, [0, 0, 0], [0, 0, 15], 5, 100, 7.9, 1, [.15, .15], [[0.1, 0.1, 0.1, 1], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0.08], 1, 0, "", "", _sh,0,false,0.3];
+_rocks3 setParticleRandom [0, [1, 1, 0], [15, 15, 10], 3, 0.25, [0, 0, 0, 0.1], 0, 0];
+_rocks3 setDropInterval 0.01;
+_rocks3 setParticleCircle [0, [0, 0, 0]];
 
-/*_source2 = "#particlesource" createVehicle _sh;
-_source2 setposasl _sh;
-_source2 setParticleParams [["\A3\data_f\ParticleEffects\Universal\Universal", 8, 3, 1], "", "Billboard", 1, 15, [0,0,0.5],[0, 0, 2.9], 1, 1.275, 1, 0.066, [4, 5, 10,10], [[.1, .1, .1, 0.75], [.4, .4, .4, 0.5], [1, 1, 1, 0.2]],[0], 1, 0, "", "", _sh];
-_source2 setParticleRandom [0, [0, 0, 0], [0.5,0.5,0], 0, 0.25, [0.05, 0.05, 0.05, 0.05], 0, 0];
-_source2 setDropInterval 0.05;
-_source2 setParticleCircle [0, [0, 0, 0]];*/
+_smoke1 = "#particlesource" createVehicle _sh;
+_smoke1 setposasl _sh;
+_smoke1 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 15, [0, 0, 0], [0, 0, 1.75], 0, 10, 7.9, 0.075, [1.2, 2, 4], [[0.0, 0.0, 0.0, 1], [0.05, 0.05, 0.05, 0.5], [0.15, 0.15, 0.15, 0]], [0.08], 1, 0, "", "", _sh];
+_smoke1 setParticleRandom [0, [2, 2, 0], [0.175, 0.175, 0], 0, 0.25, [0, 0, 0, 0.1], 0, 0];
+_smoke1 setDropInterval 0.02;
+_smoke1 setParticleCircle [0, [0, 0, 0]];
 
+_rocks = [_rocks1,_rocks2, _rocks3];
+_smokes = [_smoke1];
+sleep .5;
+{
+	deletevehicle _x;
+} foreach _rocks;
 
-
-_smokes = [_source];
-
-sleep 30;
+sleep 40;
 {
 	deletevehicle _x;
 } foreach _smokes;
+
 hint "deleted";
