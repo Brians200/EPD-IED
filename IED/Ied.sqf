@@ -2,7 +2,8 @@
 
 /* Rewritten by Brian Sweeney - [EPD] Brian*/
 
-
+IED_SMOKE = compile preprocessFileLineNumbers "IED\IedSmoke.sqf";
+Disarm = compile preprocessFileLineNumbers "IED\disarmAddAction.sqf";
 if(!isserver) exitwith {};
 
 private["_origin", "_counter", "_amountToPlace", "_distance", "_side", "_iedSmallItems","_iedMediumItems","_iedLargeItems","_iedSizes","_paramArray", "_paramCounter", "_debug", "_size","_cityNames","_cityLocations","_citySizes"];

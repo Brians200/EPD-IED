@@ -33,3 +33,7 @@ hint "Disarmed!";
   };
  
   
+removeAct = {
+ _unit = _this select 0;
+ _unit removeaction 0;
+};

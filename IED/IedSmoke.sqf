@@ -26,21 +26,21 @@ _c3 = _col select 2;
 
 _rocks1 = "#particlesource" createVehicle _sh;
 _rocks1 setposasl _sh;
-_rocks1 setParticleParams [["\A3\data_f\ParticleEffects\Universal\Mud.p3d", 1, 0, 1], "", "SpaceObject", 1, 12.5, [0, 0, 0], [0, 0, 15], 5, 100, 7.9, 1, [.75, .75], [[0.1, 0.1, 0.1, 1], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0.08], 1, 0, "", "", _sh,0,false,0.3];
+_rocks1 setParticleParams [["\A3\data_f\ParticleEffects\Universal\Mud.p3d", 1, 0, 1], "", "SpaceObject", 1, 12.5, [0, 0, 0], [0, 0, 15], 5, 100, 7.9, 1, [.45, .45], [[0.1, 0.1, 0.1, 1], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0.08], 1, 0, "", "", _sh,0,false,0.3];
 _rocks1 setParticleRandom [0, [1, 1, 0], [15, 15, 10], 3, 0.25, [0, 0, 0, 0.1], 0, 0];
 _rocks1 setDropInterval 0.01;
 _rocks1 setParticleCircle [0, [0, 0, 0]];
 
 _rocks2 = "#particlesource" createVehicle _sh;
 _rocks2 setposasl _sh;
-_rocks2 setParticleParams [["\A3\data_f\ParticleEffects\Universal\Mud.p3d", 1, 0, 1], "", "SpaceObject", 1, 12.5, [0, 0, 0], [0, 0, 15], 5, 100, 7.9, 1, [.45, .45], [[0.1, 0.1, 0.1, 1], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0.08], 1, 0, "", "", _sh,0,false,0.3];
+_rocks2 setParticleParams [["\A3\data_f\ParticleEffects\Universal\Mud.p3d", 1, 0, 1], "", "SpaceObject", 1, 12.5, [0, 0, 0], [0, 0, 15], 5, 100, 7.9, 1, [.27, .27], [[0.1, 0.1, 0.1, 1], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0.08], 1, 0, "", "", _sh,0,false,0.3];
 _rocks2 setParticleRandom [0, [1, 1, 0], [15, 15, 10], 3, 0.25, [0, 0, 0, 0.1], 0, 0];
 _rocks2 setDropInterval 0.01;
 _rocks2 setParticleCircle [0, [0, 0, 0]];
 
 _rocks3 = "#particlesource" createVehicle _sh;
 _rocks3 setposasl _sh;
-_rocks3 setParticleParams [["\A3\data_f\ParticleEffects\Universal\Mud.p3d", 1, 0, 1], "", "SpaceObject", 1, 12.5, [0, 0, 0], [0, 0, 15], 5, 100, 7.9, 1, [.15, .15], [[0.1, 0.1, 0.1, 1], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0.08], 1, 0, "", "", _sh,0,false,0.3];
+_rocks3 setParticleParams [["\A3\data_f\ParticleEffects\Universal\Mud.p3d", 1, 0, 1], "", "SpaceObject", 1, 12.5, [0, 0, 0], [0, 0, 15], 5, 100, 7.9, 1, [.09, .09], [[0.1, 0.1, 0.1, 1], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0.08], 1, 0, "", "", _sh,0,false,0.3];
 _rocks3 setParticleRandom [0, [1, 1, 0], [15, 15, 10], 3, 0.25, [0, 0, 0, 0.1], 0, 0];
 _rocks3 setDropInterval 0.01;
 _rocks3 setParticleCircle [0, [0, 0, 0]];
@@ -63,5 +63,3 @@ sleep 40;
 {
 	deletevehicle _x;
 } foreach _smokes;
-
-hint "deleted";
