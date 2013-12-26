@@ -4,12 +4,12 @@
 
 
 if(!isserver) exitwith {};
-
+IED_SMOKE = compile preprocessFileLineNumbers "IED\IedSmoke.sqf";
 private["_origin", "_counter", "_amountToPlace", "_distance", "_side", "_iedSmallItems","_iedMediumItems","_iedLargeItems","_iedSizes","_paramArray", "_paramCounter", "_debug", "_size","_cityNames","_cityLocations","_citySizes"];
 
-_cityNames = ["Gravia","Lakka","OreoKastro","Abdera","Galati","Syrta","Kore","Negades","Aggeochori","Kavala","Panochori","Zaros","Therisa","Poliakko","Alikampos","Neochori","Stravos","Agios Dionysios","Athira","Frini","Rodopoli","Paros","Kalochori","Sofia","Molos","Charkia","Pyrgos","Dorida","Chalkiea","Panagia","Feres","Selakano"];
-_cityLocations = [[14491.1,17636.8,0],[12342.6,15682.6],[4557.53,21387.7,0],[9420.76,20252.7,0],[10326.3,19055.6,0],[8634.13,18270.7,0],[7144.03,16455.2,0],[4895.13,16168.9,0],[3808.9,13694.7,0],[3543.03,13008.2,0],[5086.4,11263,0],[9197.17,11925.5,0],[10666.3,12270.4,0],[10983.5,13424.3,0],[11133,14561,0],[12501.5,14328.7,0],[12946.5,15057.3,0],[9358.66,15885.8,0],[14022.3,18716.3,0],[14615.4,20775.9,0],[18779.8,16643.9,0],[20951.5,16958.9,0],[21384.8,16362.2,0],[25702.1,21355.8,0],[27033.2,23242.4,0],[18114.4,15241,0],[16828,12662.2,0],[19399,13251.5,0],[20250.4,11673.7,0],[20511.7,8867.04,0],[21700.7,7576.93,0],[20803,6730.63,0]];
-_citySizes = [[350,350],[350,350],[250,250],[150,150],[150,150],[150,150],[300,300],[150,150],[500,500],[500,500],[350,350],[350,350],[250,250],[250,250],[250,250],[350,350],[250,250],[450,450],[400,400],[250,250],[350,350],[450,450],[250,250],[350,350],[250,250],[400,400],[500,500],[250,250],[400,400],[250,250],[350,350],[350,350]];
+_cityNames = ["Gravia","Lakka","OreoKastro","Abdera","Galati","Syrta","Kore","Negades","Aggeochori","Kavala","Panochori","Zaros","Therisa","Poliakko","Alikampos","Neochori","Stravos","Agios Dionysios","Athira","Frini","Rodopoli","Paros","Kalochori","Sofia","Molos","Charkia","Pyrgos","Dorida","Chalkiea","Panagia","Feres","Selakano","Random1","Random2","Random3","Random4","Random5","Random6","Random7","Random8","Random9","Random10","Random11","Random12","Random13","Random14","Random15","Random16"];
+_cityLocations = [[14491.1,17636.8,0],[12342.6,15682.6],[4557.53,21387.7,0],[9420.76,20252.7,0],[10326.3,19055.6,0],[8634.13,18270.7,0],[7144.03,16455.2,0],[4895.13,16168.9,0],[3808.9,13694.7,0],[3543.03,13008.2,0],[5086.4,11263,0],[9197.17,11925.5,0],[10666.3,12270.4,0],[10983.5,13424.3,0],[11133,14561,0],[12501.5,14328.7,0],[12946.5,15057.3,0],[9358.66,15885.8,0],[14022.3,18716.3,0],[14615.4,20775.9,0],[18779.8,16643.9,0],[20951.5,16958.9,0],[21384.8,16362.2,0],[25702.1,21355.8,0],[27033.2,23242.4,0],[18114.4,15241,0],[16828,12662.2,0],[19399,13251.5,0],[20250.4,11673.7,0],[20511.7,8867.04,0],[21700.7,7576.93,0],[20803,6730.63,0],[4941.03,20430.1,0],[5796.45,16578.8,0],[5435.57,12633.9,0],[9579.01,20978.4,0],[10020.1,16859.6,0],[9779.5,12901.4,0],[13749.2,21392.9,0],[13048.1,18153.4,0],[17677.8,17309.3,0],[26097.5,22777.3,0],[23259.9,19904.4,0],[21356.9,17014.4,0],[19267,13716.4,0],[17033.2,10641.5,0],[20342.5,8704.69,0],[11108.5,8551.36,0]];
+_citySizes = [[350,350],[350,350],[250,250],[150,150],[150,150],[150,150],[300,300],[150,150],[500,500],[500,500],[350,350],[350,350],[250,250],[250,250],[250,250],[350,350],[250,250],[450,450],[400,400],[250,250],[350,350],[450,450],[250,250],[350,350],[250,250],[400,400],[500,500],[250,250],[400,400],[250,250],[350,350],[350,350],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000]];
 
 _debug = true;
 _paramCounter = 0;
@@ -127,12 +127,13 @@ EPD_CREATE_IED = {
 		_tx = (_positionX + ((_rdist1 + _extraOffSet *_offSetDirection) * sin(_dir)));
 		_ty = (_positionY + ((_rdist1 + _extraOffSet *_offSetDirection) * cos(_dir)));
 		
-		//move it down the road
-		_mdir = 1;
-		if((floor random 2) == 0) then {_mdir=-1};
-		_tx = _tx + _mdir*(random 5) * cos(_dir);
-		_ty = _ty + _mdir*(random 5) * sin(_dir);
-		
+		while{isOnRoad [_tx,_ty,0]} do
+		{
+			_extraOffSet = _extraOffSet - 0.5;
+			_tx = (_positionX + ((_rdist1 + _extraOffSet *_offSetDirection) * sin(_dir)));
+			_ty = (_positionY + ((_rdist1 + _extraOffSet *_offSetDirection) * cos(_dir)));
+		};
+				
 		_iedPos = [_tx,_ty,0];
 		
 		call compile format ['ied_%1 = _iedType createVehicle _iedPos;
@@ -145,9 +146,9 @@ EPD_CREATE_IED = {
 		if((random 100) > 50) then {_offSetDirection = -1;};
 		
 		
-		_road2 = _roads select(round random(count _roads));
+		_road2 = _roads select(floor random(count _roads));
 		while{(isnil("_road2"))} do { 
-			_road2 = _roads select(round random(count _roads));
+			_road2 = _roads select(floor random(count _roads));
 			if(_road2 == _road) then { _road2 = nil; };
 		};
 		_dir = getDir _road2;
@@ -156,7 +157,6 @@ EPD_CREATE_IED = {
 		_junkPosY = _junkPos select 1;
 		_junktx = (_junkPosX + (_rdist2 * sin(_dir)));
 		_junkty = (_junkPosY + (_rdist2 * cos(_dir)));
-		
 
 		while{isOnRoad [_junktx,_junkty, 0]} do{
 			_rdist2 = _rdist2 + _offSetDirection;
@@ -168,11 +168,12 @@ EPD_CREATE_IED = {
 		_junktx = (_junkPosX + ((_rdist2 + _extraOffSet *_offSetDirection) * sin(_dir)));
 		_junkty = (_junkPosY + ((_rdist2 + _extraOffSet *_offSetDirection) * cos(_dir)));
 		
-		//move it down the road
-		_mdir = 1;
-		if((floor random 2) == 0) then {_mdir=-1};
-		_junktx = _junktx + _mdir*(random 5) * cos(_dir);
-		_junkty = _junkty + _mdir*(random 5) * sin(_dir);
+		while{isOnRoad [_junktx,_junkty,0]} do
+		{
+			_extraOffSet = _extraOffSet - 0.5;
+			_junktx = (_junkPosX + ((_rdist2 + _extraOffSet *_offSetDirection) * sin(_dir)));
+			_junkty = (_junkPosY + ((_rdist2 + _extraOffSet *_offSetDirection) * cos(_dir)));
+		};
 		
 		_junkPosition = [_junktx,_junkty, 0];
 		_junk = _junkType createVehicle _junkPosition;
@@ -268,36 +269,34 @@ EPD_INITIAL_EXPLOSION = {
 	_iedPosition = _this select 0;
 	_explosiveSequence = _this select 1;
 	
-	//_smokesToRemove = [];
-	
 	for "_i" from 0 to (count _explosiveSequence) -1 do{
 		_explosive = (_explosiveSequence select _i);
 		_xCoord = random 2;
 		if((floor random 2) == 1) then { _xCoord = -1 * _xCoord};
 		_yCoord = random 2;
 		if((floor random 2) == 1) then { _yCoord = -1 * _yCoord};
-		_zCoord = random .1;
+		_zCoord = random 0;
 		if((floor random 2) == 1) then { _zCoord = -1 * _zCoord};
 		_bomb = _explosive createVehicle _iedPosition;
 		_bomb setPos [(getPos _bomb select 0)+_xCoord,(getPos _bomb select 1)+_yCoord, 0];
 		
-		[[getPos _bomb],"EPD_CREATESMOKE",false] spawn BIS_fnc_MP;
-		//_G_40mm_SmokeWhite = "G_40mm_Smoke" createVehicle (getPos _bomb);
-		//_smokesToRemove set [ _i, _G_40mm_SmokeWhite];
 		sleep .01;
 		addCamShake[1+random 5, 1+random 3, 5+random 15];
 	};
+	_x = [(_iedPosition select 0) + 0.75, (_iedPosition select 1) + 0.75, (_iedPosition select 2) + 0.75];
+	_y = [(_iedPosition select 0) - 0.75, (_iedPosition select 1) - 0.75, (_iedPosition select 2) - 0.75];
+	//[[_iedPosition],"EPD_CREATESMOKE",true,false] spawn BIS_fnc_MP;
+	//[[_x],"EPD_CREATESMOKE",false] spawn BIS_fnc_MP;
+	//[[_y],"EPD_CREATESMOKE",false] spawn BIS_fnc_MP;
+	
+	[[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;
 	
 	if(50>random 100) then {
 		_sleepTime = 15 + random 25;
 		hint format["Incoming secondary explosions in %1 seconds!",_sleepTime];
 		sleep _sleepTime;
 		[_iedPosition] spawn EPD_SECONDARY_EXPLOSIONS;
-	};
-	
-	//sleep 60;
-	//{deleteVehicle _x} forEach _smokesToRemove;
-	
+	};	
 };
 
 EPD_SECONDARY_EXPLOSIONS = {
@@ -320,27 +319,4 @@ EPD_SECONDARY_EXPLOSIONS = {
 		sleep random 5;
 		addCamShake[1+random 5, 1+random 3, 5+random 15];
 	};
-};
-
-//Adapted from http://forums.bistudio.com/showthread.php?167728-Burning-trees-grass-houses-particleEffects/page2
-EPD_CREATESMOKE = {
-	if(!isserver) exitwith {};
-	hint "creating  smoke";
-//"Land_Garbage_square3_F"
-	/*private["_pos","_eSmoke","_time"];
-	_pos = _this select 0;
-
-	_eSmoke = "#particlesource" createVehicle _pos;
-	_eSmoke setParticleClass "BigDestructionSmoke";
-	_eSmoke setPosATL _pos;
-	
-	_time = 60 + random 60;
-	
-	sleep _time;
-	deleteVehicle _eSmoke;*/
-	
-	_G_40mm_SmokeGreen = "G_40mm_SmokeGreen" createVehicle (_this select 0);
-	sleep 40;
-	deleteVehicle _G_40mm_SmokeGreen;
-	
 };

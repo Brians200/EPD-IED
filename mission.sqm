@@ -8,7 +8,8 @@ class Mission
 		"A3_Soft_F_MRAP_01",
 		"A3_Soft_F_Quadbike",
 		"A3_Armor_F_AMV",
-		"A3_Armor_F_Slammer"
+		"A3_Armor_F_Slammer",
+		"A3_Weapons_F_Ammoboxes"
 	};
 	addOnsAuto[]=
 	{
@@ -17,6 +18,7 @@ class Mission
 		"A3_Soft_F_Quadbike",
 		"A3_Armor_F_AMV",
 		"A3_Armor_F_Slammer",
+		"A3_Weapons_F_Ammoboxes",
 		"a3_map_altis"
 	};
 	randomSeed=11154954;
@@ -25,10 +27,10 @@ class Mission
 		briefingName="IED Sample Mission";
 		overviewText="Sample mission demonstrating how to use the adapted IED code";
 		startWeather=0.29999998;
-		startWind=0.099999994;
+		startWind=0;
 		startWaves=0.099999994;
 		forecastWeather=0.29999998;
-		forecastWind=0.099999994;
+		forecastWind=0;
 		forecastWaves=0.099999994;
 		forecastLightnings=0.099999994;
 		year=2035;
@@ -126,7 +128,7 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={14410.446,17.300116,18001.322};
+					position[]={14400.931,17.039251,18014.531};
 					id=7;
 					side="WEST";
 					vehicle="B_Soldier_F";
@@ -138,7 +140,7 @@ class Mission
 	};
 	class Vehicles
 	{
-		items=21;
+		items=22;
 		class Item0
 		{
 			position[]={14398.824,16.923223,18026.584};
@@ -346,6 +348,16 @@ class Mission
 			id=28;
 			side="EMPTY";
 			vehicle="B_MBT_01_cannon_F";
+			leader=1;
+			skill=0.60000002;
+		};
+		class Item21
+		{
+			position[]={14408.305,17.112061,18021.756};
+			azimut=286.57501;
+			id=29;
+			side="EMPTY";
+			vehicle="Box_NATO_Support_F";
 			leader=1;
 			skill=0.60000002;
 		};
