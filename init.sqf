@@ -63,3 +63,5 @@ if(isServer) then
 		],"IED\Ied.sqf"],"BIS_fnc_execVM",true,true] spawn BIS_fnc_MP;
 
 };
+
+IED_SMOKE = compile preprocessFileLineNumbers "IED\IedSmoke.sqf";

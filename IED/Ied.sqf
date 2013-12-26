@@ -4,7 +4,7 @@
 
 
 if(!isserver) exitwith {};
-IED_SMOKE = compile preprocessFileLineNumbers "IED\IedSmoke.sqf";
+
 private["_origin", "_counter", "_amountToPlace", "_distance", "_side", "_iedSmallItems","_iedMediumItems","_iedLargeItems","_iedSizes","_paramArray", "_paramCounter", "_debug", "_size","_cityNames","_cityLocations","_citySizes"];
 
 _cityNames = ["Gravia","Lakka","OreoKastro","Abdera","Galati","Syrta","Kore","Negades","Aggeochori","Kavala","Panochori","Zaros","Therisa","Poliakko","Alikampos","Neochori","Stravos","Agios Dionysios","Athira","Frini","Rodopoli","Paros","Kalochori","Sofia","Molos","Charkia","Pyrgos","Dorida","Chalkiea","Panagia","Feres","Selakano","Random1","Random2","Random3","Random4","Random5","Random6","Random7","Random8","Random9","Random10","Random11","Random12","Random13","Random14","Random15","Random16"];
@@ -288,6 +288,7 @@ EPD_INITIAL_EXPLOSION = {
 	//[[_iedPosition],"EPD_CREATESMOKE",true,false] spawn BIS_fnc_MP;
 	//[[_x],"EPD_CREATESMOKE",false] spawn BIS_fnc_MP;
 	//[[_y],"EPD_CREATESMOKE",false] spawn BIS_fnc_MP;
+	
 	
 	[[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;
 	

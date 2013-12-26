@@ -30,7 +30,7 @@ _c3 = _col select 2;
 
 _source = "#particlesource" createVehicle _sh;
 _source setposasl _sh;
-_source setParticleParams [["\A3\data_f\ParticleEffects\Universal\smoke.p3d", 8, 1, 6], "", "Billboard", 1, 8, [0, 0, 0], [0, 0, 0], 0, 10, 7.9, 0.5, [4, 12, 20], [[0.1, 0.1, 0.1, 0.8], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0.125], 1, 0, "", "", _sh];
+_source setParticleParams [["\A3\data_f\ParticleEffects\Universal\Universal", 8, 1, 6], "", "Billboard", 1, 8, [0, 0, 0], [0, 0, 0], 0, 10, 7.9, 0.5, [4, 12, 20], [[0.1, 0.1, 0.1, 0.8], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0.125], 1, 0, "", "", _sh];
 _source setParticleRandom [0, [0.5, 0.5, 0], [0.2, 0.2, 0], 0, 0.25, [0, 0, 0, 0.1], 0, 0];
 _source setDropInterval 0.1;
 _source setParticleCircle [0, [0, 0, 0]];
