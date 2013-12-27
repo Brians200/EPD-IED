@@ -1,3 +1,4 @@
+/* Written by Brian Sweeney - [EPD] Brian*/
 _loc = _this select 0;
 _aslLoc = [_loc select 0, _loc select 1, getTerrainHeightASL [_loc select 0, _loc select 1]];
 _col = [0,0,0];

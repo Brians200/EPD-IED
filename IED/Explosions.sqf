@@ -1,4 +1,7 @@
-/*------ stops a tank
+/*
+This file contain a list of some of the explosions that can be used in creating different sized IEDs.
+
+------ stops a tank
 Bo_GBU12_LGB_MI10
 Bo_GBU12_LGB
 Bo_Mk82
@@ -19,5 +22,5 @@ M_Titan_AT
 R_80mm_HE
 M_PG_AT
 
------- white smoke
+------ white smoke glows bright at night
 R_230mm_HE*/
