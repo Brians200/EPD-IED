@@ -1,11 +1,14 @@
 /* Written by Brian Sweeney - [EPD] Brian*/
 
-IED_SMOKE = compile preprocessFileLineNumbers "IED\IedSmoke.sqf";
-IED_ROCKS = compile preprocessFileLineNumbers "IED\IEDRocks.sqf";
-Disarm = compile preprocessFileLineNumbers "IED\disarmAddAction.sqf";
+IED_SMOKE = compile preprocessFileLineNumbers "EPD\IedSmoke.sqf";
+IED_ROCKS = compile preprocessFileLineNumbers "EPD\IEDRocks.sqf";
+Disarm = compile preprocessFileLineNumbers "EPD\disarmAddAction.sqf";
 
 if(isserver) then {
-	[[[	/*["Random1",6,"West"],
+	[[[	/*["IEDSINGLE1","West"],
+		["IEDSINGLE2","West"],
+		["IEDSINGLE3","West"],*/
+		["Random1",6,"West"],
 		["Random2",6,"West"],
 		["Random3",6,"West"],
 		["Random4",6,"West"],
@@ -20,9 +23,8 @@ if(isserver) then {
 		["Random13",6,"West"],
 		["Random14",6,"West"],
 		["Random15",6,"West"],
-		["Random16",6,"West"],*/
-		["Gravia", 35, "West" ],
-		["IEDSINGLE","West"]/*,
+		["Random16",6,"West"],
+		["Gravia", 2, "West" ],
 		["Lakka", 2, "West" ],
 		["OreoKastro", 2, "West"],
 		["Abdera", 2, "West" ],
@@ -53,6 +55,6 @@ if(isserver) then {
 		["Chalkiea", 3, "West" ],
 		["Panagia", 2, "West" ],
 		["Feres", 2, "West" ],
-		["Selakano", 2, "West" ]*/
-		],"IED\Ied.sqf"],"BIS_fnc_execVM",false,false] spawn BIS_fnc_MP;
+		["Selakano", 2, "West" ]
+		],"EPD\Ied.sqf"],"BIS_fnc_execVM",false,false] spawn BIS_fnc_MP;
 };

@@ -1,7 +1,7 @@
 /* adapted from:  Dynamic IED script by - Mantis and MAD_T -*/
 /* Rewritten by Brian Sweeney - [EPD] Brian*/
+debug = false;
 if(!isserver) exitwith {};
-
 if (isnil ("iedcounter")) then {iedcounter=0;} ;
 
 private["_origin", "_counter", "_amountToPlace", "_distance", "_side", "_iedSizes","_paramArray", "_paramCounter", "_size","_cityNames","_cityLocations","_citySizes"];
@@ -18,7 +18,6 @@ iedMediumItems = ["Land_Portable_generator_F","Land_WoodenBox_F","Land_MetalBarr
 	
 iedLargeItems = ["Land_Bricks_V2_F","Land_Bricks_V3_F","Land_Bricks_V4_F","Land_GarbageBags_F","Land_GarbagePallet_F","Land_GarbageWashingMachine_F","Land_JunkPile_F","Land_Tyres_F","Land_Wreck_Skodovka_F","Land_Wreck_Car_F","Land_Wreck_Car3_F","Land_Wreck_Car2_F","Land_Wreck_Offroad_F","Land_Wreck_Offroad2_F"];
 
-debug = true;
 _paramCounter = 0;
 _paramArray = _this;
 
@@ -80,12 +79,12 @@ while{_paramCounter < count _paramArray} do {
 };
 
 CREATE_IED = {
+	
 	_iedPos = _this select 0;
 	_counter = _this select 1;
 	_side = _this select 2;
 	
 	_iedSize = _this select 3;
-	
 	if (isnil ("_iedSize")) then {
 		_iedSize = "SMALL";
 		r = floor random 100;
@@ -124,7 +123,7 @@ CREATE_IED = {
 	call compile format ['
 	[[ied_%1, t_%1],"Disarm", true, true] spawn BIS_fnc_MP;', _counter];
 	
-	if(debug) then {
+	if(true) then {
 		
 		call compile format ['
 		bombmarker_%1 = createmarker ["bombmarker_%1", _iedPos];
@@ -208,6 +207,11 @@ CREATE_RANDOM_IEDS = {
 				
 		_iedPos = [_tx,_ty,0];
 		
+		call compile format ['ied_%1 = _iedType createVehicle _iedPos;
+							ied_%1 setDir (random 360);
+							ied_%1 enableSimulation false;
+							ied_%1 setPos %2', _counterOffset+_counter, _iedPos];
+		
 		_rdist2 = 5;
 		_offSetDirection = 1;
 		if((random 100) > 50) then {_offSetDirection = -1;};
@@ -246,9 +250,23 @@ CREATE_RANDOM_IEDS = {
 		_junk setdir(random 360);
 		_junk setPos _junkPosition;
 		
-		[_iedPos, _counterOffset+_counter, _side] call CREATE_IED; 
+		call compile format [' t_%1 = createTrigger["EmptyDetector", _iedPos];
+		t_%1 setTriggerArea[11,11,0,true];
+		t_%1 setTriggerActivation [_side,"PRESENT",false];
+		t_%1 setTriggerStatements ["[this, thislist, %2] call EPD_EXPLOSION_CHECK && (alive ied_%1)","[%2] spawn 	EPD_EXPLOSIVESEQUENCE_%4; deletevehicle ied_%1; deleteVehicle thisTrigger",""];
+		',_counterOffset+_counter, _iedPos,_iedSize];
 		
-		if(debug) then {			
+		call compile format ['
+		[[ied_%1, t_%1],"Disarm", true, true] spawn BIS_fnc_MP;', _counterOffset+_counter];
+		
+		if(true) then {		
+			
+			call compile format ['
+			bombmarker_%1 = createmarker ["bombmarker_%1", _iedPos];
+			"bombmarker_%1" setMarkerTypeLocal "hd_warning";
+			"bombmarker_%1" setMarkerColorLocal "ColorRed";
+			"bombmarker_%1" setMarkerTextLocal "%2";', _counterOffset+_counter,_iedSize];
+		
 			call compile format ['
 			fakebombmarker_%1 = createmarker ["fakebombmarker_%1", _junkPosition];
 			"fakebombmarker_%1" setMarkerTypeLocal "hd_warning";

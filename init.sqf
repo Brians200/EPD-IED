@@ -1,1 +1,1 @@
-call compile preprocessFile "IED\Ied_Init.sqf";
+call compile preprocessFile "EPD\Ied_Init.sqf";

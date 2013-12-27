@@ -36,8 +36,8 @@ class Mission
 		year=2035;
 		month=6;
 		day=24;
-		hour=11;
-		minute=45;
+		hour=12;
+		minute=5;
 		startFogDecay=0.013;
 		forecastFogDecay=0.013;
 	};
@@ -365,7 +365,7 @@ class Mission
 	};
 	class Markers
 	{
-		items=2;
+		items=4;
 		class Item0
 		{
 			position[]={14398.555,17.128494,17996.691};
@@ -376,7 +376,19 @@ class Mission
 		class Item1
 		{
 			position[]={14474.255,19.478888,18011.574};
-			name="IEDSINGLE";
+			name="IEDSINGLE1";
+			type="Empty";
+		};
+		class Item2
+		{
+			position[]={14415.626,18.350473,17953.441};
+			name="IEDSINGLE2";
+			type="Empty";
+		};
+		class Item3
+		{
+			position[]={14475.825,20.441504,17956.061};
+			name="IEDSINGLE3";
 			type="Empty";
 		};
 	};
