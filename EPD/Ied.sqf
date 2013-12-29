@@ -1,6 +1,6 @@
 /* adapted from:  Dynamic IED script by - Mantis and MAD_T -*/
 /* Rewritten by Brian Sweeney - [EPD] Brian*/
-debug = false;
+debug = true;
 if(!isserver) exitwith {};
 if (isnil ("iedcounter")) then {iedcounter=0;} ;
 
@@ -117,8 +117,8 @@ CREATE_IED = {
 	call compile format [' t_%1 = createTrigger["EmptyDetector", _iedPos];
 	t_%1 setTriggerArea[11,11,0,true];
 	t_%1 setTriggerActivation [_side,"PRESENT",false];
-	t_%1 setTriggerStatements ["[this, thislist, %2, %3] call EPD_EXPLOSION_CHECK && (alive ied_%1)","[%2] spawn EPD_EXPLOSIVESEQUENCE_%4; deletevehicle ied_%1; deleteVehicle thisTrigger",""];
-	',_counter, _iedPos,debug,_iedSize];
+	t_%1 setTriggerStatements ["[this, thislist, %2] call EXPLOSION_CHECK && (alive ied_%1)","[%2] spawn EXPLOSIVESEQUENCE_%3; deletevehicle ied_%1; deleteVehicle thisTrigger",""];
+	',_counter, _iedPos,_iedSize];
 	
 	call compile format ['
 	[[ied_%1, t_%1],"Disarm", true, true] spawn BIS_fnc_MP;', _counter];
@@ -253,13 +253,13 @@ CREATE_RANDOM_IEDS = {
 		call compile format [' t_%1 = createTrigger["EmptyDetector", _iedPos];
 		t_%1 setTriggerArea[11,11,0,true];
 		t_%1 setTriggerActivation [_side,"PRESENT",false];
-		t_%1 setTriggerStatements ["[this, thislist, %2] call EPD_EXPLOSION_CHECK && (alive ied_%1)","[%2] spawn 	EPD_EXPLOSIVESEQUENCE_%4; deletevehicle ied_%1; deleteVehicle thisTrigger",""];
+		t_%1 setTriggerStatements ["[this, thislist, %2] call EXPLOSION_CHECK && (alive ied_%1)","[%2] spawn 	EXPLOSIVESEQUENCE_%3; deletevehicle ied_%1; deleteVehicle thisTrigger",""];
 		',_counterOffset+_counter, _iedPos,_iedSize];
 		
 		call compile format ['
 		[[ied_%1, t_%1],"Disarm", true, true] spawn BIS_fnc_MP;', _counterOffset+_counter];
 		
-		if(true) then {		
+		if(debug) then {		
 			
 			call compile format ['
 			bombmarker_%1 = createmarker ["bombmarker_%1", _iedPos];
@@ -278,7 +278,7 @@ CREATE_RANDOM_IEDS = {
 	};
 };
 
-EPD_EXPLOSION_CHECK = {
+EXPLOSION_CHECK = {
 	if(_this select 0) then
 	{
 		_iedPos = _this select 2;
@@ -305,36 +305,37 @@ EPD_EXPLOSION_CHECK = {
 			hintSilent format["People/Vehicles in trigger = %1\nMax Speed = %2\nMin Height = %3\nDistance = %4", count _objects,_maxSpeed, _minHeight,_minDistance];
 		};	
 		
-		if((_maxSpeed > 5.2) and (_minHeight < 3)) then {true; } else {false;}; 
+		if((_maxSpeed > 5.2) and (_minHeight < 3)) then { true; } else {false;}; 
 	} else {
 		false;
 	};
 };
 
 
-EPD_EXPLOSIVESEQUENCE_SMALL ={
+EXPLOSIVESEQUENCE_SMALL ={
 	_iedPosition = _this select 0;
 	_explosiveSequence = ["M_PG_AT","M_Zephyr","M_Titan_AA_long","M_PG_AT"]; 
 	
-	[[_iedPosition, _explosiveSequence], "EPD_INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
+	[[_iedPosition, _explosiveSequence], "INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
 };
 
-EPD_EXPLOSIVESEQUENCE_MEDIUM ={
+EXPLOSIVESEQUENCE_MEDIUM ={
 	_iedPosition = _this select 0;
 	//_explosiveSequence = ["HelicopterExploSmall","M_Titan_AA_long","HelicopterExploSmall","M_PG_AT","M_Titan_AT", "R_230mm_HE"];
 	_explosiveSequence = ["M_Titan_AA_long","HelicopterExploSmall","M_PG_AT","M_Titan_AT"];
 	
-	[[_iedPosition, _explosiveSequence], "EPD_INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
+	[[_iedPosition, _explosiveSequence], "INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
 };
 
-EPD_EXPLOSIVESEQUENCE_LARGE ={
+EXPLOSIVESEQUENCE_LARGE ={
 	_iedPosition = _this select 0;
 	_explosiveSequence = ["Bo_GBU12_LGB_MI10","M_Titan_AA_long","HelicopterExploSmall","M_Titan_AA_long", "M_PG_AT","M_Titan_AT"]; 
 	
-	[[_iedPosition, _explosiveSequence], "EPD_INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
+	[[_iedPosition, _explosiveSequence], "INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
 };
 
-EPD_INITIAL_EXPLOSION = {
+INITIAL_EXPLOSION = {
+	
 	
 	_iedPosition = _this select 0;
 	_explosiveSequence = _this select 1;
@@ -361,11 +362,11 @@ EPD_INITIAL_EXPLOSION = {
 			hint format["Incoming secondary explosions in %1 seconds!",_sleepTime];
 		};
 		sleep _sleepTime;
-		[_iedPosition] spawn EPD_SECONDARY_EXPLOSIONS;
+		[_iedPosition] spawn SECONDARY_EXPLOSIONS;
 	};	
 };
 
-EPD_SECONDARY_EXPLOSIONS = {
+SECONDARY_EXPLOSIONS = {
 	_iedPosition = _this select 0;
 	_explosiveSequence = ["R_80mm_HE","M_PG_AT","M_PG_AT","R_80mm_HE","M_PG_AT","R_80mm_HE","M_PG_AT","M_PG_AT","M_PG_AT","R_80mm_HE"];
 	
