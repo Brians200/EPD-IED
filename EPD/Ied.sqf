@@ -3,6 +3,7 @@
 debug = true;
 if(!isserver) exitwith {};
 if (isnil ("iedcounter")) then {iedcounter=0;} ;
+if (isnil ("junkcounter")) then {junkcounter=0;} ;
 
 private["_origin", "_counter", "_amountToPlace", "_distance", "_side", "_iedSizes","_paramArray", "_paramCounter", "_size","_cityNames","_cityLocations","_citySizes"];
 
@@ -11,12 +12,6 @@ _cityNames = ["Gravia","Lakka","OreoKastro","Abdera","Galati","Syrta","Kore","Ne
 _cityLocations = [[14491.1,17636.8,0],[12342.6,15682.6],[4557.53,21387.7,0],[9420.76,20252.7,0],[10326.3,19055.6,0],[8634.13,18270.7,0],[7144.03,16455.2,0],[4895.13,16168.9,0],[3808.9,13694.7,0],[3543.03,13008.2,0],[5086.4,11263,0],[9197.17,11925.5,0],[10666.3,12270.4,0],[10983.5,13424.3,0],[11133,14561,0],[12501.5,14328.7,0],[12946.5,15057.3,0],[9358.66,15885.8,0],[14022.3,18716.3,0],[14615.4,20775.9,0],[18779.8,16643.9,0],[20951.5,16958.9,0],[21384.8,16362.2,0],[25702.1,21355.8,0],[27033.2,23242.4,0],[18114.4,15241,0],[16828,12662.2,0],[19399,13251.5,0],[20250.4,11673.7,0],[20511.7,8867.04,0],[21700.7,7576.93,0],[20803,6730.63,0],[4941.03,20430.1,0],[5796.45,16578.8,0],[5435.57,12633.9,0],[9579.01,20978.4,0],[10020.1,16859.6,0],[9779.5,12901.4,0],[13749.2,21392.9,0],[13048.1,18153.4,0],[17677.8,17309.3,0],[26097.5,22777.3,0],[23259.9,19904.4,0],[21356.9,17014.4,0],[19267,13716.4,0],[17033.2,10641.5,0],[20342.5,8704.69,0],[11108.5,8551.36,0]];
 
 _citySizes = [[350,350],[350,350],[250,250],[150,150],[150,150],[150,150],[300,300],[150,150],[500,500],[500,500],[350,350],[350,350],[250,250],[250,250],[250,250],[350,350],[250,250],[450,450],[400,400],[250,250],[350,350],[450,450],[250,250],[350,350],[250,250],[400,400],[500,500],[250,250],[400,400],[250,250],[350,350],[350,350],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000]];
-
-iedSmallItems = ["RoadCone_F","Land_Pallets_F","Land_WheelCart_F","Land_Tyre_F","Land_ButaneCanister_F","Land_Bucket_F","Land_GasCanister_F","Land_Pillow_F"];
-	
-iedMediumItems = ["Land_Portable_generator_F","Land_WoodenBox_F","Land_MetalBarrel_F","Land_BarrelEmpty_grey_F","Land_BarrelSand_grey_F","Land_BarrelTrash_grey_F","Land_BarrelWater_grey_F","Land_Sacks_heap_F","Land_WoodenLog_F","Land_WoodPile_F"];
-	
-iedLargeItems = ["Land_Bricks_V2_F","Land_Bricks_V3_F","Land_Bricks_V4_F","Land_GarbageBags_F","Land_GarbagePallet_F","Land_GarbageWashingMachine_F","Land_JunkPile_F","Land_Tyres_F","Land_Wreck_Skodovka_F","Land_Wreck_Car_F","Land_Wreck_Car3_F","Land_Wreck_Car2_F","Land_Wreck_Offroad_F","Land_Wreck_Offroad2_F"];
 
 _paramCounter = 0;
 _paramArray = _this;
