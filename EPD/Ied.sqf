@@ -1,6 +1,6 @@
 /* adapted from:  Dynamic IED script by - Mantis and MAD_T -*/
 /* Rewritten by Brian Sweeney - [EPD] Brian*/
-debug = true;
+
 if(!isserver) exitwith {};
 if (isnil ("iedcounter")) then {iedcounter=0;} ;
 if (isnil ("junkcounter")) then {junkcounter=0;} ;
