@@ -1,11 +1,12 @@
-/* adapted from:  Dynamic IED script by - Mantis and MAD_T -*/
+/* original work from: Tankbuster */
+/* adapted from:  Dynamic IED script by - Mantis -*/
 /* Rewritten by Brian Sweeney - [EPD] Brian*/
 
 if(!isserver) exitwith {};
 if (isnil ("iedcounter")) then {iedcounter=0;} ;
 if (isnil ("junkcounter")) then {junkcounter=0;} ;
 
-private["_origin", "_counter", "_amountToPlace", "_distance", "_side", "_iedSizes","_paramArray", "_paramCounter", "_size","_cityNames","_cityLocations","_citySizes"];
+private["_paramArray", "_paramCounter", "_cityNames","_cityLocations","_citySizes"];
 
 _cityNames = ["Gravia","Lakka","OreoKastro","Abdera","Galati","Syrta","Kore","Negades","Aggeochori","Kavala","Panochori","Zaros","Therisa","Poliakko","Alikampos","Neochori","Stravos","Agios Dionysios","Athira","Frini","Rodopoli","Paros","Kalochori","Sofia","Molos","Charkia","Pyrgos","Dorida","Chalkiea","Panagia","Feres","Selakano","Random1","Random2","Random3","Random4","Random5","Random6","Random7","Random8","Random9","Random10","Random11","Random12","Random13","Random14","Random15","Random16"];
 
@@ -21,10 +22,12 @@ while{_paramCounter < count _paramArray} do {
 	_arr = _paramArray select _paramCounter;
 	_paramCounter = _paramCounter + 1;
 	
+	//["marker", iedsToPlace, fakesToPlace, side]
 	//["marker", amountToPlace, side]
 	//["marker", side]
 	//["CityName", side]
 	//["CityName", amountToPlace, side];
+	//["CityName", iedsToPlace, fakesToPlace, side];
 	
 	_origin = [0,0,0];
 	_distance = [0,0,0];
@@ -37,239 +40,217 @@ while{_paramCounter < count _paramArray} do {
 		
 	} else {
 		_origin = getmarkerpos (_arr select 0);
-		(_arr select 0) setMarkerAlpha 0;
+		if(hideIedMarker) then {
+			(_arr select 0) setMarkerAlpha 0;
+		};
 		_size = getMarkerSize (_arr select 0);
 		_distance = ((_size select 0) min (_size select 1));
 	};
 	
-	
-	if(_distance > 1) then {
-		_side = "";
-		_amountToPlace = "";
-		if(count _arr == 2) then
+	if(not ([_origin,[0,0,0]] call BIS_fnc_areEqual)) then { //don't bother if the marker doesn't exist
+		if(_distance > 1) then {
+			_side = "";
+			_iedsToPlace = 0;
+			_junkToPlace = 0;
+			if(count _arr == 2) then
+			{
+				_iedsToPlace = ceil (_distance / 100.0);
+				_junkToPlace = _iedsToPlace;
+				_side = _arr select 1;
+			} else {
+				if( count _arr == 3) then
+				{
+					_iedsToPlace = _arr select 1;
+					_junkToPlace = _iedsToPlace;
+					_side = _arr select 2;
+				} else {
+					_iedsToPlace = _arr select 1;
+					_junkToPlace = _arr select 2;
+					_side = _arr select 3;
+				};
+			};
+			
+			//prevent race condition...
+			_iedc = iedcounter;
+			_junkc = junkcounter;
+			
+			[[_origin, _distance, _side, _iedsToPlace, _junkToPlace, _iedc, _junkc], "CREATE_RANDOM_IEDS", false,false] spawn BIS_fnc_MP;
+			iedcounter = iedcounter + _iedsToPlace;
+			junkcounter = junkcounter + _junkToPlace;
+		}
+		else  //single IED exactly on the marker spot
 		{
-			_amountToPlace = ceil (_distance / 100.0);
-			_side = _arr select 1;
-		} else {
-			_amountToPlace = _arr select 1;
-			_side = _arr select 2;
+			_side = _arr select ((count _arr) -1); 
+			
+			//prevent race condition...
+			_iedc = iedcounter;
+			
+			[[_iedc, _origin, _side], "CREATE_SPECIFIC_IED", false,false] spawn BIS_fnc_MP;
+			iedcounter = iedcounter + 1;
 		};
-		
-		[_origin, _distance, _side, _amountToPlace, iedcounter] spawn{ call CREATE_RANDOM_IEDS; };
-		iedcounter = iedcounter + _amountToPlace;
-	}
-	else  //single IED exactly on the marker spot
-	{
-		_side = "";
-		if(count _arr == 2) then
-		{
-			_side = _arr select 1;
-		} else {
-			_side = _arr select 2;
-		};
-		[_origin, iedcounter, _side] spawn{ call CREATE_IED; };
-		iedcounter = iedcounter + 1;
 	};
-	
 };
 
-CREATE_IED = {
+CREATE_SPECIFIC_IED = {
 	
-	_iedPos = _this select 0;
-	_counter = _this select 1;
+	_iedNumber = _this select 0;
+	_origin = _this select 1;
 	_side = _this select 2;
 	
-	_iedSize = _this select 3;
-	if (isnil ("_iedSize")) then {
-		_iedSize = "SMALL";
-		r = floor random 100;
-		if(r>40) then {
-		_iedSize = "MEDIUM";
-		};
-
-		if(r>80) then {
-		_iedSize = "LARGE";
-		};
-	};
-	_iedType = 0;
-	if(_iedSize == "SMALL") then
-	{
-		_iedType = iedSmallItems select(floor random(count iedSmallItems));
-	} else {
-		if(_iedSize == "MEDIUM") then
-		{
-			_iedType = iedMediumItems select(floor random(count iedMediumItems));
-		} else { //large
-			_iedType = iedLargeItems select(floor random(count iedLargeItems));
-		};
-	};
-	
-	call compile format ['ied_%1 = _iedType createVehicle _iedPos;
-						ied_%1 setDir (random 360);
-						ied_%1 enableSimulation false;
-						ied_%1 setPos %2', _counter, _iedPos];
-						
-	call compile format [' t_%1 = createTrigger["EmptyDetector", _iedPos];
-	t_%1 setTriggerArea[11,11,0,true];
-	t_%1 setTriggerActivation [_side,"PRESENT",false];
-	t_%1 setTriggerStatements ["[this, thislist, %2] call EXPLOSION_CHECK && (alive ied_%1)","[%2] spawn EXPLOSIVESEQUENCE_%3; deletevehicle ied_%1; deleteVehicle thisTrigger",""];
-	',_counter, _iedPos,_iedSize];
-	
-	call compile format ['
-	[[ied_%1, t_%1],"Disarm", true, true] spawn BIS_fnc_MP;', _counter];
-	
-	if(true) then {
-		
-		call compile format ['
-		bombmarker_%1 = createmarker ["bombmarker_%1", _iedPos];
-		"bombmarker_%1" setMarkerTypeLocal "hd_warning";
-		"bombmarker_%1" setMarkerColorLocal "ColorRed";
-		"bombmarker_%1" setMarkerTextLocal "%2";', _counter,_iedSize];
-	};
+	_st = [] call GET_SIZE_AND_TYPE;
+	[_iedNumber, _origin, _st select 0, _st select 1, _side] spawn { call CREATE_IED; };
 };
 
 CREATE_RANDOM_IEDS = {
 	_origin = (_this select 0);
 	_distance = (_this select 1);
 	_side = (_this select 2);
-	_amountToPlace = (_this select 3);
-	_counterOffset = (_this select 4);
+	_iedAmountToPlace = (_this select 3);
+	_fakeAmountToPlace = (_this select 4);
+	_iedCounterOffset = (_this select 5);
+	_fakeCounterOffset = (_this select 6);
 	
 	_counter = 0;
 	
 	_roads = _origin nearRoads _distance;
-	
 	if(count _roads == 0) exitwith {}; //if there are no roads in this circle of life....
-	while{_counter < _amountToPlace} do {
+	while{_counter < _iedAmountToPlace} do {
 		
-		_iedSize = "SMALL";
-		 r = floor random 100;
-		 if(r>40) then {
-			_iedSize = "MEDIUM";
-		 };
-		 
-		 if(r>80) then {
-			_iedSize = "LARGE";
-		 };
-		
-		_iedType = 0;
-		_junkType = 0;
-		if(_iedSize == "SMALL") then
+		_iedSize = [] call GET_SIZE_AND_TYPE;
+		_iedType = _iedSize select 1;
+		_iedSize = _iedSize select 0;
+		_iedPos = [_roads] call FIND_LOCATION_BY_ROAD;
+		[_iedCounterOffset+_counter, _iedPos, _iedSize, _iedType, _side] call CREATE_IED;	
+		_counter = _counter + 1;
+	};
+	
+	_counter = 0;
+	while{_counter < _fakeAmountToPlace} do {
+	
+		_junkType = ([] call GET_SIZE_AND_TYPE) select 1;
+		_junkPosition = [_roads] call FIND_LOCATION_BY_ROAD;
+		[_fakeCounterOffset+_counter,_junkPosition, _junkType] call CREATE_FAKE;
+		_counter = _counter + 1;
+	};
+};
+
+GET_SIZE_AND_TYPE = {
+	_size = "SMALL";
+	 r = floor random 100;
+	 if(r>40) then {
+		_size = "MEDIUM";
+	 };
+	 
+	 if(r>80) then {
+		_size = "LARGE";
+	 };
+	
+	_type = "";
+	if(_size == "SMALL") then
+	{
+		_type = iedSmallItems select(floor random(count iedSmallItems));
+	} else {
+		if(_size == "MEDIUM") then
 		{
-			_iedType = iedSmallItems select(floor random(count iedSmallItems));
-			_junkType = iedSmallItems select (floor random (count iedSmallItems));
-		} else {
-			if(_iedSize == "MEDIUM") then
-			{
-				_iedType = iedMediumItems select(floor random(count iedMediumItems));
-				_junkType = iedMediumItems select (floor random (count iedMediumItems));
-			} else { //large
-				_iedType = iedLargeItems select(floor random(count iedLargeItems));
-				_junkType = iedLargeItems select (floor random (count iedLargeItems));
-			};
+			_type = iedMediumItems select(floor random(count iedMediumItems));
+		} else { //large
+			_type = iedLargeItems select(floor random(count iedLargeItems));
 		};
-		
-		_rdist1 = 5;
-		_offSetDirection = 1;
-		if((random 100) > 50) then { _offSetDirection = -1;};
-				
-		_road = _roads select(floor random(count _roads));
-		_dir  = getDir _road;
-		_position = getpos _road;
-		_positionX = _position select 0;
-		_positionY = _position select 1;
-		_tx = (_positionX + (_rdist1 * sin(_dir)));
-		_ty = (_positionY + (_rdist1 * cos(_dir)));
+	};
+	[_size,_type];
+};
+
+FIND_LOCATION_BY_ROAD = {
+	_roads = _this select 0;
+	_orthogonalDist = 5;
+	_road = _roads select(floor random(count _roads));
+	_dir = 0;
+	if(count (roadsConnectedTo _road) > 0) then {
+		_dir  = [_road, (roadsConnectedTo _road) select 0] call BIS_fnc_DirTo;
+	};
+	_position = getpos _road;
+	_opositionX = _position select 0;
+	_opositionY = _position select 1;
+	
+	_offSetDirection = 1;
+	if((random 100) > 50) then { _offSetDirection = -1;};
+	
+	_positionX = _opositionX + (random 5) * _offSetDirection * sin(_dir);
+	_positionY = _opositionY + (random 5) * _offSetDirection * cos(_dir);
+	
+	if((random 100) > 50) then { _offSetDirection = -1 * _offSetDirection;};		
+	
+	_tx = _positionX;
+	_ty = _positionY;
+	
+	while{isOnRoad [_tx,_ty,0]} do{
+		_orthogonalDist = _orthogonalDist + _offSetDirection;
+		_tx = (_positionX + (_orthogonalDist * cos(_dir)));
+		_ty = (_positionY + (_orthogonalDist * sin(_dir)));
+	};	
+	
+	_extraOffSet = 1 + random 5;
+	//move it off the road a random amount
+	_tx = (_positionX + ((_orthogonalDist + _extraOffSet *_offSetDirection) * cos(_dir)));
+	_ty = (_positionY + ((_orthogonalDist + _extraOffSet *_offSetDirection) * sin(_dir)));
+	
+	//ensure we didn't put it on another road, this happens a lot at Y type intersections
+	while{isOnRoad [_tx,_ty,0]} do
+	{
+		_extraOffSet = _extraOffSet - 0.5;
+		_tx = (_positionX + ((_orthogonalDist + _extraOffSet *_offSetDirection) * cos(_dir)));
+		_ty = (_positionY + ((_orthogonalDist + _extraOffSet *_offSetDirection) * sin(_dir)));
+	};
 			
-		while{isOnRoad [_tx,_ty,0]} do{
-			_rdist1 = _rdist1 + _offSetDirection;
-			_tx = (_positionX + (_rdist1 * sin(_dir)));
-			_ty = (_positionY + (_rdist1 * cos(_dir)));
-		};	
-		
-		_extraOffSet = 1 + random 5;
-		//move it off the road a random amount
-		_tx = (_positionX + ((_rdist1 + _extraOffSet *_offSetDirection) * sin(_dir)));
-		_ty = (_positionY + ((_rdist1 + _extraOffSet *_offSetDirection) * cos(_dir)));
-		
-		//ensure we didn't put it on another road, this happens a lot at Y type intersections
-		while{isOnRoad [_tx,_ty,0]} do
-		{
-			_extraOffSet = _extraOffSet - 0.5;
-			_tx = (_positionX + ((_rdist1 + _extraOffSet *_offSetDirection) * sin(_dir)));
-			_ty = (_positionY + ((_rdist1 + _extraOffSet *_offSetDirection) * cos(_dir)));
-		};
-				
-		_iedPos = [_tx,_ty,0];
-		
-		call compile format ['ied_%1 = _iedType createVehicle _iedPos;
+	[_tx,_ty,0];
+};
+
+CREATE_IED = {
+	_iedNumber = _this select 0;
+	_iedPos = _this select 1;
+	_iedSize = _this select 2;
+	_iedType = _this select 3;
+	_side = _this select 4;
+	
+	call compile format ['ied_%1 = _iedType createVehicle _iedPos;
 							ied_%1 setDir (random 360);
 							ied_%1 enableSimulation false;
-							ied_%1 setPos %2', _counterOffset+_counter, _iedPos];
-		
-		_rdist2 = 5;
-		_offSetDirection = 1;
-		if((random 100) > 50) then {_offSetDirection = -1;};
-		
-		
-		_road2 = _roads select(floor random(count _roads));
-		while{_road2 == _road} do { 
-			_road2 = _roads select(floor random(count _roads));
-		};
-		_dir = getDir _road2;
-		_junkPos = getpos _road2;
-		_junkPosX = _junkPos select 0;
-		_junkPosY = _junkPos select 1;
-		_junktx = (_junkPosX + (_rdist2 * sin(_dir)));
-		_junkty = (_junkPosY + (_rdist2 * cos(_dir)));
-
-		while{isOnRoad [_junktx,_junkty, 0]} do{
-			_rdist2 = _rdist2 + _offSetDirection;
-			_junktx = (_junkPosX + (_rdist2 * sin(_dir)));
-			_junkty = (_junkPosY + (_rdist2 * cos(_dir)));
-		};
-		_extraOffSet = 1 + random 5;
-		//move it off the road
-		_junktx = (_junkPosX + ((_rdist2 + _extraOffSet *_offSetDirection) * sin(_dir)));
-		_junkty = (_junkPosY + ((_rdist2 + _extraOffSet *_offSetDirection) * cos(_dir)));
-		
-		while{isOnRoad [_junktx,_junkty,0]} do
-		{
-			_extraOffSet = _extraOffSet - 0.5;
-			_junktx = (_junkPosX + ((_rdist2 + _extraOffSet *_offSetDirection) * sin(_dir)));
-			_junkty = (_junkPosY + ((_rdist2 + _extraOffSet *_offSetDirection) * cos(_dir)));
-		};
-		
-		_junkPosition = [_junktx,_junkty, 0];
-		_junk = _junkType createVehicle _junkPosition;
-		_junk setdir(random 360);
-		_junk setPos _junkPosition;
-		
-		call compile format [' t_%1 = createTrigger["EmptyDetector", _iedPos];
-		t_%1 setTriggerArea[11,11,0,true];
-		t_%1 setTriggerActivation [_side,"PRESENT",false];
-		t_%1 setTriggerStatements ["[this, thislist, %2] call EXPLOSION_CHECK && (alive ied_%1)","[%2] spawn 	EXPLOSIVESEQUENCE_%3; deletevehicle ied_%1; deleteVehicle thisTrigger",""];
-		',_counterOffset+_counter, _iedPos,_iedSize];
-		
-		call compile format ['
-		[[ied_%1, t_%1],"Disarm", true, true] spawn BIS_fnc_MP;', _counterOffset+_counter];
-		
-		if(debug) then {		
+							ied_%1 setPos _iedPos', _iedNumber];
+							
+	call compile format [' t_%1 = createTrigger["EmptyDetector", _iedPos];
+	t_%1 setTriggerArea[11,11,0,true];
+	t_%1 setTriggerActivation [_side,"PRESENT",false];
+	t_%1 setTriggerStatements ["[this, thislist, %2] call EXPLOSION_CHECK && (alive ied_%1)","[%2, ied_%1] spawn EXPLOSIVESEQUENCE_%3; deleteVehicle thisTrigger",""];
+	',_iedNumber, _iedPos,_iedSize];
+	
+	call compile format ['
+	[[ied_%1, t_%1],"Disarm", true, true] spawn BIS_fnc_MP;', _iedNumber];
+	
+	if(debug) then {		
 			
-			call compile format ['
-			bombmarker_%1 = createmarker ["bombmarker_%1", _iedPos];
-			"bombmarker_%1" setMarkerTypeLocal "hd_warning";
-			"bombmarker_%1" setMarkerColorLocal "ColorRed";
-			"bombmarker_%1" setMarkerTextLocal "%2";', _counterOffset+_counter,_iedSize];
-		
-			call compile format ['
-			fakebombmarker_%1 = createmarker ["fakebombmarker_%1", _junkPosition];
-			"fakebombmarker_%1" setMarkerTypeLocal "hd_warning";
-			"fakebombmarker_%1" setMarkerColorLocal "ColorBlue";
-			"fakebombmarker_%1" setMarkerTextLocal "fake";', _counterOffset+_counter];
-		};
-		
-		_counter = _counter + 1;
+		call compile format ['
+		bombmarker_%1 = createmarker ["bombmarker_%1", _iedPos];
+		"bombmarker_%1" setMarkerTypeLocal "hd_warning";
+		"bombmarker_%1" setMarkerColorLocal "ColorRed";
+		"bombmarker_%1" setMarkerTextLocal "%2";', _iedNumber, _iedSize];
+	};
+};
+
+CREATE_FAKE = {
+	_fakeNumber = _this select 0;
+	_junkPosition = _this select 1;
+	_junkType = _this select 2;
+	
+	_junk = _junkType createVehicle _junkPosition;
+	_junk setdir(random 360);
+	_junk setPos _junkPosition;
+	
+	if(debug) then {		
+		call compile format ['
+		fakebombmarker_%1 = createmarker ["fakebombmarker_%1", _junkPosition];
+		"fakebombmarker_%1" setMarkerTypeLocal "hd_warning";
+		"fakebombmarker_%1" setMarkerColorLocal "ColorBlue";
+		"fakebombmarker_%1" setMarkerTextLocal "fake";', _fakeNumber];
 	};
 };
 
@@ -309,32 +290,32 @@ EXPLOSION_CHECK = {
 
 EXPLOSIVESEQUENCE_SMALL ={
 	_iedPosition = _this select 0;
+	_ied = _this select 1;
 	_explosiveSequence = ["M_PG_AT","M_Zephyr","M_Titan_AA_long","M_PG_AT"]; 
 	
-	[[_iedPosition, _explosiveSequence], "INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
+	[[_iedPosition, _explosiveSequence, _ied], "INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
 };
 
 EXPLOSIVESEQUENCE_MEDIUM ={
 	_iedPosition = _this select 0;
-	//_explosiveSequence = ["HelicopterExploSmall","M_Titan_AA_long","HelicopterExploSmall","M_PG_AT","M_Titan_AT", "R_230mm_HE"];
+	_ied = _this select 1;
 	_explosiveSequence = ["M_Titan_AA_long","HelicopterExploSmall","M_PG_AT","M_Titan_AT"];
 	
-	[[_iedPosition, _explosiveSequence], "INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
+	[[_iedPosition, _explosiveSequence, _ied], "INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
 };
 
 EXPLOSIVESEQUENCE_LARGE ={
 	_iedPosition = _this select 0;
+	_ied = _this select 1;
 	_explosiveSequence = ["Bo_GBU12_LGB_MI10","M_Titan_AA_long","HelicopterExploSmall","M_Titan_AA_long", "M_PG_AT","M_Titan_AT"]; 
 	
-	[[_iedPosition, _explosiveSequence], "INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
+	[[_iedPosition, _explosiveSequence, _ied], "INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
 };
 
 INITIAL_EXPLOSION = {
-	
-	
 	_iedPosition = _this select 0;
 	_explosiveSequence = _this select 1;
-	
+	deleteVehicle (_this select 2);
 	[[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;	
 	for "_i" from 0 to (count _explosiveSequence) -1 do{
 		_explosive = (_explosiveSequence select _i);
@@ -347,8 +328,10 @@ INITIAL_EXPLOSION = {
 		_bomb = _explosive createVehicle _iedPosition;
 		_bomb setPos [(getPos _bomb select 0)+_xCoord,(getPos _bomb select 1)+_yCoord, 0];
 		[[getPos _bomb] , "IED_ROCKS", true, false] spawn BIS_fnc_MP;
-		sleep .01;
-		addCamShake[1+random 5, 1+random 3, 5+random 15];
+		if(((position player) distanceSqr getPos _bomb) < 40000) then {  //less than 200 meters away
+			addCamShake[1+random 5, 1+random 3, 5+random 15];
+		};
+		sleep .02;
 	};
 	
 	if(50>random 100) then {
@@ -377,7 +360,9 @@ SECONDARY_EXPLOSIONS = {
 		_bomb setPos [(getPos _bomb select 0)+_xCoord,(getPos _bomb select 1)+_yCoord, 0];
 		[[getPos _bomb] , "IED_ROCKS", true, false] spawn BIS_fnc_MP;
 		_i = _i + floor random 7;
-		addCamShake[1+random 5, 1+random 3, 5+random 15];
+		if(((position player) distanceSqr getPos _bomb) < 40000) then {  //less than 200 meters away
+			addCamShake[1+random 5, 1+random 3, 5+random 15];
+		};
 		sleep random 5;
 		
 	};

@@ -1,13 +1,23 @@
-/* adapted from:  Dynamic IED script by - Mantis and MAD_T -*/
+/* original work from: Tankbuster */
+/* adapted from:  Dynamic IED script by - Mantis -*/
 /* Rewritten by Brian Sweeney - [EPD] Brian*/
 
 t = (_this select 0);
 
-_array_item = items player;
+_chance = baseDisarmChance;
+
+_bonusAdded = false;
+
+{
+	if((not _bonusAdded) and ((typeof player) isKindOf _x )) then {
+		_chance = _chance + bonusDisarmChance;
+		_bonusAdded = true;
+	};
+} foreach betterDisarmers;
 
 
-//25% chance of it exploding if you don't have a toolkit
-if ((_array_item find "ToolKit" > -1) or ((random 100) > 25)) then {
+
+if (((random 100) < _chance)) then {
 	//player switchMove "AinvPknlMstpSlayWrflDnon_medic";
 	[[[player], {(_this select 0) switchMove "AinvPknlMstpSlayWrflDnon_medic";}], "BIS_fnc_call", nil, false, true] call BIS_fnc_MP;
 	disableUserInput true;
@@ -15,7 +25,7 @@ if ((_array_item find "ToolKit" > -1) or ((random 100) > 25)) then {
 	disableUserInput false;
 	deletevehicle (_this select 3);
 	[[t],"removeAct", true, true] spawn BIS_fnc_MP;
-	hint "Disarmed!";
+	hint "Successfully Disarmed!";
 }
 
  else {
@@ -27,6 +37,7 @@ if ((_array_item find "ToolKit" > -1) or ((random 100) > 25)) then {
 	deletevehicle (_this select 3);
 	[[t],"removeAct", true, true] spawn BIS_fnc_MP;
 	deletevehicle t;
+	hint "Failed to Disarm!";
 };
  
   
@@ -50,7 +61,9 @@ DISARM_EXPLOSIONS = {
 		_bomb = _explosive createVehicle _iedPosition;
 		_bomb setPos [(getPos _bomb select 0)+_xCoord,(getPos _bomb select 1)+_yCoord, 0];
 		[[getPos _bomb] , "IED_ROCKS", true, false] spawn BIS_fnc_MP;
-		addCamShake[1+random 5, 1+random 3, 5+random 15];
-		sleep random .01;
+		if(((position player) distanceSqr getPos _bomb) < 40000) then {  //less than 200 meters away
+			addCamShake[1+random 5, 1+random 3, 5+random 15];
+		};
+		sleep random .02;
 	};
 };

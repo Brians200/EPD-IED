@@ -4,3 +4,10 @@ respawndelay = "3";
 author = [EPD] Brian;
 onLoadName = IED Sample Mission;
 onLoadMission = JUST A SIMPLE IED SAMPLE MISSION;
+
+class Header
+{
+	gameType = Coop; // Game type, see 'class' columns in the table below
+	minPlayers = 1; //min # of players the mission supports
+	maxPlayers = 8; //max # of players the mission supports
+};
