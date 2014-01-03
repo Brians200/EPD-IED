@@ -10,7 +10,8 @@ class Mission
 		"A3_Armor_F_AMV",
 		"A3_Armor_F_Slammer",
 		"A3_Weapons_F_Ammoboxes",
-		"A3_Air_F_Heli_Light_01"
+		"A3_Air_F_Heli_Light_01",
+		"a3_weapons_f_beta_ammoboxes"
 	};
 	addOnsAuto[]=
 	{
@@ -21,6 +22,7 @@ class Mission
 		"A3_Armor_F_Slammer",
 		"A3_Weapons_F_Ammoboxes",
 		"A3_Air_F_Heli_Light_01",
+		"a3_weapons_f_beta_ammoboxes",
 		"a3_map_altis"
 	};
 	randomSeed=11154954;
@@ -71,7 +73,7 @@ class Mission
 					azimut=293.50201;
 					id=1;
 					side="WEST";
-					vehicle="B_soldier_exp_F";
+					vehicle="B_Soldier_GL_F";
 					player="PLAY CDG";
 					skill=0.60000002;
 					description="2";
@@ -152,14 +154,14 @@ class Mission
 	};
 	class Vehicles
 	{
-		items=26;
+		items=51;
 		class Item0
 		{
 			position[]={14398.824,16.923223,18026.584};
-			azimut=151.73891;
+			azimut=151.739;
 			id=9;
 			side="EMPTY";
-			vehicle="B_MRAP_01_F";
+			vehicle="B_MRAP_01_gmg_F";
 			leader=1;
 			skill=0.60000002;
 		};
@@ -196,50 +198,50 @@ class Mission
 		class Item4
 		{
 			position[]={14395.556,16.915735,18020.861};
-			azimut=151.73891;
+			azimut=151.739;
 			id=13;
 			side="EMPTY";
-			vehicle="B_MRAP_01_F";
+			vehicle="B_MRAP_01_gmg_F";
 			leader=1;
 			skill=0.60000002;
 		};
 		class Item5
 		{
 			position[]={14394.28,16.807417,18036.236};
-			azimut=151.73891;
+			azimut=151.739;
 			id=14;
 			side="EMPTY";
-			vehicle="B_MRAP_01_F";
+			vehicle="B_MRAP_01_gmg_F";
 			leader=1;
 			skill=0.60000002;
 		};
 		class Item6
 		{
 			position[]={14390.21,16.799168,18029.898};
-			azimut=151.73891;
+			azimut=151.739;
 			id=15;
 			side="EMPTY";
-			vehicle="B_MRAP_01_F";
+			vehicle="B_MRAP_01_gmg_F";
 			leader=1;
 			skill=0.60000002;
 		};
 		class Item7
 		{
 			position[]={14389.079,16.720762,18045.021};
-			azimut=151.73891;
+			azimut=151.739;
 			id=16;
 			side="EMPTY";
-			vehicle="B_MRAP_01_F";
+			vehicle="B_MRAP_01_gmg_F";
 			leader=1;
 			skill=0.60000002;
 		};
 		class Item8
 		{
 			position[]={14385.072,16.727612,18038.578};
-			azimut=151.73891;
+			azimut=151.739;
 			id=17;
 			side="EMPTY";
-			vehicle="B_MRAP_01_F";
+			vehicle="B_MRAP_01_gmg_F";
 			leader=1;
 			skill=0.60000002;
 		};
@@ -406,6 +408,206 @@ class Mission
 			side="EMPTY";
 			vehicle="B_AssaultPack_khk";
 			leader=1;
+			skill=0.60000002;
+		};
+		class Item26
+		{
+			position[]={14391.077,16.98045,18000.146};
+			id=35;
+			side="EMPTY";
+			vehicle="Box_NATO_Wps_F";
+			skill=0.60000002;
+		};
+		class Item27
+		{
+			position[]={14393.448,17.017529,17999.699};
+			id=36;
+			side="EMPTY";
+			vehicle="Box_NATO_Ammo_F";
+			skill=0.60000002;
+		};
+		class Item28
+		{
+			position[]={14390.936,16.973438,18001.428};
+			id=37;
+			side="EMPTY";
+			vehicle="Box_NATO_Wps_F";
+			skill=0.60000002;
+		};
+		class Item29
+		{
+			position[]={14393.782,17.012299,18001.221};
+			id=38;
+			side="EMPTY";
+			vehicle="Box_NATO_Ammo_F";
+			skill=0.60000002;
+		};
+		class Item30
+		{
+			position[]={14391.601,16.974241,18002.807};
+			id=39;
+			side="EMPTY";
+			vehicle="Box_NATO_Wps_F";
+			skill=0.60000002;
+		};
+		class Item31
+		{
+			position[]={14395.777,17.036766,18002.121};
+			id=40;
+			side="EMPTY";
+			vehicle="Box_NATO_Ammo_F";
+			skill=0.60000002;
+		};
+		class Item32
+		{
+			position[]={14392.028,16.972799,18004.041};
+			id=41;
+			side="EMPTY";
+			vehicle="Box_NATO_Wps_F";
+			skill=0.60000002;
+		};
+		class Item33
+		{
+			position[]={14394.637,17.010914,18003.832};
+			id=42;
+			side="EMPTY";
+			vehicle="Box_NATO_Ammo_F";
+			skill=0.60000002;
+		};
+		class Item34
+		{
+			position[]={14392.503,16.971655,18005.324};
+			id=43;
+			side="EMPTY";
+			vehicle="Box_NATO_Wps_F";
+			skill=0.60000002;
+		};
+		class Item35
+		{
+			position[]={14394.779,17.004627,18005.4};
+			id=44;
+			side="EMPTY";
+			vehicle="Box_NATO_Ammo_F";
+			skill=0.60000002;
+		};
+		class Item36
+		{
+			position[]={14393.927,16.984428,18006.844};
+			id=45;
+			side="EMPTY";
+			vehicle="Box_NATO_Wps_F";
+			skill=0.60000002;
+		};
+		class Item37
+		{
+			position[]={14396.203,17.017414,18006.92};
+			id=46;
+			side="EMPTY";
+			vehicle="Box_NATO_Ammo_F";
+			skill=0.60000002;
+		};
+		class Item38
+		{
+			position[]={14395.352,16.997017,18008.221};
+			id=47;
+			side="EMPTY";
+			vehicle="Box_NATO_Wps_F";
+			skill=0.60000002;
+		};
+		class Item39
+		{
+			position[]={14397.628,17.0299,18008.297};
+			id=48;
+			side="EMPTY";
+			vehicle="Box_NATO_Ammo_F";
+			skill=0.60000002;
+		};
+		class Item40
+		{
+			position[]={14398.533,17.05732,18005.846};
+			id=49;
+			side="EMPTY";
+			vehicle="Box_NATO_Wps_F";
+			skill=0.60000002;
+		};
+		class Item41
+		{
+			position[]={14400.81,17.093533,18005.922};
+			id=50;
+			side="EMPTY";
+			vehicle="Box_NATO_Ammo_F";
+			skill=0.60000002;
+		};
+		class Item42
+		{
+			position[]={14398.06,17.069124,18002.328};
+			id=51;
+			side="EMPTY";
+			vehicle="Box_NATO_Wps_F";
+			skill=0.60000002;
+		};
+		class Item43
+		{
+			position[]={14400.335,17.104191,18002.264};
+			id=52;
+			side="EMPTY";
+			vehicle="Box_NATO_Ammo_F";
+			skill=0.60000002;
+		};
+		class Item44
+		{
+			position[]={14398.153,17.061621,18003.994};
+			id=53;
+			side="EMPTY";
+			vehicle="Box_NATO_Wps_F";
+			skill=0.60000002;
+		};
+		class Item45
+		{
+			position[]={14400.43,17.096323,18004.07};
+			id=54;
+			side="EMPTY";
+			vehicle="Box_NATO_Ammo_F";
+			skill=0.60000002;
+		};
+		class Item46
+		{
+			position[]={14403.195,17.133125,18006.34};
+			id=55;
+			side="EMPTY";
+			vehicle="Box_NATO_WpsLaunch_F";
+			skill=0.60000002;
+		};
+		class Item47
+		{
+			position[]={14403.149,17.142927,18004.75};
+			id=56;
+			side="EMPTY";
+			vehicle="Box_NATO_WpsLaunch_F";
+			skill=0.60000002;
+		};
+		class Item48
+		{
+			position[]={14403.24,17.151699,18003.523};
+			id=57;
+			side="EMPTY";
+			vehicle="Box_East_WpsLaunch_F";
+			skill=0.60000002;
+		};
+		class Item49
+		{
+			position[]={14402.65,17.147236,18002.297};
+			id=58;
+			side="EMPTY";
+			vehicle="Box_East_WpsLaunch_F";
+			skill=0.60000002;
+		};
+		class Item50
+		{
+			position[]={14400.629,17.074411,18008.475};
+			id=59;
+			side="EMPTY";
+			vehicle="Box_NATO_AmmoOrd_F";
 			skill=0.60000002;
 		};
 	};

@@ -1,7 +1,7 @@
 /* Written by Brian Sweeney - [EPD] Brian*/
 
 /***************SETTINGS***********************/
-debug = false;
+debug = true;
 hideIedMarker = true;  //sets the alpha to 0 after spawning IEDs there
 
 itemsRequiredToDisarm = ["ToolKit"];   //"MineDetector" or "ToolKit" for example
@@ -24,9 +24,9 @@ IED_ROCKS = compile preprocessFileLineNumbers "EPD\IEDRocks.sqf";
 Disarm = compile preprocessFileLineNumbers "EPD\disarmAddAction.sqf";
 
 if(isserver) then {
-	[[[	/*["IEDSINGLE1","West"],
+	[[[	["IEDSINGLE1","West"],
 		["IEDSINGLE2","West"],
-		["IEDSINGLE3","West"],*/
+		["IEDSINGLE3","West"],
 		["Random1",6,"West"],
 		["Random2",6,"West"],
 		["Random3",6,"West"],
@@ -43,7 +43,7 @@ if(isserver) then {
 		["Random14",6,"West"],
 		["Random15",6,"West"],
 		["Random16",6,"West"],
-		["Gravia", 10, 5, "West" ],
+		["Gravia", 25, 0, "West" ],
 		["Lakka", 2, 8, "West" ],
 		["OreoKastro", 2, "West"],
 		["Abdera", 2, "West" ],
