@@ -2,12 +2,12 @@
 /* adapted from:  Dynamic IED script by - Mantis -*/
 /* Rewritten by Brian Sweeney - [EPD] Brian*/
 
-t = (_this select 0);
-
+_arr = _this select 3;
+if(!scriptDone (_arr select 1)) then {terminate (_arr select 1);};
 _chance = baseDisarmChance;
+_trigger = _arr select 0;
 
 _bonusAdded = false;
-
 {
 	if((not _bonusAdded) and ((typeof player) isKindOf _x )) then {
 		_chance = _chance + bonusDisarmChance;
@@ -23,8 +23,8 @@ if (((random 100) < _chance)) then {
 	disableUserInput true;
 	sleep 6;
 	disableUserInput false;
-	deletevehicle (_this select 3);
-	[[t],"removeAct", true, true] spawn BIS_fnc_MP;
+	deletevehicle (_trigger);
+	[[_this select 0],"removeAct", true, true] spawn BIS_fnc_MP;
 	hint "Successfully Disarmed!";
 }
 
@@ -34,9 +34,9 @@ if (((random 100) < _chance)) then {
 	sleep 2;
 	disableUserInput false;
 	[getpos player] spawn {call DISARM_EXPLOSIONS;};
-	deletevehicle (_this select 3);
-	[[t],"removeAct", true, true] spawn BIS_fnc_MP;
-	deletevehicle t;
+	deletevehicle (_trigger);
+	[[_this select 0],"removeAct", true, true] spawn BIS_fnc_MP;
+	deletevehicle (_this select 0);
 	hint "Failed to Disarm!";
 };
  
@@ -64,6 +64,6 @@ DISARM_EXPLOSIONS = {
 		if(((position player) distanceSqr getPos _bomb) < 40000) then {  //less than 200 meters away
 			addCamShake[1+random 5, 1+random 3, 5+random 15];
 		};
-		sleep random .02;
+		sleep random .03;
 	};
 };

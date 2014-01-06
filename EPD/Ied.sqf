@@ -5,14 +5,14 @@
 if(!isserver) exitwith {};
 if (isnil ("iedcounter")) then {iedcounter=0;} ;
 if (isnil ("junkcounter")) then {junkcounter=0;} ;
+	
+explosiveSuperClasses = ["TimeBombCore", "RocketCore", "MissileCore", "BombCore", "SubmunitionCore", "GrenadeCore", "Grenade", "ShellCore"];
+	
+explosiveBullets = ["B_20mm", "B_20mm_Tracer_Red", "B_30mm_HE", "B_30mm_HE_Tracer_Green", "B_30mm_HE_Tracer_Red", "B_30mm_HE_Tracer_Yellow", "B_30mm_MP", "B_30mm_MP_Tracer_Green", "B_30mm_MP_Tracer_Red", "B_30mm_MP_Tracer_Yellow", "B_35mm_AA", "B_35mm_AA_Tracer_Green", "B_35mm_AA_Tracer_Red", "B_35mm_AA_Tracer_Yellow", "B_40mm_GPR", "B_40mm_GPR_Tracer_Green", "B_40mm_GPR_Tracer_Red", "B_40mm_GPR_Tracer_Yellow"];
+	
+thingsToIgnore = ["SmokeShell", "FlareCore", "IRStrobeBase", "GrenadeHand_stone", "Smoke_120mm_AMOS_White", "TMR_R_DG32V_F"];
 
-private["_paramArray", "_paramCounter", "_cityNames","_cityLocations","_citySizes"];
-
-_cityNames = ["Gravia","Lakka","OreoKastro","Abdera","Galati","Syrta","Kore","Negades","Aggeochori","Kavala","Panochori","Zaros","Therisa","Poliakko","Alikampos","Neochori","Stravos","Agios Dionysios","Athira","Frini","Rodopoli","Paros","Kalochori","Sofia","Molos","Charkia","Pyrgos","Dorida","Chalkiea","Panagia","Feres","Selakano","Random1","Random2","Random3","Random4","Random5","Random6","Random7","Random8","Random9","Random10","Random11","Random12","Random13","Random14","Random15","Random16"];
-
-_cityLocations = [[14491.1,17636.8,0],[12342.6,15682.6],[4557.53,21387.7,0],[9420.76,20252.7,0],[10326.3,19055.6,0],[8634.13,18270.7,0],[7144.03,16455.2,0],[4895.13,16168.9,0],[3808.9,13694.7,0],[3543.03,13008.2,0],[5086.4,11263,0],[9197.17,11925.5,0],[10666.3,12270.4,0],[10983.5,13424.3,0],[11133,14561,0],[12501.5,14328.7,0],[12946.5,15057.3,0],[9358.66,15885.8,0],[14022.3,18716.3,0],[14615.4,20775.9,0],[18779.8,16643.9,0],[20951.5,16958.9,0],[21384.8,16362.2,0],[25702.1,21355.8,0],[27033.2,23242.4,0],[18114.4,15241,0],[16828,12662.2,0],[19399,13251.5,0],[20250.4,11673.7,0],[20511.7,8867.04,0],[21700.7,7576.93,0],[20803,6730.63,0],[4941.03,20430.1,0],[5796.45,16578.8,0],[5435.57,12633.9,0],[9579.01,20978.4,0],[10020.1,16859.6,0],[9779.5,12901.4,0],[13749.2,21392.9,0],[13048.1,18153.4,0],[17677.8,17309.3,0],[26097.5,22777.3,0],[23259.9,19904.4,0],[21356.9,17014.4,0],[19267,13716.4,0],[17033.2,10641.5,0],[20342.5,8704.69,0],[11108.5,8551.36,0]];
-
-_citySizes = [[350,350],[350,350],[250,250],[150,150],[150,150],[150,150],[300,300],[150,150],[500,500],[500,500],[350,350],[350,350],[250,250],[250,250],[250,250],[350,350],[250,250],[450,450],[400,400],[250,250],[350,350],[450,450],[250,250],[350,350],[250,250],[400,400],[500,500],[250,250],[400,400],[250,250],[350,350],[350,350],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000],[2000,2000]];
+private["_paramArray", "_paramCounter"];
 
 _paramCounter = 0;
 _paramArray = _this;
@@ -25,18 +25,24 @@ while{_paramCounter < count _paramArray} do {
 	//["marker", iedsToPlace, fakesToPlace, side]
 	//["marker", amountToPlace, side]
 	//["marker", side]
-	//["CityName", side]
-	//["CityName", amountToPlace, side];
-	//["CityName", iedsToPlace, fakesToPlace, side];
+	//["predefinedLocation", side]
+	//["predefinedLocation", amountToPlace, side];
+	//["predefinedLocation", iedsToPlace, fakesToPlace, side];
 	
 	_origin = [0,0,0];
 	_distance = [0,0,0];
-	_cityIndex = _cityNames find (_arr select 0);
-
+	_cityIndex = -1;//_cityNames find (_arr select 0);
+	for "_i" from 0 to (count predefinedLocations) -1 do{
+		if(predefinedLocations select _i select 0 == _arr select 0) then {
+			_cityIndex = _i;
+			_i = (count predefinedLocations);
+		};
+	};
+	
+	
 	if(_cityIndex > -1) then {
-		_origin = (_cityLocations select _cityIndex);
-		_size = (_citySizes select _cityIndex);
-		_distance = ((_size select 0) min (_size select 1));
+		_origin = predefinedLocations select _cityIndex select 1;
+		_distance = predefinedLocations select _cityIndex select 2;
 		
 	} else {
 		_origin = getmarkerpos (_arr select 0);
@@ -136,12 +142,12 @@ CREATE_RANDOM_IEDS = {
 
 GET_SIZE_AND_TYPE = {
 	_size = "SMALL";
-	 r = floor random 100;
-	 if(r>40) then {
+	 r = floor random (smallChance+mediumChance+largeChance);
+	 if(r>smallChance) then {
 		_size = "MEDIUM";
 	 };
 	 
-	 if(r>80) then {
+	 if(r>smallChance+mediumChance) then {
 		_size = "LARGE";
 	 };
 	
@@ -218,17 +224,17 @@ CREATE_IED = {
 							ied_%1 setPos _iedPos;
 							ied_%1 allowDamage false;
 						', _iedNumber];
-							
+													
 	call compile format [' t_%1 = createTrigger["EmptyDetector", _iedPos];
 	t_%1 setTriggerArea[11,11,0,true];
 	t_%1 setTriggerActivation [_side,"PRESENT",false];
-	t_%1 setTriggerStatements ["[this, thislist, %2, %1] call EXPLOSION_CHECK && (alive ied_%1)","terminate pd_%1; [%2, ied_%1] spawn EXPLOSIVESEQUENCE_%3; deleteVehicle thisTrigger;",""];
-	',_iedNumber, _iedPos,_iedSize];
+	t_%1 setTriggerStatements ["[this, thislist, %2, %1] call EXPLOSION_CHECK && (alive ied_%1)","terminate pd_%1; [%2, ied_%1, %1,%4] spawn EXPLOSIVESEQUENCE_%3; deleteVehicle thisTrigger;",""];
+	',_iedNumber, _iedPos,_iedSize, _side];
+	
+	call compile format['pd_%1 = [ied_%1, %1, _iedSize, t_%1, _side] spawn PROJECTILE_DETECTION;', _iedNumber];
 	
 	call compile format ['
-	[[ied_%1, t_%1],"Disarm", true, true] spawn BIS_fnc_MP;', _iedNumber];
-	
-	call compile format['pd_%1 = [ied_%1, %1, _iedSize, t_%1] spawn PROJECTILE_DETECTION;', _iedNumber];
+	[[ied_%1, t_%1, pd_%1],"Disarm", true, true] spawn BIS_fnc_MP;', _iedNumber];
 	
 	if(debug) then {		
 			
@@ -296,31 +302,39 @@ EXPLOSION_CHECK = {
 EXPLOSIVESEQUENCE_SMALL ={
 	_iedPosition = _this select 0;
 	_ied = _this select 1;
+	_iedNumber = _this select 2;
+	_side = _this select 3;
 	_explosiveSequence = ["M_PG_AT","M_Zephyr","M_Titan_AA_long","M_PG_AT"]; 
 	
-	[[_iedPosition, _explosiveSequence, _ied], "INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
+	[[_iedPosition, _explosiveSequence, _ied, _iedNumber, _side], "INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
 };
 
 EXPLOSIVESEQUENCE_MEDIUM ={
 	_iedPosition = _this select 0;
 	_ied = _this select 1;
+	_iedNumber = _this select 2;
+	_side = _this select 3;
 	_explosiveSequence = ["M_Titan_AA_long","HelicopterExploSmall","M_PG_AT","M_Titan_AT"];
 	
-	[[_iedPosition, _explosiveSequence, _ied], "INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
+	[[_iedPosition, _explosiveSequence, _ied, _iedNumber, _side], "INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
 };
 
 EXPLOSIVESEQUENCE_LARGE ={
 	_iedPosition = _this select 0;
 	_ied = _this select 1;
+	_iedNumber = _this select 2;
+	_side = _this select 3;
 	_explosiveSequence = ["Bo_GBU12_LGB_MI10","M_Titan_AA_long","HelicopterExploSmall","M_Titan_AA_long", "M_PG_AT","M_Titan_AT"]; 
 	
-	[[_iedPosition, _explosiveSequence, _ied], "INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
+	[[_iedPosition, _explosiveSequence, _ied, _iedNumber, _side], "INITIAL_EXPLOSION", true,true] spawn BIS_fnc_MP;
 };
 
 INITIAL_EXPLOSION = {
 	_iedPosition = _this select 0;
 	_explosiveSequence = _this select 1;
 	deleteVehicle (_this select 2);
+	_iedNumber = _this select 3;
+	_side = _this select 4;
 	[[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;	
 	for "_i" from 0 to (count _explosiveSequence) -1 do{
 		_explosive = (_explosiveSequence select _i);
@@ -336,21 +350,22 @@ INITIAL_EXPLOSION = {
 		if(((position player) distanceSqr getPos _bomb) < 40000) then {  //less than 200 meters away
 			addCamShake[1+random 5, 1+random 3, 5+random 15];
 		};
-		sleep .03;
+		sleep .01;
 	};
 	
-	if(50>random 100) then {
+	if(secondaryChance>random 100) then {
 		_sleepTime = 15;
 		if(debug) then {
-			hint format["Creating Secondary Explosive Created",_sleepTime];
+			hint format["Creating Secondary Explosive"];
 		};
 		sleep _sleepTime;
-		[_iedPosition] spawn SECONDARY_EXPLOSIONS;
+		[_iedPosition, _iedNumber, _side] spawn SPAWN_SECONDARY;
 	};	
 };
 
-SECONDARY_EXPLOSIONS = {
+EXPLOSIVESEQUENCE_SECONDARY = {
 	_iedPosition = _this select 0;
+	
 	_explosiveSequence = ["R_80mm_HE","M_PG_AT","M_PG_AT","R_80mm_HE","M_PG_AT","R_80mm_HE","M_PG_AT","M_PG_AT","M_PG_AT","R_80mm_HE"];
 	
 	for "_i" from 0 to (count _explosiveSequence) -1 do{
@@ -368,20 +383,60 @@ SECONDARY_EXPLOSIONS = {
 		if(((position player) distanceSqr getPos _bomb) < 40000) then {  //less than 200 meters away
 			addCamShake[1+random 5, 1+random 3, 5+random 15];
 		};
-		sleep random 5;
+		sleep .01;
 		
 	};
+};
+
+SPAWN_SECONDARY = {
+	_location = _this select 0;
+	_iedNumber = _this select 1;
+	_side = format["%1", _this select 2];
+	_theta = random 360;
+	_offset = 4 + random 12;
+	_iedPos = [(_location select 0) + _offset*cos(_theta), (_location select 1) + _offset*sin(_theta),0];
+	_iedType = iedSecondaryItems select(floor random(count iedSecondaryItems));
+	call compile format ['secied_%1 = _iedType createVehicle _iedPos;
+							secied_%1 setDir (random 360);
+							secied_%1 enableSimulation false;
+							secied_%1 setPos _iedPos;
+							secied_%1 allowDamage false;
+						', _iedNumber];
+						
+	call compile format [' st_%1 = createTrigger["EmptyDetector", _iedPos];
+	st_%1 setTriggerArea[11,11,0,true];
+	st_%1 setTriggerActivation [_side,"PRESENT",false];
+	st_%1 setTriggerStatements ["[this, thislist, %2, %1] call EXPLOSION_CHECK && (alive secied_%1)","terminate pd_%1; [%2] spawn EXPLOSIVESEQUENCE_SECONDARY; deleteVehicle thisTrigger; deleteVehicle secied_%1",""];
+	',_iedNumber, _iedPos];
+	
+	call compile format['pd_%1 = [secied_%1, %1, "SECONDARY", st_%1, _side] spawn PROJECTILE_DETECTION;', _iedNumber];
+	
+	call compile format ['
+	[[secied_%1, st_%1, pd_%1],"Disarm", true, true] spawn BIS_fnc_MP;', _iedNumber];
+	
+	if(debug) then {		
+		hint format["Secondary Explosive Created"];
+		call compile format ['
+		secbombmarker_%1 = createmarker ["secbombmarker_%1", _iedPos];
+		"secbombmarker_%1" setMarkerTypeLocal "hd_warning";
+		"secbombmarker_%1" setMarkerColorLocal "ColorGreen";
+		"secbombmarker_%1" setMarkerTextLocal "Secondary";', _iedNumber];
+	};
+	
 };
 
 
 //http://forums.bistudio.com/showthread.php?170903-How-do-you-find-out-what-type-of-explosive-hit-an-object
 //Detects projectiles that go near this object
 PROJECTILE_DETECTION = {
+	if(!allowExplosiveToTriggerIEDs) exitWith {}; 
+
 	_range = 35;
 	_ied = _this select 0;
 	_iedNumber = _this select 1;
 	_iedSize = _this select 2;
 	_trigger = _this select 3;
+	_side = _this select 4;
 
 	_fired = [];
 	while {alive _ied} do 
@@ -394,7 +449,7 @@ PROJECTILE_DETECTION = {
 
 			if (!(_ammo in _fired)) then
 			{
-				[_ammo, _ied, _trigger, _iedSize, typeof _ammo, getpos _ammo, _iedNumber ] spawn EXPLOSION_WATCHER;
+				[_ammo, _ied, _trigger, _iedSize, typeof _ammo, getpos _ammo, _iedNumber, _side ] spawn EXPLOSION_WATCHER;
 				_fired = _fired + [_ammo];
 			};
 		};
@@ -406,24 +461,21 @@ PROJECTILE_DETECTION = {
 
 //watch projectiles that passed by these and sees if they are explosives and if they are close enough to set off the IED
 EXPLOSION_WATCHER = {
-	_explosiveSuperClasses = ["TimeBombCore", "RocketCore", "MissileCore", "BombCore", "SubmunitionCore", "GrenadeCore", "Grenade", "ShellCore"];
-	
-	_explosiveBullets = ["B_20mm", "B_20mm_Tracer_Red", "B_30mm_HE", "B_30mm_HE_Tracer_Green", "B_30mm_HE_Tracer_Red", "B_30mm_HE_Tracer_Yellow", "B_30mm_MP", "B_30mm_MP_Tracer_Green", "B_30mm_MP_Tracer_Red", "B_30mm_MP_Tracer_Yellow", "B_35mm_AA", "B_35mm_AA_Tracer_Green", "B_35mm_AA_Tracer_Red", "B_35mm_AA_Tracer_Yellow", "B_40mm_GPR", "B_40mm_GPR_Tracer_Green", "B_40mm_GPR_Tracer_Red", "B_40mm_GPR_Tracer_Yellow"];
-	
-	_thingsToIgnore = ["SmokeShell", "FlareCore", "IRStrobeBase", "GrenadeHand_stone", "Smoke_120mm_AMOS_White", "TMR_R_DG32V_F"];
+
 	
 	_isExplosive = false;
 	_isExplosiveBullet = false;
 	_item = _this select 0;
 	_class = _this select 4;
 	_position = _this select 5;
+	
 	{
 		if(_class iskindof _x) then {
 			_isExplosive = true;
 		};
-	} foreach _explosiveSuperClasses;
+	} foreach explosiveSuperClasses;
 	
-	if((! _isExplosive) && (_class in _explosiveBullets)) then
+	if((! _isExplosive) && (_class in explosiveBullets)) then
 	{
 		_isExplosiveBullet = true;
 	};
@@ -435,25 +487,25 @@ EXPLOSION_WATCHER = {
 			_isExplosiveBullet = false;
 			if (debug) then {hint format["%1 ignored",_class]; };
 		}
-	} foreach _thingsToIgnore;
-	
-	
-	
+	} foreach thingsToIgnore;
+
 	if(_isExplosive || _isExplosiveBullet) then {
 		_updateInterval = .01;
 		_radius = 36;
-		if(_item iskindof "ShellCore") then {_updateInterval = .001; _radius = 64;}; //tank shells are fast!
+		if(_class iskindof "ShellCore") then {_updateInterval = .001; _radius = 225;}; //tank shells are fast!
+		if(_class iskindof "RocketCore" || _class iskindof "MissileCore") then {_radius = 200};// rockets don't like to register position properly
 		
-		_origin = getpos (_this select 1);
 		_ied = _this select 1;
 		_trigger = _this select 2;
-		_iedSize = _this select 3;		
 		
 		while {(alive _item) and !(isnull _ied) and !(isnull _trigger)} do {
 			_position = getpos _item;
 			sleep _updateInterval;
 		};
 		
+		_origin = getpos (_this select 1);
+		
+		if(debug) then {player sidechat format["distance = %1", (_origin distance _position)]; };
 		if((_origin distancesqr _position < _radius) and !(isnull _ied) and !(isnull _trigger)) then {
 			_chance = 10;
 			
@@ -467,13 +519,15 @@ EXPLOSION_WATCHER = {
 			if(_class iskindof "ShellCore") then { _chance = 100; };
 			if(_isExplosiveBullet) then {_chance = 40; };
 			_r = random 100;
-			if(debug) then {hint format["random = %1\nminimum = %2\n%3",_r,_chance,_class];};
+			if(debug) then {hint format["random = %1\nmax to explode = %2\n%3",_r,_chance,_class];};
 			if(_r < _chance) then {
 				_iedNumber = _this select 6;
+				_side = _this select 7;
+				_iedSize = _this select 3;
 				if(debug) then { player sidechat format ["%1 triggered IED",_class]; };
 				if(!(isnull _ied)) then {
 					deleteVehicle _ied;
-					call compile format["terminate pd_%2; [_origin, _ied] call EXPLOSIVESEQUENCE_%1", _iedSize, _iedNumber ];
+					call compile format["terminate pd_%2; [_origin, _ied, _iedNumber, _side] call EXPLOSIVESEQUENCE_%1", _iedSize, _iedNumber ];
 					deleteVehicle _trigger;
 				}
 			}
