@@ -2,6 +2,8 @@
 /* adapted from:  Dynamic IED script by - Mantis -*/
 /* Rewritten by Brian Sweeney - [EPD] Brian*/
 
+(_this select 0) removeAllEventHandlers "HitPart";
+
 _arr = _this select 3;
 if(!scriptDone (_arr select 1)) then {terminate (_arr select 1);};
 _chance = baseDisarmChance;
@@ -39,7 +41,6 @@ if (((random 100) < _chance)) then {
 	deletevehicle (_this select 0);
 	hint "Failed to Disarm!";
 };
- 
   
 removeAct = {
  _unit = _this select 0;

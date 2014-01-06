@@ -6,7 +6,9 @@ if(!isserver) exitwith {};
 if (isnil ("iedcounter")) then {iedcounter=0;} ;
 if (isnil ("junkcounter")) then {junkcounter=0;} ;
 	
-explosiveSuperClasses = ["TimeBombCore", "RocketCore", "MissileCore", "BombCore", "SubmunitionCore", "GrenadeCore", "Grenade", "ShellCore"];
+ehExplosiveSuperClasses = ["RocketCore", "MissileCore", "SubmunitionCore", "GrenadeCore", "ShellCore"];
+
+explosiveSuperClasses = ["TimeBombCore","BombCore", "Grenade"];
 	
 explosiveBullets = ["B_20mm", "B_20mm_Tracer_Red", "B_30mm_HE", "B_30mm_HE_Tracer_Green", "B_30mm_HE_Tracer_Red", "B_30mm_HE_Tracer_Yellow", "B_30mm_MP", "B_30mm_MP_Tracer_Green", "B_30mm_MP_Tracer_Red", "B_30mm_MP_Tracer_Yellow", "B_35mm_AA", "B_35mm_AA_Tracer_Green", "B_35mm_AA_Tracer_Red", "B_35mm_AA_Tracer_Yellow", "B_40mm_GPR", "B_40mm_GPR_Tracer_Green", "B_40mm_GPR_Tracer_Red", "B_40mm_GPR_Tracer_Yellow"];
 	
@@ -223,7 +225,8 @@ CREATE_IED = {
 							ied_%1 enableSimulation false;
 							ied_%1 setPos _iedPos;
 							ied_%1 allowDamage false;
-						', _iedNumber];
+							ied_%1 addeventhandler ["HitPart", {[_this, ied_%1, "%2", %3, %1, "%4", t_%1] call EXPLOSION_EVENT_HANDLER; }];
+						', _iedNumber,_iedSize, _iedPos, _side];
 													
 	call compile format [' t_%1 = createTrigger["EmptyDetector", _iedPos];
 	t_%1 setTriggerArea[11,11,0,true];
@@ -332,6 +335,7 @@ EXPLOSIVESEQUENCE_LARGE ={
 INITIAL_EXPLOSION = {
 	_iedPosition = _this select 0;
 	_explosiveSequence = _this select 1;
+	(_this select 2) removeAllEventHandlers "HitPart";
 	deleteVehicle (_this select 2);
 	_iedNumber = _this select 3;
 	_side = _this select 4;
@@ -365,7 +369,7 @@ INITIAL_EXPLOSION = {
 
 EXPLOSIVESEQUENCE_SECONDARY = {
 	_iedPosition = _this select 0;
-	
+	(_this select 1) removeAllEventHandlers "HitPart";
 	_explosiveSequence = ["R_80mm_HE","M_PG_AT","M_PG_AT","R_80mm_HE","M_PG_AT","R_80mm_HE","M_PG_AT","M_PG_AT","M_PG_AT","R_80mm_HE"];
 	
 	for "_i" from 0 to (count _explosiveSequence) -1 do{
@@ -401,12 +405,13 @@ SPAWN_SECONDARY = {
 							secied_%1 enableSimulation false;
 							secied_%1 setPos _iedPos;
 							secied_%1 allowDamage false;
-						', _iedNumber];
+							secied_%1 addeventhandler ["HitPart", {[_this, secied_%1, "%2", "SECONDARY", %1, "%3", t_%1] call EXPLOSION_EVENT_HANDLER; }];
+						', _iedNumber, _iedPos, _side];
 						
 	call compile format [' st_%1 = createTrigger["EmptyDetector", _iedPos];
 	st_%1 setTriggerArea[11,11,0,true];
 	st_%1 setTriggerActivation [_side,"PRESENT",false];
-	st_%1 setTriggerStatements ["[this, thislist, %2, %1] call EXPLOSION_CHECK && (alive secied_%1)","terminate pd_%1; [%2] spawn EXPLOSIVESEQUENCE_SECONDARY; deleteVehicle thisTrigger; deleteVehicle secied_%1",""];
+	st_%1 setTriggerStatements ["[this, thislist, %2, %1] call EXPLOSION_CHECK && (alive secied_%1)","terminate pd_%1; [%2] spawn EXPLOSIVESEQUENCE_SECONDARY; deleteVehicle thisTrigger;  deleteVehicle secied_%1",""];
 	',_iedNumber, _iedPos];
 	
 	call compile format['pd_%1 = [secied_%1, %1, "SECONDARY", st_%1, _side] spawn PROJECTILE_DETECTION;', _iedNumber];
@@ -453,7 +458,7 @@ PROJECTILE_DETECTION = {
 				_fired = _fired + [_ammo];
 			};
 		};
-		sleep 0.01;
+		sleep 0.1;
 		//remove dead projectiles
 		_fired = _fired - [objNull];
 	};
@@ -461,10 +466,7 @@ PROJECTILE_DETECTION = {
 
 //watch projectiles that passed by these and sees if they are explosives and if they are close enough to set off the IED
 EXPLOSION_WATCHER = {
-
-	
 	_isExplosive = false;
-	_isExplosiveBullet = false;
 	_item = _this select 0;
 	_class = _this select 4;
 	_position = _this select 5;
@@ -475,26 +477,15 @@ EXPLOSION_WATCHER = {
 		};
 	} foreach explosiveSuperClasses;
 	
-	if((! _isExplosive) && (_class in explosiveBullets)) then
-	{
-		_isExplosiveBullet = true;
-	};
-	
-	
 	{//smoke grenades.. chem lights.. ir strobes.. rocks..
 		if(_class iskindof _x) then{
 			_isExplosive = false;
-			_isExplosiveBullet = false;
-			if (debug) then {hint format["%1 ignored",_class]; };
 		}
 	} foreach thingsToIgnore;
 
-	if(_isExplosive || _isExplosiveBullet) then {
-		_updateInterval = .01;
-		_radius = 36;
-		if(_class iskindof "ShellCore") then {_updateInterval = .001; _radius = 225;}; //tank shells are fast!
-		if(_class iskindof "RocketCore" || _class iskindof "MissileCore") then {_radius = 200};// rockets don't like to register position properly
-		
+	if(_isExplosive) then {
+		_updateInterval = .1;
+		_radius = 49;		
 		_ied = _this select 1;
 		_trigger = _this select 2;
 		
@@ -507,17 +498,9 @@ EXPLOSION_WATCHER = {
 		
 		if(debug) then {player sidechat format["distance = %1", (_origin distance _position)]; };
 		if((_origin distancesqr _position < _radius) and !(isnull _ied) and !(isnull _trigger)) then {
-			_chance = 10;
-			
-			if(_class iskindof "TimeBombCore") then { _chance = 100; };
-			if(_class iskindof "RocketCore") then { _chance = 100; };
-			if(_class iskindof "MissileCore") then { _chance = 100; };
-			if(_class iskindof "BombCore") then { _chance = 100; };
-			if(_class iskindof "SubmunitionCore") then { _chance = 100; };
-			if(_class iskindof "GrenadeCore") then { _chance = 50; };
+			_chance = 100;
 			if(_class iskindof "Grenade") then { _chance = 35; };
-			if(_class iskindof "ShellCore") then { _chance = 100; };
-			if(_isExplosiveBullet) then {_chance = 40; };
+			
 			_r = random 100;
 			if(debug) then {hint format["random = %1\nmax to explode = %2\n%3",_r,_chance,_class];};
 			if(_r < _chance) then {
@@ -526,11 +509,68 @@ EXPLOSION_WATCHER = {
 				_iedSize = _this select 3;
 				if(debug) then { player sidechat format ["%1 triggered IED",_class]; };
 				if(!(isnull _ied)) then {
-					deleteVehicle _ied;
+					_ied removeAllEventHandlers "HitPart";
 					call compile format["terminate pd_%2; [_origin, _ied, _iedNumber, _side] call EXPLOSIVESEQUENCE_%1", _iedSize, _iedNumber ];
+					deleteVehicle _ied;
 					deleteVehicle _trigger;
-				}
-			}
+				};
+			};
+		};
+	};
+};
+
+EXPLOSION_EVENT_HANDLER = {
+	hint "hi";
+	_ied = _this select 1;	
+	if((!allowExplosiveToTriggerIEDs) or (isnull _ied)) exitwith{};
+	
+	_iedSize = _this select 2; 
+	_iedPosition = _this select 3;
+	_iedNumber = _this select 4;
+	_side = _this select 5;
+	_trigger = _this select 6;
+	
+	_projectile =  _this select 0 select 0 select 6 select 4;
+	
+	_isExplosive = false;
+	_isExplosiveBullet = false;
+
+	{
+		if(_projectile iskindof _x) then {
+			_isExplosive = true;
+		};
+	} foreach ehExplosiveSuperClasses;
+	
+	if((! _isExplosive) && (_projectile in explosiveBullets)) then
+	{
+		_isExplosiveBullet = true;
+	};
+	
+	{//smoke grenades.. chem lights.. ir strobes.. rocks..
+		if(_projectile iskindof _x) then{
+			_isExplosive = false;
+			_isExplosiveBullet = false;
+		}
+	} foreach thingsToIgnore;
+	
+	if(_isExplosive || _isExplosiveBullet) then {
+		_chance = 100;
+			
+		if(_projectile iskindof "GrenadeCore") then { _chance = 50; };
+		if(_isExplosiveBullet) then {_chance = 40; };
+		
+		_r = random 100;
+		if(debug) then {hint format["random = %1\nmax to explode = %2\n%3",_r,_chance,_projectile];};
+		if(_r < _chance) then {
+		
+		_ied removeAllEventHandlers "HitPart";
+		deleteVehicle _ied;
+		deleteVehicle _trigger;
+			
+			if(debug) then { player sidechat format ["%1 triggered IED",_projectile]; };
+			if(!(isnull _ied) and !(isnull _trigger)) then {
+				call compile format["terminate pd_%2; [_iedPosition, _ied, _iedNumber, _side] call EXPLOSIVESEQUENCE_%1", _iedSize, _iedNumber ];	
+			};
 		};
 	};
 };

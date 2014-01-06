@@ -1,7 +1,7 @@
 /* Written by Brian Sweeney - [EPD] Brian*/
 
 /***************SETTINGS***********************/
-debug = false;
+debug = true;
 hideIedMarker = true;  //sets the alpha to 0 after spawning IEDs there
 
 itemsRequiredToDisarm = ["ToolKit"];   //"MineDetector" or "ToolKit" for example
@@ -50,7 +50,7 @@ Disarm = compile preprocessFileLineNumbers "EPD\disarmAddAction.sqf";
 if(isserver) then {
 	[[[	["IEDSINGLE1","West"],
 		["IEDSINGLE2","West"],
-		["IEDSINGLE3","West"],
+		["IEDSINGLE3","West"],/*
 		["AltisRandom1",6,"West"],
 		["AltisRandom2",6,"West"],
 		["AltisRandom3",6,"West"],
@@ -67,7 +67,7 @@ if(isserver) then {
 		["AltisRandom14",6,"West"],
 		["AltisRandom15",6,"West"],
 		["AltisRandom16",6,"West"],
-		["Gravia", 25, 0, "West" ],
+		*/["Gravia", 25, 0, "West" ]/*,
 		["Lakka", 2, 8, "West" ],
 		["OreoKastro", 2, "West"],
 		["Abdera", 2, "West" ],
@@ -98,6 +98,6 @@ if(isserver) then {
 		["Chalkiea", 3, "West" ],
 		["Panagia", 2, "West" ],
 		["Feres", 2, "West" ],
-		["Selakano", 2, "West" ]
+		["Selakano", 2, "West" ]*/
 		],"EPD\Ied.sqf"],"BIS_fnc_execVM",false,false] spawn BIS_fnc_MP;
 };
