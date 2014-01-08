@@ -86,7 +86,7 @@ while{_paramCounter < count _paramArray} do {
 			_iedc = iedcounter;
 			_junkc = junkcounter;
 			
-			[[_origin, _distance, _side, _iedsToPlace, _junkToPlace, _iedc, _junkc], "CREATE_RANDOM_IEDS", false,false] spawn BIS_fnc_MP;
+			[_origin, _distance, _side, _iedsToPlace, _junkToPlace, _iedc, _junkc] spawn CREATE_RANDOM_IEDS;
 			iedcounter = iedcounter + _iedsToPlace;
 			junkcounter = junkcounter + _junkToPlace;
 		}
@@ -97,7 +97,7 @@ while{_paramCounter < count _paramArray} do {
 			//prevent race condition...
 			_iedc = iedcounter;
 			
-			[[_iedc, _origin, _side], "CREATE_SPECIFIC_IED", false,false] spawn BIS_fnc_MP;
+			[_iedc, _origin, _side] spawn CREATE_SPECIFIC_IED;
 			iedcounter = iedcounter + 1;
 		};
 	};

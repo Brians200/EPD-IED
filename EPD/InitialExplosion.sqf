@@ -4,6 +4,10 @@ _explosiveSequence = _this select 1;
 deleteVehicle (_this select 2);
 _iedNumber = _this select 3;
 _side = _this select 4;
+
+eventHandlers set [_iedNumber, compile "true;"];
+publicVariable "eventHandlers"
+
 [[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;	
 for "_i" from 0 to (count _explosiveSequence) -1 do{
 	_explosive = (_explosiveSequence select _i);
@@ -22,11 +26,11 @@ for "_i" from 0 to (count _explosiveSequence) -1 do{
 	sleep .01;
 };
 
-if(secondaryChance>random 100) then {
+/*if(secondaryChance>random 100) then {
 	_sleepTime = 15;
 	if(debug) then {
 		hint format["Creating Secondary Explosive"];
 	};
 	sleep _sleepTime;
 	[[_iedPosition, _iedNumber, _side], "SPAWN_SECONDARY", true, false] spawn BIS_fnc_MP;
-};
+};*/

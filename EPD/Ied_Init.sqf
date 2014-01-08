@@ -1,4 +1,13 @@
 /* Written by Brian Sweeney - [EPD] Brian*/
+
+if(isserver) then {
+	eventHandlers = [];
+	publicVariable "eventHandlers";
+	
+	iedsAdded = false;
+	publicVariable "iedsAdded";
+};
+
 /***************SETTINGS***********************/
 debug = true;
 hideIedMarker = true;  //sets the alpha to 0 after spawning IEDs there
@@ -32,18 +41,19 @@ predefinedLocations = [["Gravia",[14491.1,17636.8,0],350],["Lakka",[12342.6,1568
 allowExplosiveToTriggerIEDs = true; 
 
 /***************END SETTINGS*******************/
-
+IED = compile preprocessFileLineNumbers "EPD\Ied.sqf";
 IED_SMOKE = compile preprocessFileLineNumbers "EPD\IedSmoke.sqf";
 IED_ROCKS = compile preprocessFileLineNumbers "EPD\IEDRocks.sqf";
+CHECK_ARRAY = compile preprocessFileLineNumbers "EPD\CheckArray.sqf";
 CREATE_IED = compile preprocessFileLineNumbers "EPD\CreateIed.sqf";
 CREATE_FAKE = compile preprocessFileLineNumbers "EPD\CreateFake.sqf";
 EXPLOSION_CHECK = compile preprocessFileLineNumbers "EPD\ExplosionCheck.sqf";
 EXPLOSIVESEQUENCE_SMALL = compile preprocessFileLineNumbers "EPD\ExplosiveSequenceSmall.sqf";
 EXPLOSIVESEQUENCE_MEDIUM = compile preprocessFileLineNumbers "EPD\ExplosiveSequenceMedium.sqf";
 EXPLOSIVESEQUENCE_LARGE = compile preprocessFileLineNumbers "EPD\ExplosiveSequenceLarge.sqf";
-EXPLOSIVESEQUENCE_SECONDARY = compile preprocessFileLineNumbers "EPD\ExplosiveSequenceSecondary.sqf";
+//EXPLOSIVESEQUENCE_SECONDARY = compile preprocessFileLineNumbers "EPD\ExplosiveSequenceSecondary.sqf";
 INITIAL_EXPLOSION = compile preprocessFileLineNumbers "EPD\InitialExplosion.sqf";
-SPAWN_SECONDARY = compile preprocessFileLineNumbers "EPD\CreateSecondary.sqf";
+//SPAWN_SECONDARY = compile preprocessFileLineNumbers "EPD\CreateSecondary.sqf";
 CREATE_SPECIFIC_IED = compile preprocessFileLineNumbers "EPD\CreateSpecificIed.sqf";
 CREATE_RANDOM_IEDS = compile preprocessFileLineNumbers "EPD\CreateRandomIeds.sqf";
 GET_SIZE_AND_TYPE = compile preprocessFileLineNumbers "EPD\GetSizeAndType.sqf";
@@ -62,56 +72,67 @@ Disarm = compile preprocessFileLineNumbers "EPD\disarmAddAction.sqf";
 //["predefinedLocation", amountToPlace, side];
 //["predefinedLocation", iedsToPlace, fakesToPlace, side];
 if(isserver) then {
-	[[[	["IEDSINGLE1","West"],
-		["IEDSINGLE2","West"],
-		["IEDSINGLE3","West"]/*,
-		["AltisRandom1",6,"West"],
-		["AltisRandom2",6,"West"],
-		["AltisRandom3",6,"West"],
-		["AltisRandom4",6,"West"],
-		["AltisRandom5",6,"West"],
-		["AltisRandom6",6,"West"],
-		["AltisRandom7",6,"West"],
-		["AltisRandom8",6,"West"],
-		["AltisRandom9",6,"West"],
-		["AltisRandom10",6,"West"],
-		["AltisRandom11",6,"West"],
-		["AltisRandom12",6,"West"],
-		["AltisRandom13",6,"West"],
-		["AltisRandom14",6,"West"],
-		["AltisRandom15",6,"West"],
-		["AltisRandom16",6,"West"],
-		["Gravia", 25, 0, "West" ],
-		["Lakka", 2, 8, "West" ],
-		["OreoKastro", 2, "West"],
-		["Abdera", 2, "West" ],
-		["Galati", 2, "West" ],
-		["Syrta", 3, "West" ],
-		["Kore", 2, "West" ],
-		["Negades", 2, "West" ],
-		["Aggeochori", 4, "West" ],
-		["Kavala", 4, "West" ],
-		["Panochori", 3, "West" ],
-		["Zaros", 3, "West" ],
-		["Therisa", 3, "West"],
-		["Poliakko", 3, "West" ],
-		["Alikampos", 3, "West" ],
-		["Neochori", 4, "West" ],
-		["Stravos", 3, "West" ],
-		["Agios Dionysios", 3, "West" ],
-		["Athira", 4, "West" ],
-		["Frini", 2, "West" ],
-		["Rodopoli", 3, "West" ],
-		["Paros", 4, "West" ],
-		["Kalochori", 3, "West" ],
-		["Sofia", 3, "West" ],
-		["Molos", 2, "West" ],
-		["Charkia", 3, "West" ],
-		["Pyrgos", 2, "West" ],
-		["Dorida", 2, "West" ],
-		["Chalkiea", 3, "West" ],
-		["Panagia", 2, "West" ],
-		["Feres", 2, "West" ],
-		["Selakano", 2, "West" ]*/
-		],"EPD\Ied.sqf"],"BIS_fnc_execVM",false,false] call BIS_fnc_MP;
+	[["IEDSINGLE1","West"],
+	["IEDSINGLE2","West"],
+	["IEDSINGLE3","West"],
+	["AltisRandom1",6,"West"],
+	["AltisRandom2",6,"West"],
+	["AltisRandom3",6,"West"],
+	["AltisRandom4",6,"West"],
+	["AltisRandom5",6,"West"],
+	["AltisRandom6",6,"West"],
+	["AltisRandom7",6,"West"],
+	["AltisRandom8",6,"West"],
+	["AltisRandom9",6,"West"],
+	["AltisRandom10",6,"West"],
+	["AltisRandom11",6,"West"],
+	["AltisRandom12",6,"West"],
+	["AltisRandom13",6,"West"],
+	["AltisRandom14",6,"West"],
+	["AltisRandom15",6,"West"],
+	["AltisRandom16",6,"West"],
+	["Gravia", 25, 0, "West" ]/*,
+	["Lakka", 2, 8, "West" ],
+	["OreoKastro", 2, "West"],
+	["Abdera", 2, "West" ],
+	["Galati", 2, "West" ],
+	["Syrta", 3, "West" ],
+	["Kore", 2, "West" ],
+	["Negades", 2, "West" ],
+	["Aggeochori", 4, "West" ],
+	["Kavala", 4, "West" ],
+	["Panochori", 3, "West" ],
+	["Zaros", 3, "West" ],
+	["Therisa", 3, "West"],
+	["Poliakko", 3, "West" ],
+	["Alikampos", 3, "West" ],
+	["Neochori", 4, "West" ],
+	["Stravos", 3, "West" ],
+	["Agios Dionysios", 3, "West" ],
+	["Athira", 4, "West" ],
+	["Frini", 2, "West" ],
+	["Rodopoli", 3, "West" ],
+	["Paros", 4, "West" ],
+	["Kalochori", 3, "West" ],
+	["Sofia", 3, "West" ],
+	["Molos", 2, "West" ],
+	["Charkia", 3, "West" ],
+	["Pyrgos", 2, "West" ],
+	["Dorida", 2, "West" ],
+	["Chalkiea", 3, "West" ],
+	["Panagia", 2, "West" ],
+	["Feres", 2, "West" ],
+	["Selakano", 2, "West" ]*/
+	] call IED;
+	
+	waituntil{sleep .3; [] call CHECK_ARRAY;};
+	
+	iedsAdded = true;
+	publicVariable "iedsAdded";
 };
+
+waituntil{sleep .3; (!isnull player and iedsAdded)};
+{
+	//call _x; //this is automatically called by the foreach
+} foreach eventHandlers;
+

@@ -8,6 +8,9 @@ _arr = _this select 3;
 if(!scriptDone (_arr select 1)) then {terminate (_arr select 1);};
 _chance = baseDisarmChance;
 _trigger = _arr select 0;
+_iedNumber = _arr select 2;
+eventHandlers set [_iedNumber, compile "true;"];
+publicVariable "eventHandlers";
 
 _bonusAdded = false;
 {

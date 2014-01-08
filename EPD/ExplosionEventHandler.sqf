@@ -1,3 +1,4 @@
+//hint format["%1",_this];
 _ied = _this select 1;	
 if((!allowExplosiveToTriggerIEDs) or (isnull _ied)) exitwith{};
 
@@ -42,7 +43,8 @@ if(_isExplosive || _isExplosiveBullet) then {
 	
 		if(!(isnull _ied) and !(isnull _trigger)) then {
 			if(debug) then { player sidechat format ["%1 triggered IED",_projectile]; };
-			
+			eventHandlers set [_iedNumber, compile "true;"];
+			publicVariable "eventHandlers";
 			call compile format["terminate pd_%2; [_iedPosition, _ied, _iedNumber, _side] call EXPLOSIVESEQUENCE_%1", _iedSize, _iedNumber ];	
 			_ied removeAllEventHandlers "HitPart";
 			deleteVehicle _ied;
