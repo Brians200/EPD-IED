@@ -11,13 +11,13 @@ _size = "SMALL";
 _type = "";
 if(_size == "SMALL") then
 {
-	_type = iedSmallItems select(floor random(count iedSmallItems));
+	_type = iedSmallItems select(floor random(iedSmallItemsCount));
 } else {
 	if(_size == "MEDIUM") then
 	{
-		_type = iedMediumItems select(floor random(count iedMediumItems));
+		_type = iedMediumItems select(floor random(iedMediumItemsCount));
 	} else { //large
-		_type = iedLargeItems select(floor random(count iedLargeItems));
+		_type = iedLargeItems select(floor random(iedLargeItemsCount));
 	};
 };
 [_size,_type];

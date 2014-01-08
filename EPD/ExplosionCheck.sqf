@@ -12,9 +12,9 @@ if(_this select 0) then
 			_minDistance = _dist;
 		};
 	
-		if(speed _x > _maxSpeed) then
+		if((velocity _x) distanceSqr [0,0,velocity _x select 2] > _maxSpeed) then
 		{
-			_maxSpeed = speed _x;
+			_maxSpeed = (velocity _x) distanceSqr [0,0,velocity _x select 2]; //ignore the z component, because you get large speed increases steping over stone walls
 		};
 		if((position _x) select 2 < _minheight) then {
 			_minHeight = (position _x) select 2;
@@ -25,7 +25,14 @@ if(_this select 0) then
 		hintSilent format["Trigger %5\nPeople/Vehicles in trigger = %1\nMax Speed = %2\nMin Height = %3\nDistance = %4", count _objects,_maxSpeed, _minHeight,_minDistance, _triggerNum];
 	};	
 	
-	if((_maxSpeed > 5.2) and (_minHeight < 3)) then { true; } else {false;}; 
+	//fast walk forward without gear averages 44.6
+	//fast crouch forward without gear averages 44.6
+	//regular walk forward without gear averages 16.02
+	//regular crouch forward without gear averages 12.76
+	//slow walk forward without gear averages 2.95
+	//slow crouch forward without gear averages 1.97
+	//crawl forward averages without gear averages 0.30
+	if((_maxSpeed > 2.0) and (_minHeight < 3)) then { true; } else {false;}; 
 } else {
 	false;
 };

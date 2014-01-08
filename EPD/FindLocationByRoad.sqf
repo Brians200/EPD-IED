@@ -1,6 +1,7 @@
 _roads = _this select 0;
+_roadCount = _this select 1;
 _orthogonalDist = 5;
-_road = _roads select(floor random(count _roads));
+_road = _roads select(floor random(_roadCount));
 _dir = 0;
 if(count (roadsConnectedTo _road) > 0) then {
 	_dir  = [_road, (roadsConnectedTo _road) select 0] call BIS_fnc_DirTo;

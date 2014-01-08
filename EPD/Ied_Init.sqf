@@ -1,7 +1,7 @@
 /* Written by Brian Sweeney - [EPD] Brian*/
 
 if(isserver) then {
-	eventHandlers = [];
+	eventHandlers = [objnull];
 	publicVariable "eventHandlers";
 	
 	iedsAdded = false;
@@ -9,7 +9,7 @@ if(isserver) then {
 };
 
 /***************SETTINGS***********************/
-debug = true;
+debug = false;
 hideIedMarker = true;  //sets the alpha to 0 after spawning IEDs there
 
 itemsRequiredToDisarm = ["ToolKit"];   //"MineDetector" or "ToolKit" for example
@@ -18,13 +18,13 @@ betterDisarmers = ["B_soldier_exp_F", "B_engineer_F", "B_diver_exp_F", "B_recon_
 baseDisarmChance = 75; //how well everybody can disarm
 bonusDisarmChance = 20; //increase that the "betterDisarmers" get
 
-secondaryChance = 100; //Chance that a secondary IED will spawn.
+secondaryChance = 50; //Chance that a secondary IED will spawn.
 
-smallChance = 0; //Chance that a small IED will be chosen.
-mediumChance = 0; //Chance that a medium IED will be chosen.
-largeChance = 80; //Chance that a medium IED will be chosen.
+smallChance = 40; //Chance that a small IED will be chosen.
+mediumChance = 40; //Chance that a medium IED will be chosen.
+largeChance = 20; //Chance that a medium IED will be chosen.
 
-iedSecondaryItems = ["Land_Bricks_V2_F","Land_Bricks_V3_F","Land_Bricks_V4_F","Land_GarbageBags_F","Land_GarbagePallet_F","Land_GarbageWashingMachine_F","Land_JunkPile_F","Land_Tyres_F","Land_Wreck_Skodovka_F","Land_Wreck_Car_F","Land_Wreck_Car3_F","Land_Wreck_Car2_F","Land_Wreck_Offroad_F","Land_Wreck_Offroad2_F"];//["Land_CanisterOil_F","Land_FMradio_F","Land_Canteen_F","Land_CerealsBox_F","Land_BottlePlastic_V1_F","Land_HandyCam_F","Land_PowderedMilk_F","Land_RiceBox_F","Land_TacticalBacon_F","Land_VitaminBottle_F","Land_BottlePlastic_V2_F"];
+iedSecondaryItems = ["Land_CanisterOil_F","Land_FMradio_F","Land_Canteen_F","Land_CerealsBox_F","Land_BottlePlastic_V1_F","Land_HandyCam_F","Land_PowderedMilk_F","Land_RiceBox_F","Land_TacticalBacon_F","Land_VitaminBottle_F","Land_BottlePlastic_V2_F"];
 
 iedSmallItems = ["RoadCone_F","Land_Pallets_F","Land_WheelCart_F","Land_Tyre_F","Land_ButaneCanister_F","Land_Bucket_F","Land_GasCanister_F","Land_Pillow_F"];
 	
@@ -51,9 +51,9 @@ EXPLOSION_CHECK = compile preprocessFileLineNumbers "EPD\ExplosionCheck.sqf";
 EXPLOSIVESEQUENCE_SMALL = compile preprocessFileLineNumbers "EPD\ExplosiveSequenceSmall.sqf";
 EXPLOSIVESEQUENCE_MEDIUM = compile preprocessFileLineNumbers "EPD\ExplosiveSequenceMedium.sqf";
 EXPLOSIVESEQUENCE_LARGE = compile preprocessFileLineNumbers "EPD\ExplosiveSequenceLarge.sqf";
-//EXPLOSIVESEQUENCE_SECONDARY = compile preprocessFileLineNumbers "EPD\ExplosiveSequenceSecondary.sqf";
+EXPLOSIVESEQUENCE_SECONDARY = compile preprocessFileLineNumbers "EPD\ExplosiveSequenceSecondary.sqf";
 INITIAL_EXPLOSION = compile preprocessFileLineNumbers "EPD\InitialExplosion.sqf";
-//SPAWN_SECONDARY = compile preprocessFileLineNumbers "EPD\CreateSecondary.sqf";
+SPAWN_SECONDARY = compile preprocessFileLineNumbers "EPD\CreateSecondary.sqf";
 CREATE_SPECIFIC_IED = compile preprocessFileLineNumbers "EPD\CreateSpecificIed.sqf";
 CREATE_RANDOM_IEDS = compile preprocessFileLineNumbers "EPD\CreateRandomIeds.sqf";
 GET_SIZE_AND_TYPE = compile preprocessFileLineNumbers "EPD\GetSizeAndType.sqf";
@@ -63,6 +63,11 @@ EXPLOSION_WATCHER = compile preprocessFileLineNumbers "EPD\ExplosionWatcher.sqf"
 EXPLOSION_EVENT_HANDLER = compile preprocessFileLineNumbers "EPD\ExplosionEventHandler.sqf";
 EXPLOSION_EVENT_HANDLER_ADDER  = compile preprocessFileLineNumbers "EPD\EventHandlerAdder.sqf";
 Disarm = compile preprocessFileLineNumbers "EPD\disarmAddAction.sqf";
+
+iedSecondaryItemsCount = count iedSecondaryItems;
+iedSmallItemsCount = count iedSmallItems;
+iedMediumItemsCount = count iedMediumItems;
+iedLargeItemsCount = count iedLargeItems;
 
 //These are the actual IEDs that will spawn. Add them using one of the following formats.
 //["marker", iedsToPlace, fakesToPlace, side]
@@ -74,7 +79,7 @@ Disarm = compile preprocessFileLineNumbers "EPD\disarmAddAction.sqf";
 if(isserver) then {
 	[["IEDSINGLE1","West"],
 	["IEDSINGLE2","West"],
-	["IEDSINGLE3","West"],
+	["IEDSINGLE3","West"]/*,
 	["AltisRandom1",6,"West"],
 	["AltisRandom2",6,"West"],
 	["AltisRandom3",6,"West"],
@@ -91,7 +96,7 @@ if(isserver) then {
 	["AltisRandom14",6,"West"],
 	["AltisRandom15",6,"West"],
 	["AltisRandom16",6,"West"],
-	["Gravia", 25, 0, "West" ]/*,
+	["Gravia", 25, 0, "West" ],
 	["Lakka", 2, 8, "West" ],
 	["OreoKastro", 2, "West"],
 	["Abdera", 2, "West" ],
@@ -123,16 +128,18 @@ if(isserver) then {
 	["Panagia", 2, "West" ],
 	["Feres", 2, "West" ],
 	["Selakano", 2, "West" ]*/
-	] call IED;
+	] spawn IED;
 	
 	waituntil{sleep .3; [] call CHECK_ARRAY;};
 	
 	iedsAdded = true;
 	publicVariable "iedsAdded";
+	publicVariable "eventHandlers";
 };
 
 waituntil{sleep .3; (!isnull player and iedsAdded)};
-{
-	//call _x; //this is automatically called by the foreach
-} foreach eventHandlers;
+player sidechat "Synching IEDs... It might be laggy for a few seconds";
 
+{
+	call compile _x; 
+} foreach eventHandlers;

@@ -19,15 +19,18 @@ t_%1 setTriggerStatements ["[this, thislist, %2, %1] call EXPLOSION_CHECK && (al
 publicVariable "t_%1";
 ',_iedNumber, _iedPos,_iedSize, _side];
 
-eventHandlers set[_iedNumber, compile format ['[["ied_%1","%2",%3,"%4","t_%1",%1], "EXPLOSION_EVENT_HANDLER_ADDER", true, true] spawn BIS_fnc_MP;	', _iedNumber,_iedSize, _iedPos, _side]];
-publicVariable "eventHandlers";
-
 //call compile format ['[["ied_%1","%2",%3,"%4","t_%1",%1], "EXPLOSION_EVENT_HANDLER_ADDER", true, true] spawn BIS_fnc_MP;	', _iedNumber,_iedSize, _iedPos, _side];
 
 call compile format['pd_%1 = [ied_%1, %1, _iedSize, t_%1, _side] spawn PROJECTILE_DETECTION;', _iedNumber];
 
-call compile format ['
-[[ied_%1, t_%1, pd_%1, %1],"Disarm", true, true] spawn BIS_fnc_MP;', _iedNumber];
+//call compile format ['[[ied_%1, t_%1, pd_%1, %1],"Disarm", true, true] spawn BIS_fnc_MP;', _iedNumber];
+
+_eventhandler = format ['[["ied_%1","%2",%3,"%4","t_%1",%1], "EXPLOSION_EVENT_HANDLER_ADDER", true, true] spawn BIS_fnc_MP;	player sidechat "hi";', _iedNumber,_iedSize, _iedPos, _side];
+
+_disarm = format ['[[ied_%1, t_%1, pd_%1, %1],"Disarm", true, true] spawn BIS_fnc_MP;', _iedNumber];
+
+eventHandlers set[_iedNumber, format["%1 %2",_eventhandler, _disarm ]];
+publicVariable "eventHandlers";
 
 if(debug) then {		
 		

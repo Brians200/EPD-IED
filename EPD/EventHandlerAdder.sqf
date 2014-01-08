@@ -5,6 +5,7 @@ _iedPosition = _this select 2;
 _side = _this select 3;
 _trigger = _this select 4;
 _iedNumber = _this select 5;
-player sidechat format["%1 and %2", compile _trigger, compile _ied];
+
+if(debug) then {player sidechat format["synching %1 and %2", compile _trigger, compile _ied];};
 
 call compile format['%1 addEventHandler ["HitPart", {[_this, %1, "%2", %3, %6, "%4",%5] call EXPLOSION_EVENT_HANDLER;}];',_ied,_iedSize, _iedPosition, _side,_trigger,_iedNumber];

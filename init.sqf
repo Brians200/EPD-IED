@@ -1,1 +1,1 @@
-call compile preprocessFile "EPD\Ied_Init.sqf";
+[] spawn {call compile preprocessFileLineNumbers "EPD\Ied_Init.sqf";};
