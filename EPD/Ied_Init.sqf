@@ -49,7 +49,7 @@ if(isserver) then {
 };
 
 waituntil{sleep .5; (!isnull player and iedsAdded)};
-player sidechat "Synching IEDs... It might be laggy for a few seconds";
+player sidechat "Synching IEDs... You may experience lag for a few seconds";
 hint format["%1 ieds to synch", count eventHandlers];
 
 for "_i" from 0 to (count eventHandlers) -1 do{

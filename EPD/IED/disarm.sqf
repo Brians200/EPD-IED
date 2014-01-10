@@ -6,7 +6,7 @@
 
 _arr = _this select 3;
 
-if(_arr select 1 != "") then {terminate (_arr select 1);};
+if(format["%1",_arr select 1] != "") then {terminate (_arr select 1);};
 _chance = baseDisarmChance;
 _trigger = _arr select 0;
 _iedNumber = _arr select 2;
@@ -24,7 +24,7 @@ _bonusAdded = false;
 
 if (((random 100) < _chance)) then {
 	//player switchMove "AinvPknlMstpSlayWrflDnon_medic";
-	[[[player], {(_this select 0) switchMove "AinvPknlMstpSlayWrflDnon_medic";}], "BIS_fnc_call", nil, false, true] call BIS_fnc_MP;
+	[[[player], {(_this select 0) switchMove "AinvPknlMstpSlayWrflDnon_medic";}], "BIS_fnc_call", nil, false, false] call BIS_fnc_MP;
 	disableUserInput true;
 	sleep 6;
 	disableUserInput false;
@@ -34,7 +34,7 @@ if (((random 100) < _chance)) then {
 }
 
  else {
-	player switchMove "AinvPknlMstpSlayWrflDnon_medic";
+	[[[player], {(_this select 0) switchMove "AinvPknlMstpSlayWrflDnon_medic";}], "BIS_fnc_call", nil, false, false] call BIS_fnc_MP;
 	disableUserInput true;
 	sleep 2;
 	disableUserInput false;

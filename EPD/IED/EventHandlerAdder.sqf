@@ -1,4 +1,3 @@
-waituntil{sleep .3; (!isnull player)};
 _ied = _this select 0;
 _iedSize = _this select 1;
 _iedPosition = _this select 2;
