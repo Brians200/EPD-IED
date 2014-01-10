@@ -133,11 +133,8 @@ if(isserver) then {
 	["Panagia", 2, "West" ],
 	["Feres", 2, "West" ],
 	["Selakano", 2, "West" ]
-	] spawn IED;
+	] call IED;
 	
-	waituntil{sleep .5;publicVariable "eventHandlers";publicVariable "iedcounter"; [] call CHECK_ARRAY;};
-	
-	publicVariable "eventHandlers";
 	iedsAdded = true;
 	publicVariable "iedsAdded";
 
@@ -149,5 +146,5 @@ hint format["%1 ieds to synch", count eventHandlers];
 
 for "_i" from 0 to (count eventHandlers) -1 do{
 	call compile (eventHandlers select _i);
-	player sidechat (eventHandlers select _i);
+	if(debug) then {player sidechat (format["%1 synched", _i+1]);};
 };

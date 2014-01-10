@@ -18,7 +18,7 @@ publicVariable "explosiveBullets";
 thingsToIgnore = ["SmokeShell", "FlareCore", "IRStrobeBase", "GrenadeHand_stone", "Smoke_120mm_AMOS_White", "TMR_R_DG32V_F"];
 publicVariable "thingsToIgnore";
 
-private["_paramArray", "_paramCounter"];
+private["_paramArray", "_paramCounter", "_handles"];
 
 _paramCounter = 0;
 _paramArray = _this;
@@ -28,7 +28,7 @@ _handles = [];
 while{_paramCounter < count _paramArray} do {
 
 	_arr = _paramArray select _paramCounter;
-	_paramCounter = _paramCounter + 1;
+	
 	
 	//["predefinedLocation", side]
 	//["predefinedLocation", amountToPlace, side];
@@ -119,7 +119,8 @@ while{_paramCounter < count _paramArray} do {
 			};
 		};
 	};
-	
-	
-	publicVariable "iedcounter";
+	_paramCounter = _paramCounter + 1;
 };
+
+waituntil{sleep .5; [_handles] call CHECK_ARRAY;};
+publicVariable "eventHandlers";
