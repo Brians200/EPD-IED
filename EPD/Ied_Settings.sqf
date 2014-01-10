@@ -1,5 +1,5 @@
 /***************SETTINGS***********************/
-debug = true;
+debug = false;
 hideIedMarker = true;  //sets the alpha to 0 after spawning IEDs there
 
 itemsRequiredToDisarm = ["ToolKit"];   //"MineDetector" or "ToolKit" for example
@@ -10,11 +10,11 @@ bonusDisarmChance = 20; //increase that the "betterDisarmers" get
 
 secondaryChance = 50; //Chance that a secondary IED will spawn.
 
-smallChance = 0; //Chance that a small IED will be chosen.
-mediumChance = 0; //Chance that a medium IED will be chosen.
+smallChance = 40; //Chance that a small IED will be chosen.
+mediumChance = 40; //Chance that a medium IED will be chosen.
 largeChance = 20; //Chance that a medium IED will be chosen.
 
-iedSecondaryItems = ["Land_Bricks_V2_F","Land_Bricks_V3_F","Land_Bricks_V4_F","Land_GarbageBags_F","Land_GarbagePallet_F","Land_GarbageWashingMachine_F","Land_JunkPile_F","Land_Tyres_F","Land_Wreck_Skodovka_F","Land_Wreck_Car_F","Land_Wreck_Car3_F","Land_Wreck_Car2_F","Land_Wreck_Offroad_F","Land_Wreck_Offroad2_F"];//["Land_CanisterOil_F","Land_FMradio_F","Land_Canteen_F","Land_CerealsBox_F","Land_BottlePlastic_V1_F","Land_HandyCam_F","Land_PowderedMilk_F","Land_RiceBox_F","Land_TacticalBacon_F","Land_VitaminBottle_F","Land_BottlePlastic_V2_F"];
+iedSecondaryItems = ["Land_CanisterOil_F","Land_FMradio_F","Land_Canteen_F","Land_CerealsBox_F","Land_BottlePlastic_V1_F","Land_HandyCam_F","Land_PowderedMilk_F","Land_RiceBox_F","Land_TacticalBacon_F","Land_VitaminBottle_F","Land_BottlePlastic_V2_F"];
 
 iedSmallItems = ["RoadCone_F","Land_Pallets_F","Land_WheelCart_F","Land_Tyre_F","Land_ButaneCanister_F","Land_Bucket_F","Land_GasCanister_F","Land_Pillow_F"];
 	
@@ -45,9 +45,9 @@ allowExplosiveToTriggerIEDs = true;
 //["marker", side]
 //["marker", chanceToBeReal, side]
 iedArray = [
-	["IEDSINGLE1", 100, "West"],
-	["IEDSINGLE2", 100,"West"],
-	["IEDSINGLE3", 100, "West"],
+	["IEDSINGLE1", "West"],
+	["IEDSINGLE2", 50,"West"],
+	["IEDSINGLE3", 50, "West"],
 	["AltisRandom1",6,"West"],
 	["AltisRandom2",6,"West"],
 	["AltisRandom3",6,"West"],
@@ -64,7 +64,7 @@ iedArray = [
 	["AltisRandom14",6,"West"],
 	["AltisRandom15",6,"West"],
 	["AltisRandom16",6,"West"],
-	["Gravia", 25, 0, "West" ],
+	["Gravia", 10, 2, "West" ],
 	["Lakka", 2, 8, "West" ],
 	["OreoKastro", 2, "West"],
 	["Abdera", 2, "West" ],
