@@ -28,12 +28,16 @@ while{_paramCounter < count _paramArray} do {
 	_arr = _paramArray select _paramCounter;
 	_paramCounter = _paramCounter + 1;
 	
+	//["predefinedLocation", side]
+	//["predefinedLocation", amountToPlace, side];
+	//["predefinedLocation", iedsToPlace, fakesToPlace, side]
+	/*********Marker size > 1**********************/
 	//["marker", iedsToPlace, fakesToPlace, side]
 	//["marker", amountToPlace, side]
 	//["marker", side]
-	//["predefinedLocation", side]
-	//["predefinedLocation", amountToPlace, side];
-	//["predefinedLocation", iedsToPlace, fakesToPlace, side];
+	/*********Marker size = 1**********************/
+	//["marker", side]
+	//["marker", chanceToBeReal, side]
 	
 	_origin = [0,0,0];
 	_distance = [0,0,0];
@@ -93,12 +97,23 @@ while{_paramCounter < count _paramArray} do {
 		else  //single IED exactly on the marker spot
 		{
 			_side = _arr select ((count _arr) -1); 
+			_chance = 100;		
+			
+			if(count _arr > 2) then {_chance = _arr select ((count _arr) -2);};
 			
 			//prevent race condition...
 			_iedc = iedcounter;
+			_junkc = junkcounter;
 			
-			[_iedc, _origin, _side] spawn CREATE_SPECIFIC_IED;
-			iedcounter = iedcounter + 1;
+			if((random 100) < _chance) then {
+				[_iedc, _origin, _side] spawn CREATE_SPECIFIC_IED;
+				iedcounter = iedcounter + 1;
+			} else {
+				_st = [] call GET_SIZE_AND_TYPE;
+				[_junkc, _origin, _st select 1] spawn CREATE_FAKE;
+				junkcounter = junkcounter + 1;
+			};
 		};
 	};
+	publicVariable "iedcounter";
 };

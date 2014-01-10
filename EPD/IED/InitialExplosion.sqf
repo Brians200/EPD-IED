@@ -5,8 +5,6 @@ deleteVehicle (_this select 2);
 _iedNumber = _this select 3;
 _side = _this select 4;
 
-eventHandlers set [_iedNumber, "true;"];
-publicVariable "eventHandlers";
 
 [[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;	
 for "_i" from 0 to (count _explosiveSequence) -1 do{
@@ -30,3 +28,6 @@ if(secondaryChance>random 100) then {
 	sleep _sleepTime;
 	[[_iedPosition, _iedNumber, _side], "SPAWN_SECONDARY", true, false] spawn BIS_fnc_MP;
 };
+
+eventHandlers set [_iedNumber, "true;"];
+publicVariable "eventHandlers";

@@ -22,22 +22,24 @@ st_%1 setTriggerStatements ["[this, thislist, %2, %1] call EXPLOSION_CHECK && (a
 publicVariable "st_%1";
 ',_iedNumber, _iedPos];
 
-//call compile format ['[["secied_%1","SECONDARY",%3,"%4","st_%1",%1], "EXPLOSION_EVENT_HANDLER_ADDER", true, true] call BIS_fnc_MP;	', _iedNumber,"SECONDARY", _iedPos, _side];
+_eventhandler = "";
+_disarm = "";
+if(allowExplosiveToTriggerIEDs) then {
+	call compile format['pd_%1 = [secied_%1, %1, "SECONDARY", st_%1, _side] spawn PROJECTILE_DETECTION; publicVariable "pd_%1";', _iedNumber];
 
-call compile format['pd_%1 = [secied_%1, %1, "SECONDARY", st_%1, _side] spawn PROJECTILE_DETECTION;', _iedNumber];
-
-//call compile format ['[[secied_%1, st_%1, pd_%1],"Disarm", true, true] spawn BIS_fnc_MP;', _iedNumber];
-
-_eventhandler = format['[["secied_%1","SECONDARY",%3,"%4","st_%1",%1], "EXPLOSION_EVENT_HANDLER_ADDER", true, true] spawn BIS_fnc_MP;', _iedNumber,"SECONDARY", _iedPos, _side];
-
-_disarm = format ['[[secied_%1, st_%1, pd_%1, %1],"Disarm", true, true] spawn BIS_fnc_MP;', _iedNumber];
+	_eventhandler = format['["secied_%1","SECONDARY",%2,"%3","st_%1",%1] spawn EXPLOSION_EVENT_HANDLER_ADDER;', _iedNumber, _iedPos, _side];
+		
+	_disarm = format ['[secied_%1, st_%1, pd_%1, %1] spawn Disarm;', _iedNumber];
+} else {
+	_disarm = format ['[secied_%1, st_%1, "", %1] spawn Disarm;', _iedNumber];
+};
 
 _code = format["%1 %2",_eventhandler, _disarm ];
 
 eventHandlers set[_iedNumber, _code];
 publicVariable "eventHandlers";
 
-call compile _code;
+[[_code],"SECONDARY_EVENT_ADDER",true,false] spawn BIS_fnc_MP;
 
 if(debug) then {		
 	hint format["Secondary Explosive Created"];
@@ -48,4 +50,3 @@ if(debug) then {
 	"secbombmarker_%1" setMarkerTextLocal "Secondary";', _iedNumber];
 };
 
-//hint format ['[["secied_%1","SECONDARY",%3,"%4","st_%1",%1], "EXPLOSION_EVENT_HANDLER_ADDER", true, true] call BIS_fnc_MP;	', _iedNumber,"SECONDARY", _iedPos, _side];

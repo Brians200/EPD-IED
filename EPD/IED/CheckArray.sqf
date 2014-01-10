@@ -1,4 +1,5 @@
-if((count eventhandlers) < (iedcounter)) then {false;}
+_count = (count eventhandlers);
+if((_count < iedcounter) or ( _count == 0) ) then {false;}
 else {
 	_good = true;
 	for "_i" from 0 to (count eventhandlers) -1 do{

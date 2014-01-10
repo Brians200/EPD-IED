@@ -1,7 +1,8 @@
-//hint format["%1",_this];
+if(!allowExplosiveToTriggerIEDs) then exitwith{};
+
 _ied = _this select 1;
 _trigger = _this select 6;	
-if((!allowExplosiveToTriggerIEDs) or (isnull _ied) or (isnull _trigger)) exitwith{};
+if((isnull _ied) or (isnull _trigger)) exitwith{};
 
 _iedSize = _this select 2; 
 _iedPosition = _this select 3;

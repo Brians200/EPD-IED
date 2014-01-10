@@ -1,7 +1,7 @@
 //http://forums.bistudio.com/showthread.php?170903-How-do-you-find-out-what-type-of-explosive-hit-an-object
 //Detects projectiles that go near this object
 
-if(!allowExplosiveToTriggerIEDs) exitWith {}; 
+if(!allowExplosiveToTriggerIEDs) then exitwith{};
 
 _range = 35;
 _ied = _this select 0;
