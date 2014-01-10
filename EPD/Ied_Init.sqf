@@ -133,13 +133,14 @@ if(isserver) then {
 	["Panagia", 2, "West" ],
 	["Feres", 2, "West" ],
 	["Selakano", 2, "West" ]
-	] call IED;
+	] spawn IED;
 	
 	waituntil{sleep .5;publicVariable "eventHandlers";publicVariable "iedcounter"; [] call CHECK_ARRAY;};
 	
+	publicVariable "eventHandlers";
 	iedsAdded = true;
 	publicVariable "iedsAdded";
-	publicVariable "eventHandlers";
+
 };
 
 waituntil{sleep .5; (!isnull player and iedsAdded)};

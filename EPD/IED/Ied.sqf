@@ -23,6 +23,8 @@ private["_paramArray", "_paramCounter"];
 _paramCounter = 0;
 _paramArray = _this;
 
+_handles = [];
+
 while{_paramCounter < count _paramArray} do {
 
 	_arr = _paramArray select _paramCounter;
@@ -90,9 +92,10 @@ while{_paramCounter < count _paramArray} do {
 			_iedc = iedcounter;
 			_junkc = junkcounter;
 			
-			[_origin, _distance, _side, _iedsToPlace, _junkToPlace, _iedc, _junkc] spawn CREATE_RANDOM_IEDS;
+			_handle = [_origin, _distance, _side, _iedsToPlace, _junkToPlace, _iedc, _junkc] spawn CREATE_RANDOM_IEDS;
 			iedcounter = iedcounter + _iedsToPlace;
 			junkcounter = junkcounter + _junkToPlace;
+			_handles set [_paramCounter, _handle];
 		}
 		else  //single IED exactly on the marker spot
 		{
@@ -106,8 +109,9 @@ while{_paramCounter < count _paramArray} do {
 			_junkc = junkcounter;
 			
 			if((random 100) < _chance) then {
-				[_iedc, _origin, _side] spawn CREATE_SPECIFIC_IED;
+				_handle = [_iedc, _origin, _side] spawn CREATE_SPECIFIC_IED;
 				iedcounter = iedcounter + 1;
+				_handles set [_paramCounter, _handle];
 			} else {
 				_st = [] call GET_SIZE_AND_TYPE;
 				[_junkc, _origin, _st select 1] spawn CREATE_FAKE;
@@ -115,5 +119,7 @@ while{_paramCounter < count _paramArray} do {
 			};
 		};
 	};
+	
+	
 	publicVariable "iedcounter";
 };
