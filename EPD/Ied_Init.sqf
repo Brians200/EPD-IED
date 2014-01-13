@@ -48,8 +48,11 @@ if(isserver) then {
 	publicVariable "iedsAdded";
 	//free some memory
 	safeRoads = [];
-	placesOfInterest = [];
 	predefinedLocations = [];
+	placesOfInterest = [];
+	cities = [];
+	villages = [];
+	//locals = [];
 
 };
 

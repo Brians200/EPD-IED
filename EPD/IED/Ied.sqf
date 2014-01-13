@@ -73,12 +73,26 @@ while{_paramCounter < count _paramArray} do {
 
 	_arr = _paramArray select _paramCounter;
 	
-	if(_arr select 0 == "All") then {
-		for "_i" from 0 to (count placesOfInterest) -1 do{
-			_place = placesOfInterest select _i;
+	if(_arr select 0 in ["All", "AllCities", "AllVillages", "AllLocals"]) then {
+		_arrToLoop = [];
+		if(_arr select 0 == "All") then {
+			_arrToLoop = placesOfInterest;
+		};
+		if(_arr select 0 == "AllCities") then {
+			_arrToLoop = cities;
+		};
+		if(_arr select 0 == "AllVillages") then {
+			_arrToLoop = villages;
+		};
+		if(_arr select 0 == "AllLocals") then {
+			_arrToLoop = locals;
+		};
+		
+		for "_i" from 0 to (count _arrToLoop) -1 do{
+			_place = _arrToLoop select _i;
 			_origin = _place select 1;
 			_distance = _place select 2;
-			_iedsToPlace = round (_distance / 100.0);
+			_iedsToPlace = floor (_distance / 100.0);
 			_junkToPlace = _iedsToPlace;
 			_side = _arr select ((count _arr) -1); 
 		
@@ -90,8 +104,7 @@ while{_paramCounter < count _paramArray} do {
 			iedcounter = iedcounter + _iedsToPlace;
 			junkcounter = junkcounter + _junkToPlace;
 			_handles set [_handleCounter, _handle];	
-			_handleCounter = _handleCounter + 1;
-					
+			_handleCounter = _handleCounter + 1;			
 		};
 	} else {			
 		_origin = [0,0,0];

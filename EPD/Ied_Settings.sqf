@@ -36,6 +36,9 @@ allowExplosiveToTriggerIEDs = true;
 //These are the actual IEDs that will spawn. Add them using one of the following formats.
 //mapLocations must have their type defined as one of "NameCityCapital","NameCity","NameVillage", "NameLocal"
 //["All", side]
+//["AllCities", side]
+//["AllVillages", side]
+//["AllLocals", side]
 //["mapLocation", side]
 //["mapLocation", amountToPlace, side];
 //["mapLocation", iedsToPlace, fakesToPlace, side]
@@ -50,7 +53,8 @@ allowExplosiveToTriggerIEDs = true;
 //["marker", side]
 //["marker", chanceToBeReal, side]
 iedArray = [
-	["All","West"],
+	["AllCities","West"],
+	["AllVillages","West"],
 	["AltisRandom1",6,"West"],
 	["AltisRandom2",6,"West"],
 	["AltisRandom3",6,"West"],
@@ -71,34 +75,6 @@ iedArray = [
 	["Lakka", 2, 8, "West" ],
 	["OreoKastro", 2, "West"],
 	["Abdera", 2, "West" ],
-	["Galati", 2, "West" ],
-	["Syrta", 3, "West" ],
-	["Kore", 2, "West" ],
-	["Negades", 2, "West" ],
-	["Aggeochori", 4, "West" ],
-	["Kavala", 4, "West" ],
-	["Panochori", 3, "West" ],
-	["Zaros", 3, "West" ],
-	["Therisa", 3, "West"],
-	["Poliakko", 3, "West" ],
-	["Alikampos", 3, "West" ],
-	["Neochori", 4, "West" ],
-	["Stravos", 3, "West" ],
-	["Agios Dionysios", 3, "West" ],
-	["Athira", 4, "West" ],
-	["Frini", 2, "West" ],
-	["Rodopoli", 3, "West" ],
-	["Paros", 4, "West" ],
-	["Kalochori", 3, "West" ],
-	["Sofia", 3, "West" ],
-	["Molos", 2, "West" ],
-	["Charkia", 3, "West" ],
-	["Pyrgos", 2, "West" ],
-	["Dorida", 2, "West" ],
-	["Chalkiea", 3, "West" ],
-	["Panagia", 2, "West" ],
-	["Feres", 2, "West" ],
-	["Selakano", 2, "West" ],
 	["IEDSINGLE1", "West"],
 	["IEDSINGLE2", 50,"West"],
 	["IEDSINGLE3", 50, "West"]*/

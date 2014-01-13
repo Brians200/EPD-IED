@@ -12,4 +12,4 @@ class Header
 	maxPlayers = 8; //max # of players the mission supports
 };
 
-//enableDebugConsole = 2;
+enableDebugConsole = 1;
