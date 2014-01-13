@@ -629,15 +629,15 @@ class Mission
 		};
 		class Item2
 		{
-			position[]={14415.626,18.350473,17953.441};
+			position[]={14462.331,18.964108,18005.348};
 			name="IEDSINGLE2";
-			type="Empty";
+			type="mil_objective";
 		};
 		class Item3
 		{
-			position[]={14475.825,20.441504,17956.061};
+			position[]={14475.127,19.563786,17997.193};
 			name="IEDSINGLE3";
-			type="Empty";
+			type="mil_objective";
 		};
 	};
 };
