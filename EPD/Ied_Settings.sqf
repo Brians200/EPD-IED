@@ -1,5 +1,5 @@
 /***************SETTINGS***********************/
-debug = false;
+debug = true;
 hideIedMarker = true;  //sets the alpha to 0 after spawning IEDs there
 
 itemsRequiredToDisarm = ["ToolKit"];   //"MineDetector" or "ToolKit" for example
@@ -24,7 +24,7 @@ iedLargeItems = ["Land_Bricks_V2_F","Land_Bricks_V3_F","Land_Bricks_V4_F","Land_
 
 //If you want to use locations without making markers on the map, define them here. Altis has been provided as an example. ***THESE ARE NOT WHERE THE ACTUAL IEDS ARE SPAWNED***
 //["Name",[LocationX,LocationY,LocationZ],size]
-predefinedLocations = [["Gravia",[14491.1,17636.8,0],350],["Lakka",[12342.6,15682.6],350],["OreoKastro",[4557.53,21387.7,0],250],["Abdera",[9420.76,20252.7,0],150],["Galati",[10326.3,19055.6,0],150],["Syrta",[8634.13,18270.7,0],150],["Kore",[7144.03,16455.2,0],300],["Negades",[4895.13,16168.9,0],150],["Aggeochori",[3808.9,13694.7,0],500],["Kavala",[3543.03,13008.2,0],500],["Panochori",[5086.4,11263,0],350],["Zaros",[9197.17,11925.5,0],350],["Therisa",[10666.3,12270.4,0],250],["Poliakko",[10983.5,13424.3,0],250],["Alikampos",[11133,14561,0],250],["Neochori",[12501.5,14328.7,0],350],["Stravos",[12946.5,15057.3,0],250],["Agios Dionysios",[9358.66,15885.8,0],450],["Athira",[14022.3,18716.3,0],400],["Frini",[14615.4,20775.9,0],250],["Rodopoli",[18779.8,16643.9,0],350],["Paros",[20951.5,16958.9,0],450],["Kalochori",[21384.8,16362.2,0],250],["Sofia",[25702.1,21355.8,0],350],["Molos",[27033.2,23242.4,0],250],["Charkia",[18114.4,15241,0],400],["Pyrgos",[16828,12662.2,0],500],["Dorida",[19399,13251.5,0],250],["Chalkiea",[20250.4,11673.7,0],400],["Panagia",[20511.7,8867.04,0],250],["Feres",[21700.7,7576.93,0],350],["Selakano",[20803,6730.63,0],350],["AltisRandom1",[4941.03,20430.1,0],2000],["AltisRandom2",[5796.45,16578.8,0],2000],["AltisRandom3",[5435.57,12633.9,0],2000],["AltisRandom4",[9579.01,20978.4,0],2000],["AltisRandom5",[10020.1,16859.6,0],2000],["AltisRandom6",[9779.5,12901.4,0],2000],["AltisRandom7",[13749.2,21392.9,0],2000],["AltisRandom8",[13048.1,18153.4,0],2000],["AltisRandom9",[17677.8,17309.3,0],2000],["AltisRandom10",[26097.5,22777.3,0],2000],["AltisRandom11",[23259.9,19904.4,0],2000],["AltisRandom12",[21356.9,17014.4,0],2000],["AltisRandom13",[19267,13716.4,0],2000],["AltisRandom14",[17033.2,10641.5,0],2000],["AltisRandom15",[20342.5,8704.69,0],2000],["AltisRandom16",[11108.5,8551.36,0],2000]];
+predefinedLocations = [["AltisRandom1",[4941.03,20430.1,0],2000],["AltisRandom2",[5796.45,16578.8,0],2000],["AltisRandom3",[5435.57,12633.9,0],2000],["AltisRandom4",[9579.01,20978.4,0],2000],["AltisRandom5",[10020.1,16859.6,0],2000],["AltisRandom6",[9779.5,12901.4,0],2000],["AltisRandom7",[13749.2,21392.9,0],2000],["AltisRandom8",[13048.1,18153.4,0],2000],["AltisRandom9",[17677.8,17309.3,0],2000],["AltisRandom10",[26097.5,22777.3,0],2000],["AltisRandom11",[23259.9,19904.4,0],2000],["AltisRandom12",[21356.9,17014.4,0],2000],["AltisRandom13",[19267,13716.4,0],2000],["AltisRandom14",[17033.2,10641.5,0],2000],["AltisRandom15",[20342.5,8704.69,0],2000],["AltisRandom16",[11108.5,8551.36,0],2000]];
 
 /***************EXPERIMENTAL***********************/
 // This is still being worked on and may contain bugs, please report them on the forums.
@@ -34,6 +34,11 @@ allowExplosiveToTriggerIEDs = true;
 
 
 //These are the actual IEDs that will spawn. Add them using one of the following formats.
+//mapLocations must have their type defined as one of "NameCityCapital","NameCity","NameVillage", "NameLocal"
+//["All", side]
+//["mapLocation", side]
+//["mapLocation", amountToPlace, side];
+//["mapLocation", iedsToPlace, fakesToPlace, side]
 //["predefinedLocation", side]
 //["predefinedLocation", amountToPlace, side];
 //["predefinedLocation", iedsToPlace, fakesToPlace, side]
@@ -45,9 +50,7 @@ allowExplosiveToTriggerIEDs = true;
 //["marker", side]
 //["marker", chanceToBeReal, side]
 iedArray = [
-	["IEDSINGLE1", "West"],
-	["IEDSINGLE2", 50,"West"],
-	["IEDSINGLE3", 50, "West"],
+	["All","West"],
 	["AltisRandom1",6,"West"],
 	["AltisRandom2",6,"West"],
 	["AltisRandom3",6,"West"],
@@ -63,7 +66,7 @@ iedArray = [
 	["AltisRandom13",6,"West"],
 	["AltisRandom14",6,"West"],
 	["AltisRandom15",6,"West"],
-	["AltisRandom16",6,"West"],
+	["AltisRandom16",6,"West"]/*,
 	["Gravia", 10, 2, "West" ],
 	["Lakka", 2, 8, "West" ],
 	["OreoKastro", 2, "West"],
@@ -95,5 +98,11 @@ iedArray = [
 	["Chalkiea", 3, "West" ],
 	["Panagia", 2, "West" ],
 	["Feres", 2, "West" ],
-	["Selakano", 2, "West" ]
+	["Selakano", 2, "West" ],
+	["IEDSINGLE1", "West"],
+	["IEDSINGLE2", 50,"West"],
+	["IEDSINGLE3", 50, "West"]*/
 	];
+	
+//Place the mapLocations, predefinedLocations, and markerNames of places you don't want any IEDs spawning
+safeZones = ["SafeZone"];

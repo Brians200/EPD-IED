@@ -17,6 +17,7 @@ IED_ROCKS = compile preprocessFileLineNumbers "EPD\IED\IEDRocks.sqf";
 CHECK_ARRAY = compile preprocessFileLineNumbers "EPD\IED\CheckArray.sqf";
 CREATE_IED = compile preprocessFileLineNumbers "EPD\IED\CreateIed.sqf";
 CREATE_FAKE = compile preprocessFileLineNumbers "EPD\IED\CreateFake.sqf";
+CREATE_PLACES_OF_INTEREST = compile preprocessFileLineNumbers "EPD\IED\createPlacesOfInterest.sqf";
 EXPLOSION_CHECK = compile preprocessFileLineNumbers "EPD\IED\ExplosionCheck.sqf";
 EXPLOSIVESEQUENCE_SMALL = compile preprocessFileLineNumbers "EPD\IED\ExplosiveSequenceSmall.sqf";
 EXPLOSIVESEQUENCE_MEDIUM = compile preprocessFileLineNumbers "EPD\IED\ExplosiveSequenceMedium.sqf";
@@ -45,12 +46,16 @@ if(isserver) then {
 	
 	iedsAdded = true;
 	publicVariable "iedsAdded";
+	//free some memory
+	safeRoads = [];
+	placesOfInterest = [];
+	predefinedLocations = [];
 
 };
 
 waituntil{sleep .5; (!isnull player and iedsAdded)};
 player sidechat "Synching IEDs... You may experience lag for a few seconds";
-hint format["%1 ieds to synch", count eventHandlers];
+//hint format["%1 ieds to synch", count eventHandlers];
 
 for "_i" from 0 to (count eventHandlers) -1 do{
 	call compile (eventHandlers select _i);

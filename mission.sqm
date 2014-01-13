@@ -613,7 +613,7 @@ class Mission
 	};
 	class Markers
 	{
-		items=4;
+		items=5;
 		class Item0
 		{
 			position[]={14398.555,17.128494,17996.691};
@@ -638,6 +638,18 @@ class Mission
 			position[]={14475.127,19.563786,17997.193};
 			name="IEDSINGLE3";
 			type="mil_objective";
+		};
+		class Item4
+		{
+			position[]={14688.305,17.900311,16323.069};
+			name="SafeZone";
+			text="SafeZone";
+			markerType="ELLIPSE";
+			type="Empty";
+			colorName="ColorRed";
+			fillName="DiagGrid";
+			a=900;
+			b=900;
 		};
 	};
 };
