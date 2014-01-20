@@ -20,6 +20,9 @@ for "_i" from 0 to (count _explosiveSequence) -1 do{
 	sleep .01;
 };
 
+eventHandlers set [_iedNumber, "true;"];
+publicVariable "eventHandlers";
+
 if(secondaryChance>random 100) then {
 	_sleepTime = 15;
 	if(debug) then {
@@ -29,5 +32,3 @@ if(secondaryChance>random 100) then {
 	[[_iedPosition, _iedNumber, _side], "SPAWN_SECONDARY", true, false] spawn BIS_fnc_MP;
 };
 
-eventHandlers set [_iedNumber, "true;"];
-publicVariable "eventHandlers";

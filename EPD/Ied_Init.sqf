@@ -52,7 +52,7 @@ if(isserver) then {
 	placesOfInterest = [];
 	cities = [];
 	villages = [];
-	//locals = [];
+	locals = [];
 
 };
 

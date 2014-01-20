@@ -629,7 +629,7 @@ class Mission
 		};
 		class Item2
 		{
-			position[]={14462.331,18.964108,18005.348};
+			position[]={14489.97,20.522633,18006.445};
 			name="IEDSINGLE2";
 			type="mil_objective";
 		};

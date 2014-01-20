@@ -69,6 +69,13 @@ for "_i" from 0 to (count safeZones) -1 do{
 	};
 };
 
+disarmedSections = [];
+explodedSections = [];
+for "_i" from 0 to (count _paramArray) -1 do{
+	disarmedSections set [_i, ""];
+	explodedSections set [_i, ""];
+};
+
 while{_paramCounter < count _paramArray} do {
 
 	_arr = _paramArray select _paramCounter;
@@ -100,7 +107,7 @@ while{_paramCounter < count _paramArray} do {
 			_iedc = iedcounter;
 			_junkc = junkcounter;
 			
-			_handle = [_origin, _distance, _side, _iedsToPlace, _junkToPlace, _iedc, _junkc] spawn CREATE_RANDOM_IEDS;
+			_handle = [_origin, _distance, _side, _iedsToPlace, _junkToPlace, _iedc, _junkc, _paramCounter] spawn CREATE_RANDOM_IEDS;
 			iedcounter = iedcounter + _iedsToPlace;
 			junkcounter = junkcounter + _junkToPlace;
 			_handles set [_handleCounter, _handle];	
@@ -170,7 +177,7 @@ while{_paramCounter < count _paramArray} do {
 				_iedc = iedcounter;
 				_junkc = junkcounter;
 				
-				_handle = [_origin, _distance, _side, _iedsToPlace, _junkToPlace, _iedc, _junkc] spawn CREATE_RANDOM_IEDS;
+				_handle = [_origin, _distance, _side, _iedsToPlace, _junkToPlace, _iedc, _junkc, _paramCounter] spawn CREATE_RANDOM_IEDS;
 				iedcounter = iedcounter + _iedsToPlace;
 				junkcounter = junkcounter + _junkToPlace;
 				_handles set [_handleCounter, _handle];
@@ -187,7 +194,7 @@ while{_paramCounter < count _paramArray} do {
 				_junkc = junkcounter;
 				
 				if((random 100) < _chance) then {
-					_handle = [_iedc, _origin, _side] spawn CREATE_SPECIFIC_IED;
+					_handle = [_iedc, _origin, _side, _paramCounter, _paramCounter] spawn CREATE_SPECIFIC_IED;
 					iedcounter = iedcounter + 1;
 					_handles set [_paramCounter, _handle];
 				} else {
@@ -197,6 +204,9 @@ while{_paramCounter < count _paramArray} do {
 				};
 			};
 			_handleCounter = _handleCounter + 1;
+		} else {
+			disarmedSections set [_paramCounter, "true"];
+			explodedSections set [_paramCounter, "false"];
 		};
 	};
 	_paramCounter = _paramCounter + 1;
