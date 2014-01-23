@@ -11,7 +11,8 @@ class Mission
 		"A3_Armor_F_Slammer",
 		"A3_Weapons_F_Ammoboxes",
 		"A3_Air_F_Heli_Light_01",
-		"a3_weapons_f_beta_ammoboxes"
+		"a3_weapons_f_beta_ammoboxes",
+		"A3_Characters_F_OPFOR"
 	};
 	addOnsAuto[]=
 	{
@@ -629,13 +630,13 @@ class Mission
 		};
 		class Item2
 		{
-			position[]={14489.97,20.522633,18006.445};
+			position[]={14448.803,18.64871,17982.51};
 			name="IEDSINGLE2";
 			type="mil_objective";
 		};
 		class Item3
 		{
-			position[]={14475.127,19.563786,17997.193};
+			position[]={14428.881,18.481613,17958.414};
 			name="IEDSINGLE3";
 			type="mil_objective";
 		};

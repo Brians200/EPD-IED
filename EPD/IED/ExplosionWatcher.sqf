@@ -39,12 +39,11 @@ if(_isExplosive) then {
 		if(debug) then {hint format["random = %1\nmax to explode = %2\n%3",_r,_chance,_class];};
 		if(_r < _chance) then {
 			_iedNumber = _this select 6;
-			_side = _this select 7;
 			_iedSize = _this select 3;
 			if(debug) then { player sidechat format ["%1 triggered IED",_class]; };
 			if(!(isnull _ied)) then {
 				_ied removeAllEventHandlers "HitPart";
-				call compile format["terminate pd_%2; [_origin, _ied, _iedNumber, _side] call EXPLOSIVESEQUENCE_%1", _iedSize, _iedNumber ];
+				call compile format["terminate pd_%2; [_origin, _ied, _iedNumber] call EXPLOSIVESEQUENCE_%1", _iedSize, _iedNumber ];
 				deleteVehicle _ied;
 				deleteVehicle _trigger;
 			};

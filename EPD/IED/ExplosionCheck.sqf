@@ -1,28 +1,37 @@
 if(_this select 0) then
 {
+	_items = 0;
 	_triggerNum = _this select 3;
 	_iedPos = _this select 2;
 	_objects = _this select 1;
 	_minDistance = 10000;
 	_minHeight = 10000;
 	_maxSpeed = 0;
-	{
-		_dist = (position _x distance _iedPos);
-		if(_dist < _minDistance) then {
-			_minDistance = _dist;
-		};
 	
-		if(((velocity _x) distanceSqr [0,0,velocity _x select 2]) > _maxSpeed) then
-		{
-			_maxSpeed = (velocity _x) distanceSqr [0,0,velocity _x select 2]; //ignore the z component, because you get large speed increases steping over stone walls
-		};
-		if((position _x) select 2 < _minheight) then {
-			_minHeight = (position _x) select 2;
+	_sides = call compile format["tSides_%1", _triggerNum];
+	{
+		if((_x iskindof "man") or (_x iskindof "allvehicles")) then {
+			if(format["%1", side _x] in _sides) then {
+				_items = _items + 1;
+				_dist = (position _x distance _iedPos);
+				if(_dist < _minDistance) then {
+					_minDistance = _dist;
+				};
+			
+				if((((velocity _x) distanceSqr [0,0,velocity _x select 2]) > _maxSpeed) and (stance _x != "PRONE")) then
+				{
+					_maxSpeed = (velocity _x) distanceSqr [0,0,velocity _x select 2]; //ignore the z component, because you get large speed increases steping over stone walls
+					
+				};
+				if((position _x) select 2 < _minheight) then {
+					_minHeight = (position _x) select 2;
+				};
+			};
 		};
 	} foreach _objects;
 	
-	if(debug) then {
-		hintSilent format["Trigger %5\nPeople/Vehicles in trigger = %1\nMax Speed = %2\nMin Height = %3\nDistance = %4", count _objects,_maxSpeed, _minHeight,_minDistance, _triggerNum];
+	if(debug && _items > 0) then {
+		hintSilent format["Trigger %5\nPeople/Vehicles in trigger = %1\nMax Speed = %2\nMin Height = %3\nDistance = %4", _items,_maxSpeed, _minHeight,_minDistance, _triggerNum];
 	};	
 	
 	

@@ -3,7 +3,6 @@ _explosiveSequence = _this select 1;
 (_this select 2) removeAllEventHandlers "HitPart";
 deleteVehicle (_this select 2);
 _iedNumber = _this select 3;
-_side = _this select 4;
 
 
 [[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;	
@@ -29,6 +28,6 @@ if(secondaryChance>random 100) then {
 		hint format["Creating Secondary Explosive"];
 	};
 	sleep _sleepTime;
-	[[_iedPosition, _iedNumber, _side], "SPAWN_SECONDARY", true, false] spawn BIS_fnc_MP;
+	[[_iedPosition, _iedNumber], "SPAWN_SECONDARY", true, false] spawn BIS_fnc_MP;
 };
 

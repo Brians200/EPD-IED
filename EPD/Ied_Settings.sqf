@@ -52,6 +52,11 @@ allowExplosiveToTriggerIEDs = true;
 /*********Marker size = 1**********************/
 //["marker", side]
 //["marker", chanceToBeReal, side]
+
+//The side can be a single side, or an array of sides
+//Ex. "West"   or ["West,"East"]
+//http://community.bistudio.com/wiki/side
+
 iedArray = [
 	["AllCities","West"],
 	["AllVillages","West"],
@@ -75,7 +80,7 @@ iedArray = [
 	["Lakka", 2, 8, "West" ],
 	["OreoKastro", 2, "West"],
 	["Abdera", 2, "West" ],
-	["IEDSINGLE1", "West"],
+	["IEDSINGLE1", ["West","East"],
 	["IEDSINGLE2", 50,"West"],
 	["IEDSINGLE3", 50, "West"]*/
 	];

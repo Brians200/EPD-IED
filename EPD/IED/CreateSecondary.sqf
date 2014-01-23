@@ -2,7 +2,6 @@ if(!isserver) exitwith{};
 
 _location = _this select 0;
 _iedNumber = _this select 1;
-_side = format["%1", _this select 2];
 _theta = random 360;
 _offset = 4 + random 12;
 _iedPos = [(_location select 0) + _offset*cos(_theta), (_location select 1) + _offset*sin(_theta),0];
@@ -13,11 +12,11 @@ call compile format ['secied_%1 = _iedType createVehicle _iedPos;
 						secied_%1 setPos _iedPos;
 						secied_%1 allowDamage false;
 						publicVariable "secied_%1";
-						', _iedNumber, _iedPos, _side];
+						', _iedNumber, _iedPos];
 					
 call compile format [' st_%1 = createTrigger["EmptyDetector", _iedPos];
 st_%1 setTriggerArea[11,11,0,true];
-st_%1 setTriggerActivation [_side,"PRESENT",false];
+st_%1 setTriggerActivation ["any","PRESENT",false];
 st_%1 setTriggerStatements ["[this, thislist, %2, %1] call EXPLOSION_CHECK && (alive secied_%1)","terminate pd_%1; [%2,sec_%1, %1] spawn EXPLOSIVESEQUENCE_SECONDARY; deleteVehicle thisTrigger;  deleteVehicle secied_%1",""];
 publicVariable "st_%1";
 ',_iedNumber, _iedPos];
@@ -25,9 +24,9 @@ publicVariable "st_%1";
 _eventhandler = "";
 _disarm = "";
 if(allowExplosiveToTriggerIEDs) then {
-	call compile format['pd_%1 = [secied_%1, %1, "SECONDARY", st_%1, _side] spawn PROJECTILE_DETECTION; publicVariable "pd_%1";', _iedNumber];
+	call compile format['pd_%1 = [secied_%1, %1, "SECONDARY", st_%1] spawn PROJECTILE_DETECTION; publicVariable "pd_%1";', _iedNumber];
 
-	_eventhandler = format['["secied_%1","SECONDARY",%2,"%3","st_%1",%1] spawn EXPLOSION_EVENT_HANDLER_ADDER;', _iedNumber, _iedPos, _side];
+	_eventhandler = format['["secied_%1","SECONDARY",%2,"st_%1",%1] spawn EXPLOSION_EVENT_HANDLER_ADDER;', _iedNumber, _iedPos];
 		
 	_disarm = format ['[secied_%1, st_%1, pd_%1, %1] spawn Disarm;', _iedNumber];
 } else {

@@ -7,7 +7,6 @@ if(allowExplosiveToTriggerIEDs) then {
 	_iedNumber = _this select 1;
 	_iedSize = _this select 2;
 	_trigger = _this select 3;
-	_side = _this select 4;
 
 	_fired = [];
 	while {alive _ied} do 
@@ -20,7 +19,7 @@ if(allowExplosiveToTriggerIEDs) then {
 
 			if (!(_ammo in _fired)) then
 			{
-				[_ammo, _ied, _trigger, _iedSize, typeof _ammo, getpos _ammo, _iedNumber, _side ] spawn EXPLOSION_WATCHER;
+				[_ammo, _ied, _trigger, _iedSize, typeof _ammo, getpos _ammo, _iedNumber ] spawn EXPLOSION_WATCHER;
 				_fired = _fired + [_ammo];
 			};
 		};
