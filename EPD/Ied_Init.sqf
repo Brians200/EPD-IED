@@ -13,7 +13,8 @@ if(isserver) then {
 
 IED = compile preprocessFileLineNumbers "EPD\IED\Ied.sqf";
 IED_SMOKE = compile preprocessFileLineNumbers "EPD\IED\IedSmoke.sqf";
-IED_ROCKS = compile preprocessFileLineNumbers "EPD\IED\IEDRocks.sqf";
+IED_ROCKS = compile preprocessFileLineNumbers "EPD\IED\IedRocks.sqf";
+IED_SCREEN_EFFECTS = compile preprocessFileLineNumbers "EPD\IED\IedPlayerEffects.sqf";
 CHECK_ARRAY = compile preprocessFileLineNumbers "EPD\IED\CheckArray.sqf";
 CREATE_IED = compile preprocessFileLineNumbers "EPD\IED\CreateIed.sqf";
 CREATE_FAKE = compile preprocessFileLineNumbers "EPD\IED\CreateFake.sqf";

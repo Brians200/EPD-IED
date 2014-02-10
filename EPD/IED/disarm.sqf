@@ -57,6 +57,7 @@ DISARM_EXPLOSIONS = {
 	_iedPosition = _this select 0;
 	_explosiveSequence = ["Bo_GBU12_LGB_MI10","Bo_GBU12_LGB_MI10","M_PG_AT","R_80mm_HE"];
 	[[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;
+	[[_iedPosition] , "IED_SCREEN_EFFECTS", true, false] spawn BIS_fnc_MP;
 	for "_i" from 0 to (count _explosiveSequence) -1 do{
 		[[_iedPosition] , "IED_ROCKS", true, false] spawn BIS_fnc_MP;
 		_explosive = (_explosiveSequence select _i);

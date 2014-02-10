@@ -6,6 +6,7 @@ _iedNumber = _this select 3;
 
 
 [[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;	
+[[_iedPosition] , "IED_SCREEN_EFFECTS", true, false] spawn BIS_fnc_MP;
 for "_i" from 0 to (count _explosiveSequence) -1 do{
 	[[_iedPosition] , "IED_ROCKS", true, false] spawn BIS_fnc_MP;
 	_explosive = (_explosiveSequence select _i);
@@ -19,6 +20,18 @@ for "_i" from 0 to (count _explosiveSequence) -1 do{
 	sleep .01;
 };
 
+_buildings = (_iedPosition) nearObjects ["Building", 100];
+{
+	_damage = 1;
+	_distance = _iedPosition distance getpos _x;
+	if(_distance > 30) then { _damage = 0 max log (_distance/100);};
+	for "_i" from 1 to 7 do {
+		_currentDamage = getdammage _x;
+		_x sethit [format["dam%1",_i], _currentDamage + _damage];
+		_x sethit [format["dam_%1",_i], _currentDamage + _damage];
+	}
+} foreach _buildings;
+
 eventHandlers set [_iedNumber, "true;"];
 publicVariable "eventHandlers";
 
@@ -30,4 +43,3 @@ if(secondaryChance>random 100) then {
 	sleep _sleepTime;
 	[[_iedPosition, _iedNumber], "SPAWN_SECONDARY", true, false] spawn BIS_fnc_MP;
 };
-
