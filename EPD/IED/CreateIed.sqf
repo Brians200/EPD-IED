@@ -40,7 +40,7 @@ if(allowExplosiveToTriggerIEDs) then {
 eventHandlers set[_iedNumber, format["%1 %2",_eventhandler, _disarm ]];
 //publicVariable "eventHandlers";
 
-if(debug) then {		
+if(EPD_IED_debug) then {		
 		
 	call compile format ['
 	bombmarker_%1 = createmarker ["bombmarker_%1", _iedPos];

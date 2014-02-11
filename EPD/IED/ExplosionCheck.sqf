@@ -30,7 +30,7 @@ if(_this select 0) then
 		};
 	} foreach _objects;
 	
-	if(debug && _items > 0) then {
+	if(EPD_IED_debug && _items > 0) then {
 		hintSilent format["Trigger %5\nPeople/Vehicles in trigger = %1\nMax Speed = %2\nMin Height = %3\nDistance = %4", _items,_maxSpeed, _minHeight,_minDistance, _triggerNum];
 	};	
 	

@@ -20,24 +20,12 @@ for "_i" from 0 to (count _explosiveSequence) -1 do{
 	sleep .01;
 };
 
-_buildings = (_iedPosition) nearObjects ["Building", 100];
-{
-	_damage = 1;
-	_distance = _iedPosition distance getpos _x;
-	if(_distance > 30) then { _damage = 0 max log (_distance/100);};
-	for "_i" from 1 to 7 do {
-		_currentDamage = getdammage _x;
-		_x sethit [format["dam%1",_i], _currentDamage + _damage];
-		_x sethit [format["dam_%1",_i], _currentDamage + _damage];
-	}
-} foreach _buildings;
-
 eventHandlers set [_iedNumber, "true;"];
 publicVariable "eventHandlers";
 
 if(secondaryChance>random 100) then {
 	_sleepTime = 15;
-	if(debug) then {
+	if(EPD_IED_debug) then {
 		hint format["Creating Secondary Explosive"];
 	};
 	sleep _sleepTime;

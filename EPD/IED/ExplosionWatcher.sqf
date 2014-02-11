@@ -30,17 +30,17 @@ if(_isExplosive) then {
 	
 	_origin = getpos (_this select 1);
 	
-	if(debug) then {player sidechat format["distance = %1", (_origin distance _position)]; };
+	if(EPD_IED_debug) then {player sidechat format["distance = %1", (_origin distance _position)]; };
 	if((_origin distancesqr _position < _radius) and !(isnull _ied) and !(isnull _trigger)) then {
 		_chance = 100;
 		if(_class iskindof "Grenade") then { _chance = 35; };
 		
 		_r = random 100;
-		if(debug) then {hint format["random = %1\nmax to explode = %2\n%3",_r,_chance,_class];};
+		if(EPD_IED_debug) then {hint format["random = %1\nmax to explode = %2\n%3",_r,_chance,_class];};
 		if(_r < _chance) then {
 			_iedNumber = _this select 6;
 			_iedSize = _this select 3;
-			if(debug) then { player sidechat format ["%1 triggered IED",_class]; };
+			if(EPD_IED_debug) then { player sidechat format ["%1 triggered IED",_class]; };
 			if(!(isnull _ied)) then {
 				_ied removeAllEventHandlers "HitPart";
 				call compile format["terminate pd_%2; [_origin, _ied, _iedNumber] call EXPLOSIVESEQUENCE_%1", _iedSize, _iedNumber ];

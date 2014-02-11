@@ -38,11 +38,11 @@ if(allowExplosiveToTriggerIEDs) then {
 		if(_isExplosiveBullet) then {_chance = 40; };
 		
 		_r = random 100;
-		if(debug) then {hint format["random = %1\nmax to explode = %2\n%3",_r,_chance,_projectile];};
+		if(EPD_IED_debug) then {hint format["random = %1\nmax to explode = %2\n%3",_r,_chance,_projectile];};
 		if(_r < _chance) then {
 			if(!(isnull _ied) and !(isnull _trigger)) then {
 				
-				if(debug) then { player sidechat format ["%1 triggered IED",_projectile]; };
+				if(EPD_IED_debug) then { player sidechat format ["%1 triggered IED",_projectile]; };
 				eventHandlers set [_iedNumber, compile "true;"];
 				publicVariable "eventHandlers";
 				call compile format["terminate pd_%2; [_iedPosition, _ied, _iedNumber] call EXPLOSIVESEQUENCE_%1", _iedSize, _iedNumber ];	

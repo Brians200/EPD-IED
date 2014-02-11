@@ -40,7 +40,7 @@ publicVariable "eventHandlers";
 
 [[_code],"SECONDARY_EVENT_ADDER",true,false] spawn BIS_fnc_MP;
 
-if(debug) then {		
+if(EPD_IED_debug) then {		
 	hint format["Secondary Explosive Created"];
 	call compile format ['
 	secbombmarker_%1 = createmarker ["secbombmarker_%1", _iedPos];

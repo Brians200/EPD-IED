@@ -48,12 +48,12 @@ if(isserver) then {
 	iedsAdded = true;
 	publicVariable "iedsAdded";
 	//free some memory
-	safeRoads = [];
-	predefinedLocations = [];
-	placesOfInterest = [];
-	cities = [];
-	villages = [];
-	locals = [];
+	safeRoads = nil;
+	predefinedLocations = nil;
+	placesOfInterest = nil;
+	cities = nil;
+	villages = nil;
+	locals = nil;
 
 };
 
@@ -63,5 +63,5 @@ player sidechat "Synching IEDs... You may experience lag for a few seconds";
 
 for "_i" from 0 to (count eventHandlers) -1 do{
 	call compile (eventHandlers select _i);
-	if(debug) then {player sidechat (format["%1 synched", _i+1]);};
+	if(EPD_IED_debug) then {player sidechat (format["%1 synched", _i+1]);};
 };

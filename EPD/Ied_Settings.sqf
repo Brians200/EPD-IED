@@ -1,5 +1,5 @@
 /***************SETTINGS***********************/
-debug = true;
+EPD_IED_debug = true;
 hideIedMarker = true;  //sets the alpha to 0 after spawning IEDs there
 
 itemsRequiredToDisarm = ["ToolKit"];   //"MineDetector" or "ToolKit" for example
@@ -80,7 +80,7 @@ iedArray = [
 	["Lakka", 2, 8, "West" ],
 	["OreoKastro", 2, "West"],
 	["Abdera", 2, "West" ],
-	["IEDSINGLE1", ["West","East"],
+	["IEDSINGLE1", ["West","East"]],
 	["IEDSINGLE2", 50,"West"],
 	["IEDSINGLE3", 50, "West"]*/
 	];

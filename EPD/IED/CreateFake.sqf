@@ -8,7 +8,7 @@ _junk setPos _junkPosition;
 _junk enableSimulation false;
 _junk allowDamage false;
 
-if(debug) then {		
+if(EPD_IED_debug) then {		
 	call compile format ['
 	fakebombmarker_%1 = createmarker ["fakebombmarker_%1", _junkPosition];
 	"fakebombmarker_%1" setMarkerTypeLocal "hd_warning";
