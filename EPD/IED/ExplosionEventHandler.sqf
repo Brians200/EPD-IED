@@ -18,9 +18,12 @@ if(allowExplosiveToTriggerIEDs) then {
 		};
 	} foreach ehExplosiveSuperClasses;
 
-	if((! _isExplosive) && (_projectile in explosiveBullets)) then
+	if(! _isExplosive) then
 	{
-		_isExplosiveBullet = true;
+		_explosiveValue = getNumber(configfile >> "CfgAmmo" >> format["%1", _projectile] >> "explosive");
+		if(_explosiveValue > 0) then {
+			_isExplosiveBullet = true;
+		};
 	};
 
 	{//smoke grenades.. chem lights.. ir strobes.. rocks..
