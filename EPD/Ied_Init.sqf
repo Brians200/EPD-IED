@@ -11,6 +11,7 @@ if(isserver) then {
 };
 
 
+call compile preprocessFileLineNumbers "EPD\IED\ExplosiveSequences.sqf";
 IED = compile preprocessFileLineNumbers "EPD\IED\Ied.sqf";
 IED_SMOKE = compile preprocessFileLineNumbers "EPD\IED\IedSmoke.sqf";
 IED_ROCKS = compile preprocessFileLineNumbers "EPD\IED\IedRocks.sqf";
@@ -20,11 +21,6 @@ CREATE_IED = compile preprocessFileLineNumbers "EPD\IED\CreateIed.sqf";
 CREATE_FAKE = compile preprocessFileLineNumbers "EPD\IED\CreateFake.sqf";
 CREATE_PLACES_OF_INTEREST = compile preprocessFileLineNumbers "EPD\IED\createPlacesOfInterest.sqf";
 EXPLOSION_CHECK = compile preprocessFileLineNumbers "EPD\IED\ExplosionCheck.sqf";
-EXPLOSIVESEQUENCE_SMALL = compile preprocessFileLineNumbers "EPD\IED\ExplosiveSequenceSmall.sqf";
-EXPLOSIVESEQUENCE_MEDIUM = compile preprocessFileLineNumbers "EPD\IED\ExplosiveSequenceMedium.sqf";
-EXPLOSIVESEQUENCE_LARGE = compile preprocessFileLineNumbers "EPD\IED\ExplosiveSequenceLarge.sqf";
-EXPLOSIVESEQUENCE_SECONDARY = compile preprocessFileLineNumbers "EPD\IED\ExplosiveSequenceSecondary.sqf";
-INITIAL_EXPLOSION = compile preprocessFileLineNumbers "EPD\IED\InitialExplosion.sqf";
 SPAWN_SECONDARY = compile preprocessFileLineNumbers "EPD\IED\CreateSecondary.sqf";
 CREATE_SPECIFIC_IED = compile preprocessFileLineNumbers "EPD\IED\CreateSpecificIed.sqf";
 CREATE_RANDOM_IEDS = compile preprocessFileLineNumbers "EPD\IED\CreateRandomIeds.sqf";
