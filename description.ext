@@ -25,7 +25,7 @@ class CfgFunctions {
             class isEmpty { description = "Returns true if the dictionary is empty. \nExample: _isDictionaryEmpty = _myDictionary call Dictionary_fnc_isEmpty;"; };
             class containsKey { description = "Returns true if the dictionary contains the key. \nExample: _dictionaryContainsKey = [_myDictionary, _myKey] call Dictionary_fnc_containsKey;"; };
             class containsValue { description = "Returns true if the dictionary contains the value. \nExample: _dictionaryContainsValue = [_myDictionary, _myValue] call Dictionary_fnc_containsValue;"; };
-            class size { description = "Returns the number of elements in the dictionary. \nExample: _count = _myDictionary call Dictionary_fnc_size;" };
+            class size { description = "Returns the number of elements in the dictionary. \nExample: _count = _myDictionary call Dictionary_fnc_size;"; };
             class keys { description = "Returns the keys as an array. \nExample: _keys = _myDictionary call Dictionary_fnc_keys;"; };
             class values { description = "Returns the values as an array. \nExample: _values = _myDictionary call Dictionary_fnc_values;"; };
         };
