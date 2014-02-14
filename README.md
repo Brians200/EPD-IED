@@ -1,4 +1,4 @@
-Randomly generated roadside IED script for ARMA 3
+Randomly generated roadside IED script for ARMA 3<br>
 http://forums.bistudio.com/showthread.php?170703-Randomly-generated-roadside-IEDs
 
 
@@ -6,52 +6,52 @@ Hello,
 
 I am here to release a script I created that randomly generates IEDs. It is based off of the original work from Tankbuster and Mantls's update on that.
 
-VIDEOS
-Release v1.0 video - https://www.youtube.com/watch?v=_XRlKUd7d2k
-Release v1.1 video - https://www.youtube.com/watch?v=v7CZDESIw8g
-Release v1.2 video - https://www.youtube.com/watch?v=YZRS37J6CIY
-Release v1.5 video - https://www.youtube.com/watch?v=ZeyHyyuFawo
-Tutorial video - https://www.youtube.com/watch?v=E2EdlbSlcrc
-
-IMAGES
-http://i.imgur.com/tirV1Dk.jpg
-http://i.imgur.com/ttIV6LX.jpg
-http://i.imgur.com/ZayMpBw.jpg (361 kB)
-http://i.imgur.com/es7QeVD.jpg (182 kB)
+VIDEOS<br>
+Release v1.0 video - https://www.youtube.com/watch?v=_XRlKUd7d2k<br>
+Release v1.1 video - https://www.youtube.com/watch?v=v7CZDESIw8g<br>
+Release v1.2 video - https://www.youtube.com/watch?v=YZRS37J6CIY<br>
+Release v1.5 video - https://www.youtube.com/watch?v=ZeyHyyuFawo<br>
+Tutorial video - https://www.youtube.com/watch?v=E2EdlbSlcrc<br>
+<br>
+IMAGES<br>
+http://i.imgur.com/tirV1Dk.jpg<br>
+http://i.imgur.com/ttIV6LX.jpg<br>
+http://i.imgur.com/ZayMpBw.jpg (361 kB)<br>
+http://i.imgur.com/es7QeVD.jpg (182 kB)<br>
 
 Adding the script to your mission file is pretty simple, all you need to do is put the folder into your mission folder and add the following to your init.sqf
 Code:
 
-[] spawn {call compile preprocessFileLineNumbers "EPD\Ied_Init.sqf";};
+	[] spawn {call compile preprocessFileLineNumbers "EPD\Ied_Init.sqf";};
 
 If you want to change where or how many IEDs are spawned, modify the variable called iedArray in Ied_Settings.sqf.
 
 There are several ways to define where you want the IEDs placed.
 Code:
 
-//These are the actual IEDs that will spawn. Add them using one of the following formats.
-//mapLocations that have their type defined as one of "NameCityCapital","NameCity","NameVillage", "NameLocal" will be grabbed out of the map config.
-["All", side]     //This is a combination of Cities, Villages, and Locals
-["AllCities", side]
-["AllVillages", side]
-["AllLocals", side]
-["mapLocation", side]
-["mapLocation", amountToPlace, side];
-["mapLocation", iedsToPlace, fakesToPlace, side]
-["predefinedLocation", side]
-["predefinedLocation", amountToPlace, side];
-["predefinedLocation", iedsToPlace, fakesToPlace, side]
-/*********Marker size > 1**********************/
-["marker", iedsToPlace, fakesToPlace, side]
-["marker", amountToPlace, side]
-["marker", side]
-/*********Marker size = 1**********************/
-["marker", side]
-["marker", chanceToBeReal, side]
+	//These are the actual IEDs that will spawn. Add them using one of the following formats.
+	//mapLocations that have their type defined as one of "NameCityCapital","NameCity","NameVillage", "NameLocal" will be grabbed out of the map config.
+	["All", side]     //This is a combination of Cities, Villages, and Locals
+	["AllCities", side]
+	["AllVillages", side]
+	["AllLocals", side]
+	["mapLocation", side]
+	["mapLocation", amountToPlace, side];
+	["mapLocation", iedsToPlace, fakesToPlace, side]
+	["predefinedLocation", side]
+	["predefinedLocation", amountToPlace, side];
+	["predefinedLocation", iedsToPlace, fakesToPlace, side]
+	/*********Marker size > 1**********************/
+	["marker", iedsToPlace, fakesToPlace, side]
+	["marker", amountToPlace, side]
+	["marker", side]
+	/*********Marker size = 1**********************/
+	["marker", side]
+	["marker", chanceToBeReal, side]
 
-The side can be a single side, or an array of sides
-Ex. "West"   or ["West,"East"]
-http://community.bistudio.com/wiki/side
+	The side can be a single side, or an array of sides
+	Ex. "West"   or ["West,"East"]
+	http://community.bistudio.com/wiki/side
 
 The way it works is that it will use the markerName as the center and find all the roads within the radius of the marker (make sure you set it!), then it will randomly place real and fake IEDs somewhere within it.
 There are several predefined locations for Altis in EPD\Ied_Settings.sqf that you can use if you don't feel like making your own markers. As of version 1.3, you can also use the names of locations in the game. If you want to share your predefined locations for other maps for others to use, feel free to, and I will post them here on the front post.
@@ -110,20 +110,20 @@ For example, assume you started with these 2 towns
 
 Code:
 
-iedArray = [
-	["Gravia", 3, 8, "West" ],
-	["Lakka", 2, 8, "West" ]
-	];
+	iedArray = [
+		["Gravia", 3, 8, "West" ],
+		["Lakka", 2, 8, "West" ]
+		];
 
 If we want to check if any IED has been set off in Gravia, we can use the following.
 Code:
 
-call compile (explodedSections select 0)
+	call compile (explodedSections select 0)
 
 If we want check if all the IEDS in Lakka have been disarmed, we can use the following.
 Code:
 
-call compile (disarmedSections select 1)
+	call compile (disarmedSections select 1)
 
 Change Log:
 Version 1.6
