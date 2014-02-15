@@ -12,18 +12,12 @@ if(isserver) then {
 
 
 call compile preprocessFileLineNumbers "EPD\IED\ExplosiveSequences.sqf";
+call compile preprocessFileLineNumbers "EPD\IED\CreationFunctions.sqf";
+call compile preprocessFileLineNumbers "EPD\IED\ExplosionEffects.sqf";
 IED = compile preprocessFileLineNumbers "EPD\IED\Ied.sqf";
-IED_SMOKE = compile preprocessFileLineNumbers "EPD\IED\IedSmoke.sqf";
-IED_ROCKS = compile preprocessFileLineNumbers "EPD\IED\IedRocks.sqf";
-IED_SCREEN_EFFECTS = compile preprocessFileLineNumbers "EPD\IED\IedPlayerEffects.sqf";
 CHECK_ARRAY = compile preprocessFileLineNumbers "EPD\IED\CheckArray.sqf";
-CREATE_IED = compile preprocessFileLineNumbers "EPD\IED\CreateIed.sqf";
-CREATE_FAKE = compile preprocessFileLineNumbers "EPD\IED\CreateFake.sqf";
 CREATE_PLACES_OF_INTEREST = compile preprocessFileLineNumbers "EPD\IED\createPlacesOfInterest.sqf";
 EXPLOSION_CHECK = compile preprocessFileLineNumbers "EPD\IED\ExplosionCheck.sqf";
-SPAWN_SECONDARY = compile preprocessFileLineNumbers "EPD\IED\CreateSecondary.sqf";
-CREATE_SPECIFIC_IED = compile preprocessFileLineNumbers "EPD\IED\CreateSpecificIed.sqf";
-CREATE_RANDOM_IEDS = compile preprocessFileLineNumbers "EPD\IED\CreateRandomIeds.sqf";
 GET_SIZE_AND_TYPE = compile preprocessFileLineNumbers "EPD\IED\GetSizeAndType.sqf";
 FIND_LOCATION_BY_ROAD = compile preprocessFileLineNumbers "EPD\IED\FindLocationByRoad.sqf";
 PROJECTILE_DETECTION = compile preprocessFileLineNumbers "EPD\IED\ProjectileDetection.sqf";

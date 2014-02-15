@@ -84,7 +84,7 @@ INITIAL_EXPLOSION = {
 			hint format["Creating Secondary Explosive"];
 		};
 		sleep _sleepTime;
-		[[_iedPosition, _iedNumber], "SPAWN_SECONDARY", true, false] spawn BIS_fnc_MP;
+		[[_iedPosition, _iedNumber], "CREATE_SECONDARY", true, false] spawn BIS_fnc_MP;
 	};
 };
 
