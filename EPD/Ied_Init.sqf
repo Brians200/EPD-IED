@@ -11,21 +11,15 @@ if(isserver) then {
 };
 
 
-call compile preprocessFileLineNumbers "EPD\IED\ExplosiveSequences.sqf";
+call compile preprocessFileLineNumbers "EPD\IED\ExplosionFunctions.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\CreationFunctions.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\ExplosionEffects.sqf";
+call compile preprocessFileLineNumbers "EPD\IED\CreationAuxiliaryFunctions.sqf";
+call compile preprocessFileLineNumbers "EPD\IED\ExplosivesHandler.sqf";
+call compile preprocessFileLineNumbers "EPD\IED\Disarm.sqf";
 IED = compile preprocessFileLineNumbers "EPD\IED\Ied.sqf";
-CHECK_ARRAY = compile preprocessFileLineNumbers "EPD\IED\CheckArray.sqf";
-CREATE_PLACES_OF_INTEREST = compile preprocessFileLineNumbers "EPD\IED\createPlacesOfInterest.sqf";
-EXPLOSION_CHECK = compile preprocessFileLineNumbers "EPD\IED\ExplosionCheck.sqf";
-GET_SIZE_AND_TYPE = compile preprocessFileLineNumbers "EPD\IED\GetSizeAndType.sqf";
-FIND_LOCATION_BY_ROAD = compile preprocessFileLineNumbers "EPD\IED\FindLocationByRoad.sqf";
-PROJECTILE_DETECTION = compile preprocessFileLineNumbers "EPD\IED\ProjectileDetection.sqf";
-EXPLOSION_WATCHER = compile preprocessFileLineNumbers "EPD\IED\ExplosionWatcher.sqf";
-EXPLOSION_EVENT_HANDLER = compile preprocessFileLineNumbers "EPD\IED\ExplosionEventHandler.sqf";
-EXPLOSION_EVENT_HANDLER_ADDER  = compile preprocessFileLineNumbers "EPD\IED\EventHandlerAdder.sqf";
-SECONDARY_EVENT_ADDER = compile preprocessFileLineNumbers "EPD\IED\SecondaryEventAdder.sqf";
-Disarm = compile preprocessFileLineNumbers "EPD\IED\disarmAddAction.sqf";
+TRIGGER_CHECK = compile preprocessFileLineNumbers "EPD\IED\TriggerCheck.sqf";
+
 
 iedSecondaryItemsCount = count iedSecondaryItems;
 iedSmallItemsCount = count iedSmallItems;

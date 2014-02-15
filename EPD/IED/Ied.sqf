@@ -6,7 +6,7 @@ if(!isserver) exitwith {};
 if (isnil ("iedcounter")) then {iedcounter=0;} ;
 if (isnil ("junkcounter")) then {junkcounter=0;} ;
 
-[] call CREATE_PLACES_OF_INTEREST;
+[] call GET_PLACES_OF_INTEREST;
 
 ehExplosiveSuperClasses = ["RocketCore", "MissileCore", "SubmunitionCore", "GrenadeCore", "ShellCore"];
 publicVariable "ehExplosiveSuperClasses";
