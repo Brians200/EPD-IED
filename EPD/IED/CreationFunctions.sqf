@@ -1,4 +1,31 @@
-CREATE_IED = {
+CREATE_IED_SECTION = {
+	_name = "";
+	_parameters = [];
+	if(count _this == 1) then {
+		_name = call CREATE_RANDOM_IED_GROUP_NAME;
+		_parameters = _this select 0;
+	};
+	if(count _this == 2) then {
+		_name = _this select 0;
+		_parameters = _this select 1;
+	};
+	
+	_sectionDictionary = call Dictionary_fnc_new;
+	
+	[iedDictionary, _name, _sectionDictionary] call Dictionary_fnc_set;
+	_locationAndSize = (_parameters select 0) call GET_CENTER_LOCATION_AND_SIZE;
+	
+	if(_locationAndSize select 1 == 1) then {
+		
+	};
+	
+};
+
+CREATE_SINGLE_IED = {
+
+};
+
+/*CREATE_IED = {
 	_iedNumber = _this select 0;
 	_iedPos = _this select 1;
 	_iedSize = _this select 2;
@@ -195,4 +222,4 @@ CREATE_SPECIFIC_IED = {
 		disarmedSections set [_sectionNumber, format["%2 && isNull t_%1 && ! isNull ied_%1", _iedNumber, disarmedSection select _sectionNumber]];
 		explodedSections set [_sectionNumber, format["%2 || isNull ied_%1", _iedNumber, disarmedSection select _sectionNumber]];
 	};
-};
+};*/

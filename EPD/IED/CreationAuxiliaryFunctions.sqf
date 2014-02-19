@@ -3,15 +3,13 @@ GET_PLACES_OF_INTEREST = {
 	_cities = ["NameCityCapital","NameCity"];
 	_villages = ["NameVillage"];
 	_locals = ["NameLocal"];
-	placesOfInterest = [];
-	cities = [];
-	villages = [];
-	locals = [];
+	
+	iedAllMapLocations = call Dictionary_fnc_new;
+	iedCityMapLocations = call Dictionary_fnc_new;
+	iedVillageMapLocations = call Dictionary_fnc_new;
+	iedLocalMapLocations = call Dictionary_fnc_new;
+	
 	_placesCfg = configFile >> "CfgWorlds" >> worldName >> "Names";
-	_allCounter = 0;
-	_cityCounter = 0;
-	_villageCounter = 0;
-	_localCounter = 0;
 	for "_i" from 0 to (count _placesCfg)-1 do
 	{
 		_place = _placesCfg select _i;
@@ -23,25 +21,24 @@ GET_PLACES_OF_INTEREST = {
 		_type = getText(_place >> "type");
 		if(_type in _placesToKeep) then
 		{	
-			placesOfInterest set [_allCounter, [_name, _position, _avgSize]];
-			_allCounter = _allCounter + 1;
+			[iedAllMapLocations, _name , [_name, _position, _avgSize]] call Dictionary_fnc_set;
 		};
 		if(_type in _cities) then
 		{	
-			cities set [_cityCounter, [_name, _position, _avgSize]];
-			_cityCounter = _cityCounter + 1;
+			[iedCityMapLocations, _name , [_name, _position, _avgSize]] call Dictionary_fnc_set;
 		};
 		if(_type in _villages) then
 		{	
-			villages set [_villageCounter, [_name, _position, _avgSize]];
-			_villageCounter = _villageCounter + 1;
+			[iedVillageMapLocations, _name , [_name, _position, _avgSize]] call Dictionary_fnc_set;
 		};
 		if(_type in _locals) then
 		{	
-			locals set [_localCounter, [_name, _position, _avgSize]];
-			_localCounter = _localCounter + 1;
+			[iedLocalMapLocations, _name , [_name, _position, _avgSize]] call Dictionary_fnc_set;
 		};
 	};
+	
+	
+	
 };
 
 FIND_LOCATION_BY_ROAD = {
@@ -116,6 +113,18 @@ GET_SIZE_AND_TYPE = {
 	[_size,_type];
 };
 
+CREATE_RANDOM_IED_GROUP_NAME = {
+	_letters = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+	_name = "";
+	_numberOfLettersToUse = 10;
+	
+	for "_i" from 0 to _numberOfLettersToUse-1 do
+	{
+		_name = _name + (_letters select floor random 26);
+	};
+	_name;
+};
+
 CHECK_ARRAY = {
 	_arr = _this select 0;
 	_good = true;
@@ -124,4 +133,44 @@ CHECK_ARRAY = {
 	};
 
 	_good;
+};
+
+GET_CENTER_LOCATION_AND_SIZE = {
+	_origin = _this;
+	_centerPos = [0,0,0];
+	_size = 100;
+	if(typename _origin == "ARRAY") then
+	{
+		_centerPos = _origin select 0;
+		_size = _origin select 1;
+	} else {
+		//check if it is a location defined in cfgWorlds
+		_dictLocation = [iedAllMapLocations, _origin] call Dictionary_fnc_get;
+		if(typename _dictLocation == "ARRAY") then {
+			_centerPos = _dictLocation select 1;
+			_size = _dictLocation select 2;
+		} else {
+			//check if it is a marker on the map
+			if( getMarkerColor _origin != "") then {
+				_centerPos = getMarkerPos _origin;
+				_sizeArray = getMarkerSize _origin;
+				_size = ((_sizeArray select 0) + (_sizeArray select 1))/2;
+			} else {
+				//check if it is in the predefined array
+				_predefinedLocationIndex = -1;
+				for "_i" from 0 to iedPredefinedLocationsSize -1 do{
+					if(predefinedLocations select _i select 0 == _origin) then {
+						_predefinedLocationIndex = _i;
+						_i = (count predefinedLocations);
+					};
+				};
+				if(_predefinedLocationIndex > -1) then {
+					_origin = predefinedLocations select _predefinedLocationIndex select 1;
+					_size = predefinedLocations select _predefinedLocationIndex select 2;
+				};
+			};
+		};
+	};
+	
+	[_centerPos, _size];
 };

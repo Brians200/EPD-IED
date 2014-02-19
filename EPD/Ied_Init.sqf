@@ -1,16 +1,17 @@
 /* Written by Brian Sweeney - [EPD] Brian*/
 
-call compile preprocessFileLineNumbers "EPD\Ied_Settings.sqf";
-
 if(isserver) then {
-	eventHandlers = [];
-	publicVariable "eventHandlers";
-	
 	iedsAdded = false;
 	publicVariable "iedsAdded";
+	
+	iedDictionary = call Dictionary_fnc_new;
+	publicVariable "iedDictionary";
+	
+	eventHandlers = [];
+	//publicVariable "eventHandlers";
 };
 
-
+call compile preprocessFileLineNumbers "EPD\Ied_Settings.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\ExplosionFunctions.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\CreationFunctions.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\ExplosionEffects.sqf";
@@ -27,18 +28,21 @@ iedMediumItemsCount = count iedMediumItems;
 iedLargeItemsCount = count iedLargeItems;
 
 if(isserver) then {
-	_script = iedArray call IED;
+	call GET_PLACES_OF_INTEREST;
+	
+	{
+		[_x] call CREATE_IED_SECTION;
+	} foreach iedInitialArray;
+	
+	//hint "Here";
+	
+	//_script = iedArray call IED;
 	
 	iedsAdded = true;
 	publicVariable "iedsAdded";
 	//free some memory
 	safeRoads = nil;
-	predefinedLocations = nil;
-	placesOfInterest = nil;
-	cities = nil;
-	villages = nil;
-	locals = nil;
-
+	publicVariable "iedDictionary";
 };
 
 waituntil{sleep .5; (!isnull player and iedsAdded)};

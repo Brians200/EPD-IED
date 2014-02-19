@@ -26,6 +26,8 @@ iedLargeItems = ["Land_Bricks_V2_F","Land_Bricks_V3_F","Land_Bricks_V4_F","Land_
 //["Name",[LocationX,LocationY,LocationZ],size]
 predefinedLocations = [["AltisRandom1",[4941.03,20430.1,0],2000],["AltisRandom2",[5796.45,16578.8,0],2000],["AltisRandom3",[5435.57,12633.9,0],2000],["AltisRandom4",[9579.01,20978.4,0],2000],["AltisRandom5",[10020.1,16859.6,0],2000],["AltisRandom6",[9779.5,12901.4,0],2000],["AltisRandom7",[13749.2,21392.9,0],2000],["AltisRandom8",[13048.1,18153.4,0],2000],["AltisRandom9",[17677.8,17309.3,0],2000],["AltisRandom10",[26097.5,22777.3,0],2000],["AltisRandom11",[23259.9,19904.4,0],2000],["AltisRandom12",[21356.9,17014.4,0],2000],["AltisRandom13",[19267,13716.4,0],2000],["AltisRandom14",[17033.2,10641.5,0],2000],["AltisRandom15",[20342.5,8704.69,0],2000],["AltisRandom16",[11108.5,8551.36,0],2000]];
 
+iedPredefinedLocationsSize = count predefinedLocations;
+
 /***************EXPERIMENTAL***********************/
 // This is still being worked on and may contain bugs, please report them on the forums.
 allowExplosiveToTriggerIEDs = true; 
@@ -57,7 +59,7 @@ allowExplosiveToTriggerIEDs = true;
 //Ex. "West"   or ["West,"East"]
 //http://community.bistudio.com/wiki/side
 
-iedArray = [
+iedInitialArray = [
 	/*["AllCities","West"],
 	["AllVillages","West"],
 	["AltisRandom1",6,"West"],
@@ -76,12 +78,12 @@ iedArray = [
 	["AltisRandom14",6,"West"],
 	["AltisRandom15",6,"West"],
 	["AltisRandom16",6,"West"],*/
-	["Gravia", 10, 2, "West" ],
-	["Lakka", 2, 8, "West" ],
-	["OreoKastro", 2, "West"],
-	["Abdera", 2, "West" ],
-	["IEDSINGLE1", ["West","East"]],
-	["IEDSINGLE2", 100,"West"],
+//	["Gravia", 10, 2, "West" ],
+//	["Lakka", 2, 8, "West" ],
+//	["OreoKastro", 2, "West"],
+//	["Abdera", 2, "West" ],
+//	["IEDSINGLE1", ["West","East"]],
+//	["IEDSINGLE2", 100,"West"],
 	["IEDSINGLE3", 100, "West"]
 	];
 	
