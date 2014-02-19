@@ -113,7 +113,7 @@ GET_SIZE_AND_TYPE = {
 	[_size,_type];
 };
 
-CREATE_RANDOM_IED_GROUP_NAME = {
+CREATE_RANDOM_IED_NAME = {
 	_letters = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
 	_name = "";
 	_numberOfLettersToUse = 10;

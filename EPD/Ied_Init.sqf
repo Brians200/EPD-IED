@@ -34,8 +34,6 @@ if(isserver) then {
 		[_x] call CREATE_IED_SECTION;
 	} foreach iedInitialArray;
 	
-	//hint "Here";
-	
 	//_script = iedArray call IED;
 	
 	iedsAdded = true;

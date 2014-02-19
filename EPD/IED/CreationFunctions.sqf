@@ -1,31 +1,55 @@
 CREATE_IED_SECTION = {
-	_name = "";
+	_sectionName = "";
 	_parameters = [];
 	if(count _this == 1) then {
-		_name = call CREATE_RANDOM_IED_GROUP_NAME;
+		_sectionName = call CREATE_RANDOM_IED_NAME;
 		_parameters = _this select 0;
 	};
 	if(count _this == 2) then {
-		_name = _this select 0;
+		_sectionName = _this select 0;
 		_parameters = _this select 1;
 	};
 	
 	_sectionDictionary = call Dictionary_fnc_new;
 	
-	[iedDictionary, _name, _sectionDictionary] call Dictionary_fnc_set;
+	[iedDictionary, _sectionName, _sectionDictionary] call Dictionary_fnc_set;
 	_locationAndSize = (_parameters select 0) call GET_CENTER_LOCATION_AND_SIZE;
 	
 	if(_locationAndSize select 1 == 1) then {
-		
+		[_sectionDictionary, _locationAndSize select 0, _parameters ] spawn CREATE_SPECIFIC_IED;
 	};
+};
+
+CREATE_SPECIFIC_IED = {
+	_dictionary = _this select 0;
+	_origin = _this select 1;
+	_parameters = _this select 2;
+	_side = _parameters select ((count _parameters)-1);
+	
+	_sizeAndType = call GET_SIZE_AND_TYPE;
+	_iedName = call CREATE_RANDOM_IED_NAME;
+	_ied = [_origin, _sizeAndType select 0, _sizeAndType select 1, _side] call CREATE_IED;
+	
+	[_dictionary, _iedName, _ied] call Dictionary_fnc_set;
 	
 };
 
-CREATE_SINGLE_IED = {
-
+CREATE_IED = {
+	_iedPos = _this select 0;
+	_iedSize = _this select 1;
+	_iedObject = _this select 2;
+	_side = _this select 3;
+	
+	_ied = _iedObject createVehicle _iedPos;
+	_ied setDir random 360;
+	_ied enableSimulation false;
+	_ied allowDamage false;
+	
+	_ied;
 };
 
-/*CREATE_IED = {
+/*
+CREATE_IED = {
 	_iedNumber = _this select 0;
 	_iedPos = _this select 1;
 	_iedSize = _this select 2;
@@ -75,6 +99,24 @@ CREATE_SINGLE_IED = {
 		"bombmarker_%1" setMarkerTypeLocal "hd_warning";
 		"bombmarker_%1" setMarkerColorLocal "ColorRed";
 		"bombmarker_%1" setMarkerTextLocal "%2";', _iedNumber, _iedSize];
+	};
+};
+
+CREATE_SPECIFIC_IED = {
+	_iedNumber = _this select 0;
+	_origin = _this select 1;
+	_side = _this select 2;
+	_sectionNumber = _this select 3;
+
+	_st = [] call GET_SIZE_AND_TYPE;
+	[_iedNumber, _origin, _st select 0, _st select 1, _side] call CREATE_IED;
+
+	if((disarmedSections select _sectionNumber) == "") then {
+		disarmedSections set [_sectionNumber, format["isNull t_%1 && ! isNull ied_%1", _iedNumber]];
+		explodedSections set [_sectionNumber, format["isNull ied_%1", _iedNumber]];
+	} else {
+		disarmedSections set [_sectionNumber, format["%2 && isNull t_%1 && ! isNull ied_%1", _iedNumber, disarmedSection select _sectionNumber]];
+		explodedSections set [_sectionNumber, format["%2 || isNull ied_%1", _iedNumber, disarmedSection select _sectionNumber]];
 	};
 };
 
@@ -206,20 +248,4 @@ CREATE_RANDOM_IEDS = {
 	};
 };
 
-CREATE_SPECIFIC_IED = {
-	_iedNumber = _this select 0;
-	_origin = _this select 1;
-	_side = _this select 2;
-	_sectionNumber = _this select 3;
-
-	_st = [] call GET_SIZE_AND_TYPE;
-	[_iedNumber, _origin, _st select 0, _st select 1, _side] call CREATE_IED;
-
-	if((disarmedSections select _sectionNumber) == "") then {
-		disarmedSections set [_sectionNumber, format["isNull t_%1 && ! isNull ied_%1", _iedNumber]];
-		explodedSections set [_sectionNumber, format["isNull ied_%1", _iedNumber]];
-	} else {
-		disarmedSections set [_sectionNumber, format["%2 && isNull t_%1 && ! isNull ied_%1", _iedNumber, disarmedSection select _sectionNumber]];
-		explodedSections set [_sectionNumber, format["%2 || isNull ied_%1", _iedNumber, disarmedSection select _sectionNumber]];
-	};
-};*/
+*/
