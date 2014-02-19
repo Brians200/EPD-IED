@@ -16,21 +16,21 @@ CREATE_IED_SECTION = {
 	_locationAndSize = (_parameters select 0) call GET_CENTER_LOCATION_AND_SIZE;
 	
 	if(_locationAndSize select 1 == 1) then {
-		[_sectionDictionary, _locationAndSize select 0, _parameters ] spawn CREATE_SPECIFIC_IED;
+		[_sectionDictionary, _sectionName, _locationAndSize select 0, _parameters ] spawn CREATE_SPECIFIC_IED;
 	};
 };
 
 CREATE_SPECIFIC_IED = {
 	_dictionary = _this select 0;
-	_origin = _this select 1;
-	_parameters = _this select 2;
+	_sectionName = _this select 1;
+	_origin = _this select 2;
+	_parameters = _this select 3;
 	_side = _parameters select ((count _parameters)-1);
 	
 	_sizeAndType = call GET_SIZE_AND_TYPE;
-	_iedName = call CREATE_RANDOM_IED_NAME;
-	_ied = [_origin, _sizeAndType select 0, _sizeAndType select 1, _side] call CREATE_IED;
+
+	[_origin, _sizeAndType select 0, _sizeAndType select 1, _side, _dictionary, _sectionName] call CREATE_IED;
 	
-	[_dictionary, _iedName, _ied] call Dictionary_fnc_set;
 	
 };
 
@@ -39,13 +39,30 @@ CREATE_IED = {
 	_iedSize = _this select 1;
 	_iedObject = _this select 2;
 	_side = _this select 3;
+	_dictionary = _this select 4;
+	_sectionName = _this select 5;
+	
+	_iedName = call CREATE_RANDOM_IED_NAME;
+	
+	if(typename _side != "ARRAY") then { _side = [_side]; };
+	for "_i" from 0 to (count _side) -1 do {
+		_side set [_i, toUpper (_side select _i)];
+	};
 	
 	_ied = _iedObject createVehicle _iedPos;
 	_ied setDir random 360;
 	_ied enableSimulation false;
 	_ied allowDamage false;
 	
-	_ied;
+	_trigger = createTrigger["EmptyDetector", _iedPos];
+	
+	[_dictionary, _iedName, [_ied, _trigger, _side, _size]] call Dictionary_fnc_set;
+	
+	
+	_trigger setTriggerArea[11,11,0,true];
+	_trigger setTriggerActivation ["any", "PRESENT", false];
+	_trigger setTriggerStatements ['this && { ["' + _sectionName + '","' + _iedName +'", thisList] call TRIGGER_CHECK }', "player sidechat 'boom'", ""];
+
 };
 
 /*
