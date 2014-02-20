@@ -155,6 +155,9 @@ GET_CENTER_LOCATION_AND_SIZE = {
 				_centerPos = getMarkerPos _origin;
 				_sizeArray = getMarkerSize _origin;
 				_size = ((_sizeArray select 0) + (_sizeArray select 1))/2;
+				if(hideIedMarker) then {
+					(_origin) setMarkerAlpha 0;
+				};
 			} else {
 				//check if it is in the predefined array
 				_predefinedLocationIndex = -1;

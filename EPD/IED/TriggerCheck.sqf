@@ -2,7 +2,6 @@ _sectionName = _this select 0;
 _iedName = _this select 1;
 _thisList = _this select 2;
 
-//[ied, trigger, sides, size]
 _iedArray = [_sectionName, _iedName] call GET_IED_ARRAY; 
 
 _iedPos = getpos (_iedArray select 0);

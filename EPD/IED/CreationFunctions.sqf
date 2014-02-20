@@ -10,14 +10,15 @@ CREATE_IED_SECTION = {
 		_parameters = _this select 1;
 	};
 	
-	_sectionDictionary = call Dictionary_fnc_new;
+	_sectionDictionary = _sectionName call CREATE_IED_SECTION_DICTIONARY;
 	
-	[iedDictionary, _sectionName, _sectionDictionary] call Dictionary_fnc_set;
 	_locationAndSize = (_parameters select 0) call GET_CENTER_LOCATION_AND_SIZE;
 	
 	if(_locationAndSize select 1 == 1) then {
 		[_sectionDictionary, _sectionName, _locationAndSize select 0, _parameters ] spawn CREATE_SPECIFIC_IED;
 	};
+	
+	_sectionName;
 };
 
 CREATE_SPECIFIC_IED = {
@@ -30,8 +31,6 @@ CREATE_SPECIFIC_IED = {
 	_sizeAndType = call GET_SIZE_AND_TYPE;
 
 	[_origin, _sizeAndType select 0, _sizeAndType select 1, _side, _dictionary, _sectionName] call CREATE_IED;
-	
-	
 };
 
 CREATE_IED = {
@@ -39,10 +38,11 @@ CREATE_IED = {
 	_iedSize = _this select 1;
 	_iedObject = _this select 2;
 	_side = _this select 3;
-	_dictionary = _this select 4;
+	_sectionDictionary = _this select 4;
 	_sectionName = _this select 5;
-	
+
 	_iedName = call CREATE_RANDOM_IED_NAME;
+	_markerName = "ied"+_iedName+_iedSize;
 	
 	if(typename _side != "ARRAY") then { _side = [_side]; };
 	for "_i" from 0 to (count _side) -1 do {
@@ -55,17 +55,21 @@ CREATE_IED = {
 	_ied allowDamage false;
 	
 	_trigger = createTrigger["EmptyDetector", _iedPos];
-	
-	[_dictionary, _iedName, [_ied, _trigger, _side, _size]] call Dictionary_fnc_set;
-	
-	
+	[_sectionDictionary, _iedName, [_ied, _trigger, _side, _iedSize,_markerName]] call ADD_IED_TO_SECTION;
 	_trigger setTriggerArea[11,11,0,true];
 	_trigger setTriggerActivation ["any", "PRESENT", false];
 	_trigger setTriggerStatements [
-	'this && { ["' + _sectionName + '","' + _iedName +'", thisList] call TRIGGER_CHECK }',
-	'["' + _sectionName + '","' + _iedName +'"] call EXPLOSIVESEQUENCE_' + _iedSize + ';',
-	""];
-
+						'this && { ["' + _sectionName + '","' + _iedName +'", thisList] call TRIGGER_CHECK }',
+						'["' + _sectionName + '","' + _iedName +'"] call EXPLOSIVESEQUENCE_' + _iedSize + '; "' + _sectionName + '" call INCREMENT_EXPLOSION_COUNTER',
+						""];
+	
+	if(EPD_IED_debug) then {			
+		createmarker [_markerName, _iedPos];
+		_markerName setMarkerTypeLocal "hd_warning";
+		_markerName setMarkerColorLocal "ColorRed";
+		_markerName setMarkerTextLocal _iedSize;
+	};
+	
 };
 
 /*

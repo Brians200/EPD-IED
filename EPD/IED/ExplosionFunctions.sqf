@@ -17,10 +17,10 @@ PRIMARY_EXPLOSION = {
 	_iedPosition = (_this select 0) call REMOVE_IED_ARRAY;
 	_explosiveSequence = (_this select 1);
 	
-	//[[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;	
-	//[[_iedPosition] , "IED_SCREEN_EFFECTS", true, false] spawn BIS_fnc_MP;
+	[[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;	
+	[[_iedPosition] , "IED_SCREEN_EFFECTS", true, false] spawn BIS_fnc_MP;
 
-	//shrapnel
+	//fragmentation
 	0 = _iedPosition spawn {
 		_pos = _this;
 		_pos set[2,.1 + random 1]; 
@@ -32,7 +32,7 @@ PRIMARY_EXPLOSION = {
 			_bullet setVelocity [_speed*cos(_angle), _speed*sin(_angle), random 2];
 		}
 	};
-	/*for "_i" from 0 to (count _explosiveSequence) -1 do{
+	for "_i" from 0 to (count _explosiveSequence) -1 do{
 		[[_iedPosition] , "IED_ROCKS", true, false] spawn BIS_fnc_MP;
 		_explosive = (_explosiveSequence select _i);
 		_xCoord = (random 4)-2;
@@ -43,7 +43,7 @@ PRIMARY_EXPLOSION = {
 			addCamShake[1+random 5, 1+random 3, 5+random 15];
 		};
 		sleep .01;
-	};*/
+	};
 	
 };
 

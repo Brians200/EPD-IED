@@ -2,7 +2,14 @@
 
 iedDictionary = <sectionName, sectionDictionary>
 
-sectionDictionary = <iedName, iedDictionary>
+sectionDictionary =   <infos, [iedsExploded, iedsDisarmed]>
+					| <ieds, iedsDictionary>
+					| <fakes, fakesDictionary>
+					| <cleanUp, [disarmedobjects]>
+					
+iedsDictionary = <iedName, [ied, trigger, sides, size, markerName]>
 
-iedDictionary = [ied, trigger, sides, size]
+fakesDictionary = <fakeName, [fake, fakeMarkerName]>
+
+
 *********************************/

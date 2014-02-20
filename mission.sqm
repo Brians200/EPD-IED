@@ -636,7 +636,7 @@ class Mission
 		};
 		class Item3
 		{
-			position[]={14428.881,18.481613,17958.414};
+			position[]={14431.705,18.514732,17957.805};
 			name="IEDSINGLE3";
 			type="mil_objective";
 		};
