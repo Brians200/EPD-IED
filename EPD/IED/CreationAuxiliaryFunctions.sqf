@@ -174,10 +174,3 @@ GET_CENTER_LOCATION_AND_SIZE = {
 	
 	[_centerPos, _size];
 };
-
-GET_IED_ARRAY = {
-	_sectionName = _this select 0;
-	_iedName = _this select 1;
-	_sectionDictionary = [iedDictionary, _sectionName] call Dictionary_fnc_get;
-	[_sectionDictionary, _iedName] call Dictionary_fnc_get;
-};

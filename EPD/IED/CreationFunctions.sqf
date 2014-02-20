@@ -61,7 +61,10 @@ CREATE_IED = {
 	
 	_trigger setTriggerArea[11,11,0,true];
 	_trigger setTriggerActivation ["any", "PRESENT", false];
-	_trigger setTriggerStatements ['this && { ["' + _sectionName + '","' + _iedName +'", thisList] call TRIGGER_CHECK }', "player sidechat 'boom'", ""];
+	_trigger setTriggerStatements [
+	'this && { ["' + _sectionName + '","' + _iedName +'", thisList] call TRIGGER_CHECK }',
+	'["' + _sectionName + '","' + _iedName +'"] call EXPLOSIVESEQUENCE_' + _iedSize + ';',
+	""];
 
 };
 

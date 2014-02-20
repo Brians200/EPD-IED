@@ -18,6 +18,7 @@ call compile preprocessFileLineNumbers "EPD\IED\ExplosionEffects.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\CreationAuxiliaryFunctions.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\ExplosivesHandler.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\Disarm.sqf";
+call compile preprocessFileLineNumbers "EPD\IED\DictionaryFunctions.sqf";
 IED = compile preprocessFileLineNumbers "EPD\IED\Ied.sqf";
 TRIGGER_CHECK = compile preprocessFileLineNumbers "EPD\IED\TriggerCheck.sqf";
 
