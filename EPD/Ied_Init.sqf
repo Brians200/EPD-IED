@@ -39,11 +39,47 @@ if(isserver) then {
 		iedSafeRoads = (iedSafeRoads - _roads) + _roads; //removes duplicates first
 	} foreach iedSafeZones;
 	
-	
+	//iedAllMapLocations
+	//iedCityMapLocations
+	//iedVillageMapLocations
+	//iedLocalMapLocations
 	
 	
 	{
-		[_x] call CREATE_IED_SECTION;
+		switch(toUpper(_x select 0)) do {
+			case "ALL": {
+					_keys = iedAllMapLocations call Dictionary_fnc_keys;
+					_side = _x select 1;
+					{
+						[[_x,_side]] call CREATE_IED_SECTION;
+					} foreach _keys;
+				};
+			case "ALLCITIES": {
+					_keys = iedCityMapLocations call Dictionary_fnc_keys;
+					_side = _x select 1;
+					{
+						[[_x,_side]] call CREATE_IED_SECTION;
+					} foreach _keys;
+				};
+			case "ALLVILLAGES": {
+					_keys = iedVillageMapLocations call Dictionary_fnc_keys;
+					_side = _x select 1;
+					{
+						[[_x,_side]] call CREATE_IED_SECTION;
+					} foreach _keys;
+				};
+			case "ALLLOCALS": {
+					_keys = iedLocalMapLocations call Dictionary_fnc_keys;
+					_side = _x select 1;
+					{
+						[[_x,_side]] call CREATE_IED_SECTION;
+					} foreach _keys;
+				};
+			default	{
+				[_x] call CREATE_IED_SECTION;
+			};
+		};
+		
 	} foreach iedInitialArray;
 	
 	//_script = iedArray call IED;

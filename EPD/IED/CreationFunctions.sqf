@@ -11,9 +11,6 @@ CREATE_IED_SECTION = {
 	};
 	
 	_locationAndSize = (_parameters select 0) call GET_CENTER_LOCATION_AND_SIZE;
-	
-	hint format["%1", _locationAndSize];
-	
 	_sectionDictionary = _sectionName call CREATE_IED_SECTION_DICTIONARY;
 	if(_locationAndSize select 1 == 1) then {
 		
