@@ -165,7 +165,7 @@ GET_CENTER_LOCATION_AND_SIZE = {
 					};
 				};
 				if(_predefinedLocationIndex > -1) then {
-					_origin = predefinedLocations select _predefinedLocationIndex select 1;
+					_centerPos = predefinedLocations select _predefinedLocationIndex select 1;
 					_size = predefinedLocations select _predefinedLocationIndex select 2;
 				};
 			};

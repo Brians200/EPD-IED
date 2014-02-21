@@ -11,13 +11,16 @@ CREATE_IED_SECTION = {
 	};
 	
 	_locationAndSize = (_parameters select 0) call GET_CENTER_LOCATION_AND_SIZE;
+	
+	hint format["%1", _locationAndSize];
+	
 	_sectionDictionary = _sectionName call CREATE_IED_SECTION_DICTIONARY;
 	if(_locationAndSize select 1 == 1) then {
 		
-		[_sectionDictionary, _sectionName, _locationAndSize select 0, _parameters ] spawn CREATE_SPECIFIC_IED;
+		[_sectionDictionary, _sectionName, _locationAndSize select 0, _parameters ] call CREATE_SPECIFIC_IED;
 	} else {
 		if(_locationAndSize select 1 > 1) then {
-			[_sectionDictionary, _sectionName, _locationAndSize select 0, _locationAndSize select 1, _parameters ] spawn CREATE_RANDOM_IEDS;
+			[_sectionDictionary, _sectionName, _locationAndSize select 0, _locationAndSize select 1, _parameters ] call CREATE_RANDOM_IEDS;
 		};
 	};
 	

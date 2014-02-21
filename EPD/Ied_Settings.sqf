@@ -60,7 +60,7 @@ allowExplosiveToTriggerIEDs = true;
 //http://community.bistudio.com/wiki/side
 
 iedInitialArray = [
-	/*["AllCities","West"],
+	["AllCities","West"],
 	["AllVillages","West"],
 	["AltisRandom1",6,"West"],
 	["AltisRandom2",6,"West"],
@@ -77,8 +77,8 @@ iedInitialArray = [
 	["AltisRandom13",6,"West"],
 	["AltisRandom14",6,"West"],
 	["AltisRandom15",6,"West"],
-	["AltisRandom16",6,"West"],*/
-	//["Gravia", 10, 2, "West" ],
+	["AltisRandom16",6,"West"],
+	["Gravia", 10, 2, "West" ],
 	["Lakka", 8, "West" ],
 	["OreoKastro", "West"],
 	["Abdera", 2, "West" ],
@@ -88,4 +88,4 @@ iedInitialArray = [
 	];
 	
 //Place the mapLocations, predefinedLocations, and markerNames of places you don't want any IEDs spawning
-safeZones = ["SafeZone"];
+iedSafeZones = ["SafeZone"];

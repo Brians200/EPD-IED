@@ -29,8 +29,18 @@ iedMediumItemsCount = count iedMediumItems;
 iedLargeItemsCount = count iedLargeItems;
 
 if(isserver) then {
-	iedSafeRoads = [];
+	
 	call GET_PLACES_OF_INTEREST;
+	
+	iedSafeRoads = [];
+	{
+		_locationAndSize = (_x) call GET_CENTER_LOCATION_AND_SIZE;
+		_roads = ((_locationAndSize select 0) nearRoads (_locationAndSize select 1));
+		iedSafeRoads = (iedSafeRoads - _roads) + _roads; //removes duplicates first
+	} foreach iedSafeZones;
+	
+	
+	
 	
 	{
 		[_x] call CREATE_IED_SECTION;
