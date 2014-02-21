@@ -44,6 +44,8 @@ if(isserver) then {
 	//iedVillageMapLocations
 	//iedLocalMapLocations
 	
+	_handles = [];
+	_nextHandleSpot = 0;
 	
 	{
 		switch(toUpper(_x select 0)) do {
@@ -51,43 +53,49 @@ if(isserver) then {
 					_keys = iedAllMapLocations call Dictionary_fnc_keys;
 					_side = _x select 1;
 					{
-						[[_x,_side]] call CREATE_IED_SECTION;
+						_handles set [_nextHandleSpot, [[_x,_side]] spawn CREATE_IED_SECTION];
+						_nextHandleSpot = _nextHandleSpot + 1;
 					} foreach _keys;
 				};
 			case "ALLCITIES": {
 					_keys = iedCityMapLocations call Dictionary_fnc_keys;
 					_side = _x select 1;
 					{
-						[[_x,_side]] call CREATE_IED_SECTION;
+						_handles set [_nextHandleSpot, [[_x,_side]] spawn CREATE_IED_SECTION];
+						_nextHandleSpot = _nextHandleSpot + 1;
 					} foreach _keys;
 				};
 			case "ALLVILLAGES": {
 					_keys = iedVillageMapLocations call Dictionary_fnc_keys;
 					_side = _x select 1;
 					{
-						[[_x,_side]] call CREATE_IED_SECTION;
+						_handles set [_nextHandleSpot, [[_x,_side]] spawn CREATE_IED_SECTION];
+						_nextHandleSpot = _nextHandleSpot + 1;
 					} foreach _keys;
 				};
 			case "ALLLOCALS": {
 					_keys = iedLocalMapLocations call Dictionary_fnc_keys;
 					_side = _x select 1;
 					{
-						[[_x,_side]] call CREATE_IED_SECTION;
+						_handles set [_nextHandleSpot, [[_x,_side]] spawn CREATE_IED_SECTION];
+						_nextHandleSpot = _nextHandleSpot + 1;
 					} foreach _keys;
 				};
 			default	{
-				[_x] call CREATE_IED_SECTION;
+				_handles set [_nextHandleSpot, [_x] spawn CREATE_IED_SECTION];
+				_nextHandleSpot = _nextHandleSpot + 1;
 			};
 		};
 		
 	} foreach iedInitialArray;
 	
+	waituntil{sleep .5; [_handles] call CHECK_ARRAY;};
+	
 	//_script = iedArray call IED;
 	
 	iedsAdded = true;
 	publicVariable "iedsAdded";
-	//free some memory
-	safeRoads = nil;
+	
 	publicVariable "iedDictionary";
 };
 
