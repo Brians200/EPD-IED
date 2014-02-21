@@ -84,7 +84,7 @@ iedInitialArray = [
 //	["Abdera", 2, "West" ],
 	//["IEDSINGLE1", ["West","East"]],
 	//["IEDSINGLE2", 100,"West"],
-	["IEDSINGLE3", 100, "West"]
+	["IEDSINGLE3", 20, "West"]
 	];
 	
 //Place the mapLocations, predefinedLocations, and markerNames of places you don't want any IEDs spawning

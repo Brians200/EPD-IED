@@ -138,7 +138,7 @@ CHECK_ARRAY = {
 GET_CENTER_LOCATION_AND_SIZE = {
 	_origin = _this;
 	_centerPos = [0,0,0];
-	_size = 100;
+	_size = 0;
 	if(typename _origin == "ARRAY") then
 	{
 		_centerPos = _origin select 0;

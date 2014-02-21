@@ -29,8 +29,14 @@ CREATE_SPECIFIC_IED = {
 	_side = _parameters select ((count _parameters)-1);
 	
 	_sizeAndType = call GET_SIZE_AND_TYPE;
-
-	[_origin, _sizeAndType select 0, _sizeAndType select 1, _side, _dictionary, _sectionName] call CREATE_IED;
+	_chance = 100;
+	if(count _parameters == 3) then { _chance = _parameters select 1; };
+	
+	if(random 100 < _chance) then {
+		[_origin, _sizeAndType select 0, _sizeAndType select 1, _side, _dictionary, _sectionName] call CREATE_IED;
+	} else {
+		[_origin, _sizeAndType select 1, _dictionary] call CREATE_FAKE;
+	};
 };
 
 CREATE_IED = {
@@ -69,10 +75,56 @@ CREATE_IED = {
 		_markerName setMarkerColorLocal "ColorRed";
 		_markerName setMarkerTextLocal _iedSize;
 	};
+};
+
+CREATE_FAKE = {
+	_junkPosition = _this select 0;
+	_junkType = _this select 1;
+	_sectionDictionary = _this select 2;
+	_fakesDictionary = [_sectionDictionary, "fake"] call Dictionary_fnc_get;
+	
+	_junk = _junkType createVehicle _junkPosition;
+	_junk setdir(random 360);
+	_junk setPos _junkPosition;
+	_junk enableSimulation false;
+	_junk allowDamage false;
+	
+	_fakeName = call CREATE_RANDOM_IED_NAME;
+	_markerName = "fake"+_fakeName;
+	[_fakesDictionary, _fakeName, [_junk, _markerName]] call Dictionary_fnc_set;
+	
+	if(EPD_IED_debug) then {			
+		createmarker [_markerName, _junkPosition];
+		_markerName setMarkerTypeLocal "hd_warning";
+		_markerName setMarkerColorLocal "ColorBlue";
+		_markerName setMarkerTextLocal "fake";
+	};
 	
 };
 
 /*
+
+CREATE_FAKE = {
+	_fakeNumber = _this select 0;
+	_junkPosition = _this select 1;
+	_junkType = _this select 2;
+
+	_junk = _junkType createVehicle _junkPosition;
+	_junk setdir(random 360);
+	_junk setPos _junkPosition;
+	_junk enableSimulation false;
+	_junk allowDamage false;
+
+	if(EPD_IED_debug) then {		
+		call compile format ['
+		fakebombmarker_%1 = createmarker ["fakebombmarker_%1", _junkPosition];
+		"fakebombmarker_%1" setMarkerTypeLocal "hd_warning";
+		"fakebombmarker_%1" setMarkerColorLocal "ColorBlue";
+		"fakebombmarker_%1" setMarkerTextLocal "fake";
+		', _fakeNumber];
+	};
+};
+
 CREATE_IED = {
 	_iedNumber = _this select 0;
 	_iedPos = _this select 1;
@@ -123,24 +175,6 @@ CREATE_IED = {
 		"bombmarker_%1" setMarkerTypeLocal "hd_warning";
 		"bombmarker_%1" setMarkerColorLocal "ColorRed";
 		"bombmarker_%1" setMarkerTextLocal "%2";', _iedNumber, _iedSize];
-	};
-};
-
-CREATE_SPECIFIC_IED = {
-	_iedNumber = _this select 0;
-	_origin = _this select 1;
-	_side = _this select 2;
-	_sectionNumber = _this select 3;
-
-	_st = [] call GET_SIZE_AND_TYPE;
-	[_iedNumber, _origin, _st select 0, _st select 1, _side] call CREATE_IED;
-
-	if((disarmedSections select _sectionNumber) == "") then {
-		disarmedSections set [_sectionNumber, format["isNull t_%1 && ! isNull ied_%1", _iedNumber]];
-		explodedSections set [_sectionNumber, format["isNull ied_%1", _iedNumber]];
-	} else {
-		disarmedSections set [_sectionNumber, format["%2 && isNull t_%1 && ! isNull ied_%1", _iedNumber, disarmedSection select _sectionNumber]];
-		explodedSections set [_sectionNumber, format["%2 || isNull ied_%1", _iedNumber, disarmedSection select _sectionNumber]];
 	};
 };
 
@@ -197,26 +231,7 @@ CREATE_SECONDARY = {
 	};
 };
 
-CREATE_FAKE = {
-	_fakeNumber = _this select 0;
-	_junkPosition = _this select 1;
-	_junkType = _this select 2;
 
-	_junk = _junkType createVehicle _junkPosition;
-	_junk setdir(random 360);
-	_junk setPos _junkPosition;
-	_junk enableSimulation false;
-	_junk allowDamage false;
-
-	if(EPD_IED_debug) then {		
-		call compile format ['
-		fakebombmarker_%1 = createmarker ["fakebombmarker_%1", _junkPosition];
-		"fakebombmarker_%1" setMarkerTypeLocal "hd_warning";
-		"fakebombmarker_%1" setMarkerColorLocal "ColorBlue";
-		"fakebombmarker_%1" setMarkerTextLocal "fake";
-		', _fakeNumber];
-	};
-};
 
 CREATE_RANDOM_IEDS = {
 	_origin = (_this select 0);
