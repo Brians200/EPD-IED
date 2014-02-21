@@ -78,12 +78,12 @@ iedInitialArray = [
 	["AltisRandom14",6,"West"],
 	["AltisRandom15",6,"West"],
 	["AltisRandom16",6,"West"],*/
-//	["Gravia", 10, 2, "West" ],
-//	["Lakka", 2, 8, "West" ],
-//	["OreoKastro", 2, "West"],
-//	["Abdera", 2, "West" ],
-	//["IEDSINGLE1", ["West","East"]],
-	//["IEDSINGLE2", 100,"West"],
+	//["Gravia", 10, 2, "West" ],
+	["Lakka", 8, "West" ],
+	["OreoKastro", "West"],
+	["Abdera", 2, "West" ],
+	["IEDSINGLE1", ["West","East"]],
+	["IEDSINGLE2", 100,"West"],
 	["IEDSINGLE3", 20, "West"]
 	];
 	

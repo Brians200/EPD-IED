@@ -29,6 +29,7 @@ iedMediumItemsCount = count iedMediumItems;
 iedLargeItemsCount = count iedLargeItems;
 
 if(isserver) then {
+	iedSafeRoads = [];
 	call GET_PLACES_OF_INTEREST;
 	
 	{

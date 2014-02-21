@@ -13,7 +13,7 @@ GET_PLACES_OF_INTEREST = {
 	for "_i" from 0 to (count _placesCfg)-1 do
 	{
 		_place = _placesCfg select _i;
-		_name =	getText(_place >> "name");
+		_name =	 toUpper(getText(_place >> "name")); 
 		_sizeX = getNumber (_place >> "radiusA");
 		_sizeY = getNumber (_place >> "radiusB");
 		_avgSize = (_sizeX+_sizeY)/2;
@@ -35,10 +35,7 @@ GET_PLACES_OF_INTEREST = {
 		{	
 			[iedLocalMapLocations, _name , [_name, _position, _avgSize]] call Dictionary_fnc_set;
 		};
-	};
-	
-	
-	
+	};	
 };
 
 FIND_LOCATION_BY_ROAD = {
@@ -145,7 +142,7 @@ GET_CENTER_LOCATION_AND_SIZE = {
 		_size = _origin select 1;
 	} else {
 		//check if it is a location defined in cfgWorlds
-		_dictLocation = [iedAllMapLocations, _origin] call Dictionary_fnc_get;
+		_dictLocation = [iedAllMapLocations,  toUpper(_origin)] call Dictionary_fnc_get;
 		if(typename _dictLocation == "ARRAY") then {
 			_centerPos = _dictLocation select 1;
 			_size = _dictLocation select 2;
