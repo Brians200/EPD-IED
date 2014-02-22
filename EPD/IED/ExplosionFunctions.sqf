@@ -20,6 +20,7 @@ EXPLOSIVESEQUENCE_DISARM = {
 
 
 PRIMARY_EXPLOSION = {
+	_iedArray = (_this select 0) call GET_IED_ARRAY;
 	_iedPosition = (_this select 0) call REMOVE_IED_ARRAY;
 	_explosiveSequence = (_this select 1);
 	_createSecondary = (_this select 2);
@@ -37,7 +38,7 @@ PRIMARY_EXPLOSION = {
 			_angle = random 360;
 			_speed = 450 + random 100;
 			_bullet setVelocity [_speed*cos(_angle), _speed*sin(_angle), random 2];
-		}
+		};
 	};
 	for "_i" from 0 to (count _explosiveSequence) -1 do{
 		[[_iedPosition] , "IED_ROCKS", true, false] spawn BIS_fnc_MP;
@@ -52,6 +53,19 @@ PRIMARY_EXPLOSION = {
 		sleep .01;
 	};
 	
+	if(_createSecondary) then {
+		if(random 100 < secondaryChance) then {
+			_sleepTime = 15;
+			if(EPD_IED_debug) then {
+				hint format["Creating Secondary Explosive"];
+			};
+			sleep _sleepTime;
+			[[_iedPosition, _iedArray select 2, _this select 0 select 0], "CREATE_SECONDARY_IED", false, false] call BIS_fnc_MP;
+		};
+	};
+	
+	
+	publicVariable "iedDictionary";
 };
 
 /*INITIAL_EXPLOSION = {

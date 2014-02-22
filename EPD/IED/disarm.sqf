@@ -49,18 +49,20 @@ DISARM_ACTION = {
 		_this select 3 select 1 select 0 call INCREMENT_DISARM_COUNTER;
 		_this select 3 select 1 call PREPARE_IED_FOR_CLEANUP;
 		hint "Successfully Disarmed!";
+		publicVariable "iedDictionary";
 	} else {
 		//Acts_carFixingWheel --- would like to use this, but it doesn't seem to work...
 		[[[player], {(_this select 0) playmovenow "AinvPknlMstpSnonWrflDr_medic4";}], "BIS_fnc_call", nil, false, false] call BIS_fnc_MP;
 		disableUserInput true;
 		sleep 4.545;
 		disableUserInput false;
-		_this select 3 select 1 call EXPLOSIVESEQUENCE_DISARM;
 		_this select 3 select 1 select 0 call INCREMENT_EXPLOSION_COUNTER;
+		_this select 3 select 1 call EXPLOSIVESEQUENCE_DISARM;
 		hint "Failed to Disarm!";
+		//publicVariable "iedDictionary";          //not needed as the explosion will update
 	};
 	
-	publicVariable "iedDictionary";
+	
 };
 
 REMOVE_DISARM_ACTION = {

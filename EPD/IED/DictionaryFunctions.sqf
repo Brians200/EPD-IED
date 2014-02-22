@@ -80,6 +80,7 @@ CREATE_IED_SECTION_DICTIONARY = {
 };
 
 ADD_IED_TO_SECTION = {
+	//hint format["%1",_this];
 	_sectionDictionary = _this select 0;
 	_iedName = _this select 1;
 	_iedArray = _this select 2;

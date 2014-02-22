@@ -158,7 +158,106 @@ CREATE_IED = {
 	};
 };
 
+CREATE_SECONDARY_IED = {
+	hint format["%1", _this];
+	_location = _this select 0;
+	_side = _this select 1;
+	_sectionName = _this select 2;
+	_sectionDictionary = [iedDictionary, _sectionName] call Dictionary_fnc_get;
+	
+
+	_theta = random 360;
+	_offset = 4 + random 12;
+	_iedPos = [(_location select 0) + _offset*cos(_theta), (_location select 1) + _offset*sin(_theta),0];
+	_iedObject = iedSecondaryItems select(floor random(iedSecondaryItemsCount));
+	
+	_iedName = call CREATE_RANDOM_IED_NAME;
+	_markerName = "secondary"+_iedName;
+	
+	if(typename _side != "ARRAY") then { _side = [_side]; };
+	for "_i" from 0 to (count _side) -1 do {
+		_side set [_i, toUpper (_side select _i)];
+	};
+	
+	_ied = _iedObject createVehicle _iedPos;
+	_ied setDir random 360;
+	_ied enableSimulation false;
+	_ied allowDamage false;
+	
+	_trigger = createTrigger["EmptyDetector", _iedPos];
+	[_sectionDictionary, _iedName, [_ied, _trigger, _side,"SECONDARY",_markerName]] call ADD_IED_TO_SECTION;
+	_trigger setTriggerArea[11,11,0,true];
+	_trigger setTriggerActivation ["any", "PRESENT", false];
+	_trigger setTriggerStatements [
+						'this && { ["' + _sectionName + '","' + _iedName +'", thisList] call TRIGGER_CHECK }',
+						'["' + _sectionName + '","' + _iedName +'"] call EXPLOSIVESEQUENCE_SECONDARY; "' + _sectionName + '" call INCREMENT_EXPLOSION_COUNTER',
+						""];
+	
+	if(EPD_IED_debug) then {			
+		createmarker [_markerName, _iedPos];
+		_markerName setMarkerTypeLocal "hd_warning";
+		_markerName setMarkerColorLocal "ColorGreen";
+		_markerName setMarkerTextLocal "SECONDARY";
+	};
+	
+	publicVariable "iedDictionary";
+	[[_sectionName, _iedName],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
+};
+
 /*
+
+CREATE_SECONDARY = {
+	if(!isserver) exitwith{};
+
+	_location = _this select 0;
+	_iedNumber = _this select 1;
+	_theta = random 360;
+	_offset = 4 + random 12;
+	_iedPos = [(_location select 0) + _offset*cos(_theta), (_location select 1) + _offset*sin(_theta),0];
+	_iedType = iedSecondaryItems select(floor random(iedSecondaryItemsCount));
+	call compile format ['secied_%1 = _iedType createVehicle _iedPos;
+							secied_%1 setDir (random 360);
+							secied_%1 enableSimulation false;
+							secied_%1 setPos _iedPos;
+							secied_%1 allowDamage false;
+							publicVariable "secied_%1";
+							', _iedNumber, _iedPos];
+						
+	call compile format [' st_%1 = createTrigger["EmptyDetector", _iedPos];
+	st_%1 setTriggerArea[11,11,0,true];
+	st_%1 setTriggerActivation ["any","PRESENT",false];
+	st_%1 setTriggerStatements ["[this, thislist, %2, %1] call TRIGGER_CHECK && (alive secied_%1)","terminate pd_%1; [%2,sec_%1, %1] spawn EXPLOSIVESEQUENCE_SECONDARY; deleteVehicle thisTrigger;  deleteVehicle secied_%1",""];
+	publicVariable "st_%1";
+	',_iedNumber, _iedPos];
+
+	_eventhandler = "";
+	_disarm = "";
+	if(allowExplosiveToTriggerIEDs) then {
+		call compile format['pd_%1 = [secied_%1, %1, "SECONDARY", st_%1] spawn PROJECTILE_DETECTION; publicVariable "pd_%1";', _iedNumber];
+
+		_eventhandler = format['["secied_%1","SECONDARY",%2,"st_%1",%1] spawn EXPLOSION_EVENT_HANDLER_ADDER;', _iedNumber, _iedPos];
+			
+		_disarm = format ['[secied_%1, st_%1, pd_%1, %1] spawn DISARM;', _iedNumber];
+	} else {
+		_disarm = format ['[secied_%1, st_%1, "", %1] spawn DISARM;', _iedNumber];
+	};
+
+	_code = format["%1 %2",_eventhandler, _disarm ];
+
+	eventHandlers set[_iedNumber, _code];
+	publicVariable "eventHandlers";
+
+	[[_code],"SECONDARY_EVENT_ADDER",true,false] spawn BIS_fnc_MP;
+
+	if(EPD_IED_debug) then {		
+		hint format["Secondary Explosive Created"];
+		call compile format ['
+		secbombmarker_%1 = createmarker ["secbombmarker_%1", _iedPos];
+		"secbombmarker_%1" setMarkerTypeLocal "hd_warning";
+		"secbombmarker_%1" setMarkerColorLocal "ColorGreen";
+		"secbombmarker_%1" setMarkerTextLocal "Secondary";', _iedNumber];
+	};
+};
 
 CREATE_IED = {
 	_iedNumber = _this select 0;
@@ -267,57 +366,6 @@ CREATE_RANDOM_IEDS = {
 	};
 };
 
-CREATE_SECONDARY = {
-	if(!isserver) exitwith{};
 
-	_location = _this select 0;
-	_iedNumber = _this select 1;
-	_theta = random 360;
-	_offset = 4 + random 12;
-	_iedPos = [(_location select 0) + _offset*cos(_theta), (_location select 1) + _offset*sin(_theta),0];
-	_iedType = iedSecondaryItems select(floor random(iedSecondaryItemsCount));
-	call compile format ['secied_%1 = _iedType createVehicle _iedPos;
-							secied_%1 setDir (random 360);
-							secied_%1 enableSimulation false;
-							secied_%1 setPos _iedPos;
-							secied_%1 allowDamage false;
-							publicVariable "secied_%1";
-							', _iedNumber, _iedPos];
-						
-	call compile format [' st_%1 = createTrigger["EmptyDetector", _iedPos];
-	st_%1 setTriggerArea[11,11,0,true];
-	st_%1 setTriggerActivation ["any","PRESENT",false];
-	st_%1 setTriggerStatements ["[this, thislist, %2, %1] call TRIGGER_CHECK && (alive secied_%1)","terminate pd_%1; [%2,sec_%1, %1] spawn EXPLOSIVESEQUENCE_SECONDARY; deleteVehicle thisTrigger;  deleteVehicle secied_%1",""];
-	publicVariable "st_%1";
-	',_iedNumber, _iedPos];
-
-	_eventhandler = "";
-	_disarm = "";
-	if(allowExplosiveToTriggerIEDs) then {
-		call compile format['pd_%1 = [secied_%1, %1, "SECONDARY", st_%1] spawn PROJECTILE_DETECTION; publicVariable "pd_%1";', _iedNumber];
-
-		_eventhandler = format['["secied_%1","SECONDARY",%2,"st_%1",%1] spawn EXPLOSION_EVENT_HANDLER_ADDER;', _iedNumber, _iedPos];
-			
-		_disarm = format ['[secied_%1, st_%1, pd_%1, %1] spawn DISARM;', _iedNumber];
-	} else {
-		_disarm = format ['[secied_%1, st_%1, "", %1] spawn DISARM;', _iedNumber];
-	};
-
-	_code = format["%1 %2",_eventhandler, _disarm ];
-
-	eventHandlers set[_iedNumber, _code];
-	publicVariable "eventHandlers";
-
-	[[_code],"SECONDARY_EVENT_ADDER",true,false] spawn BIS_fnc_MP;
-
-	if(EPD_IED_debug) then {		
-		hint format["Secondary Explosive Created"];
-		call compile format ['
-		secbombmarker_%1 = createmarker ["secbombmarker_%1", _iedPos];
-		"secbombmarker_%1" setMarkerTypeLocal "hd_warning";
-		"secbombmarker_%1" setMarkerColorLocal "ColorGreen";
-		"secbombmarker_%1" setMarkerTextLocal "Secondary";', _iedNumber];
-	};
-};
 
 */
