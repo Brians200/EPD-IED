@@ -24,44 +24,6 @@ CREATE_IED_SECTION = {
 	_sectionName;
 };
 
-CREATE_IED = {
-	_iedPos = _this select 0;
-	_iedSize = _this select 1;
-	_iedObject = _this select 2;
-	_side = _this select 3;
-	_sectionDictionary = _this select 4;
-	_sectionName = _this select 5;
-
-	_iedName = call CREATE_RANDOM_IED_NAME;
-	_markerName = "ied"+_iedName+_iedSize;
-	
-	if(typename _side != "ARRAY") then { _side = [_side]; };
-	for "_i" from 0 to (count _side) -1 do {
-		_side set [_i, toUpper (_side select _i)];
-	};
-	
-	_ied = _iedObject createVehicle _iedPos;
-	_ied setDir random 360;
-	_ied enableSimulation false;
-	_ied allowDamage false;
-	
-	_trigger = createTrigger["EmptyDetector", _iedPos];
-	[_sectionDictionary, _iedName, [_ied, _trigger, _side, _iedSize,_markerName]] call ADD_IED_TO_SECTION;
-	_trigger setTriggerArea[11,11,0,true];
-	_trigger setTriggerActivation ["any", "PRESENT", false];
-	_trigger setTriggerStatements [
-						'this && { ["' + _sectionName + '","' + _iedName +'", thisList] call TRIGGER_CHECK }',
-						'["' + _sectionName + '","' + _iedName +'"] call EXPLOSIVESEQUENCE_' + _iedSize + '; "' + _sectionName + '" call INCREMENT_EXPLOSION_COUNTER',
-						""];
-	
-	if(EPD_IED_debug) then {			
-		createmarker [_markerName, _iedPos];
-		_markerName setMarkerTypeLocal "hd_warning";
-		_markerName setMarkerColorLocal "ColorRed";
-		_markerName setMarkerTextLocal _iedSize;
-	};
-};
-
 CREATE_FAKE = {
 	_junkPosition = _this select 0;
 	_junkType = _this select 1;
@@ -153,60 +115,50 @@ CREATE_RANDOM_IEDS = {
 	};
 };
 
-/*
-CREATE_RANDOM_IEDS = {
-	_origin = (_this select 0);
-	_distance = (_this select 1);
-	_side = (_this select 2);
-	_iedAmountToPlace = (_this select 3);
-	_fakeAmountToPlace = (_this select 4);
-	_iedCounterOffset = (_this select 5);
-	_fakeCounterOffset = (_this select 6);
-	_sectionNumber = (_this select 7);
-	_counter = 0;
+CREATE_IED = {
+	_iedPos = _this select 0;
+	_iedSize = _this select 1;
+	_iedObject = _this select 2;
+	_side = _this select 3;
+	_sectionDictionary = _this select 4;
+	_sectionName = _this select 5;
 
-	_roads = (_origin nearRoads _distance) - safeRoads;
-	_roadCount = count _roads;
-	if(_roadCount > 0) then { 
-		while{_counter < _iedAmountToPlace} do {
-			
-			_iedSize = [] call GET_SIZE_AND_TYPE;
-			_iedType = _iedSize select 1;
-			_iedSize = _iedSize select 0;
-			_iedPos = [_roads, _roadCount] call FIND_LOCATION_BY_ROAD;
-			[_iedCounterOffset+_counter, _iedPos, _iedSize, _iedType, _side] call CREATE_IED;	
-			if((disarmedSections select _sectionNumber) == "") then {
-				disarmedSections set [_sectionNumber, format["isNull t_%1 && ! isNull ied_%1", _iedCounterOffset+_counter]];
-				explodedSections set [_sectionNumber, format["isNull ied_%1", _iedCounterOffset+_counter]];
-			} else {
-				disarmedSections set [_sectionNumber, format["%2 && isNull t_%1 && ! isNull ied_%1", _iedCounterOffset+_counter, disarmedSections select _sectionNumber]];
-				explodedSections set [_sectionNumber, format["%2 || isNull ied_%1", _iedCounterOffset+_counter, explodedSections select _sectionNumber]];
-			};
-			_counter = _counter + 1;
-		};
-
-		_counter = 0;
-		while{_counter < _fakeAmountToPlace} do {
-
-			_junkType = ([] call GET_SIZE_AND_TYPE) select 1;
-			_junkPosition = [_roads, _roadCount] call FIND_LOCATION_BY_ROAD;
-			[_fakeCounterOffset+_counter,_junkPosition, _junkType] call CREATE_FAKE;
-			_counter = _counter + 1;
-		};
-	} else {
-		while{_counter < _iedAmountToPlace} do {
-			eventHandlers set[_iedCounterOffset+_counter, "true;"];
-			_counter = _counter + 1;
-		};
-		if((disarmedSections select _sectionNumber) == "") then {
-			disarmedSections set [_sectionNumber, "true"];
-			explodedSections set [_sectionNumber, "false"];
-		} else {
-			disarmedSections set [_sectionNumber, format["%1 && true", disarmedSections select _sectionNumber]];
-			explodedSections set [_sectionNumber, format["%2 || false", explodedSections select _sectionNumber]];
-		};
+	_iedName = call CREATE_RANDOM_IED_NAME;
+	_markerName = "ied"+_iedName+_iedSize;
+	
+	if(typename _side != "ARRAY") then { _side = [_side]; };
+	for "_i" from 0 to (count _side) -1 do {
+		_side set [_i, toUpper (_side select _i)];
+	};
+	
+	_ied = _iedObject createVehicle _iedPos;
+	_ied setDir random 360;
+	_ied enableSimulation false;
+	_ied allowDamage false;
+	
+	_trigger = createTrigger["EmptyDetector", _iedPos];
+	[_sectionDictionary, _iedName, [_ied, _trigger, _side, _iedSize,_markerName]] call ADD_IED_TO_SECTION;
+	_trigger setTriggerArea[11,11,0,true];
+	_trigger setTriggerActivation ["any", "PRESENT", false];
+	_trigger setTriggerStatements [
+						'this && { ["' + _sectionName + '","' + _iedName +'", thisList] call TRIGGER_CHECK }',
+						'["' + _sectionName + '","' + _iedName +'"] call EXPLOSIVESEQUENCE_' + _iedSize + '; "' + _sectionName + '" call INCREMENT_EXPLOSION_COUNTER',
+						""];
+	
+	if(EPD_IED_debug) then {			
+		createmarker [_markerName, _iedPos];
+		_markerName setMarkerTypeLocal "hd_warning";
+		_markerName setMarkerColorLocal "ColorRed";
+		_markerName setMarkerTextLocal _iedSize;
+	};
+	
+	if(iedsAdded) then { //initial ieds were added already and the game is in progress
+		publicVariable "iedDictionary";
+		[[_sectionName, _iedName],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
 	};
 };
+
+/*
 
 CREATE_IED = {
 	_iedNumber = _this select 0;
@@ -258,6 +210,60 @@ CREATE_IED = {
 		"bombmarker_%1" setMarkerTypeLocal "hd_warning";
 		"bombmarker_%1" setMarkerColorLocal "ColorRed";
 		"bombmarker_%1" setMarkerTextLocal "%2";', _iedNumber, _iedSize];
+	};
+};
+
+CREATE_RANDOM_IEDS = {
+	_origin = (_this select 0);
+	_distance = (_this select 1);
+	_side = (_this select 2);
+	_iedAmountToPlace = (_this select 3);
+	_fakeAmountToPlace = (_this select 4);
+	_iedCounterOffset = (_this select 5);
+	_fakeCounterOffset = (_this select 6);
+	_sectionNumber = (_this select 7);
+	_counter = 0;
+
+	_roads = (_origin nearRoads _distance) - safeRoads;
+	_roadCount = count _roads;
+	if(_roadCount > 0) then { 
+		while{_counter < _iedAmountToPlace} do {
+			
+			_iedSize = [] call GET_SIZE_AND_TYPE;
+			_iedType = _iedSize select 1;
+			_iedSize = _iedSize select 0;
+			_iedPos = [_roads, _roadCount] call FIND_LOCATION_BY_ROAD;
+			[_iedCounterOffset+_counter, _iedPos, _iedSize, _iedType, _side] call CREATE_IED;	
+			if((disarmedSections select _sectionNumber) == "") then {
+				disarmedSections set [_sectionNumber, format["isNull t_%1 && ! isNull ied_%1", _iedCounterOffset+_counter]];
+				explodedSections set [_sectionNumber, format["isNull ied_%1", _iedCounterOffset+_counter]];
+			} else {
+				disarmedSections set [_sectionNumber, format["%2 && isNull t_%1 && ! isNull ied_%1", _iedCounterOffset+_counter, disarmedSections select _sectionNumber]];
+				explodedSections set [_sectionNumber, format["%2 || isNull ied_%1", _iedCounterOffset+_counter, explodedSections select _sectionNumber]];
+			};
+			_counter = _counter + 1;
+		};
+
+		_counter = 0;
+		while{_counter < _fakeAmountToPlace} do {
+
+			_junkType = ([] call GET_SIZE_AND_TYPE) select 1;
+			_junkPosition = [_roads, _roadCount] call FIND_LOCATION_BY_ROAD;
+			[_fakeCounterOffset+_counter,_junkPosition, _junkType] call CREATE_FAKE;
+			_counter = _counter + 1;
+		};
+	} else {
+		while{_counter < _iedAmountToPlace} do {
+			eventHandlers set[_iedCounterOffset+_counter, "true;"];
+			_counter = _counter + 1;
+		};
+		if((disarmedSections select _sectionNumber) == "") then {
+			disarmedSections set [_sectionNumber, "true"];
+			explodedSections set [_sectionNumber, "false"];
+		} else {
+			disarmedSections set [_sectionNumber, format["%1 && true", disarmedSections select _sectionNumber]];
+			explodedSections set [_sectionNumber, format["%2 || false", explodedSections select _sectionNumber]];
+		};
 	};
 };
 

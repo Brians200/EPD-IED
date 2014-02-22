@@ -46,7 +46,7 @@ if(isserver) then {
 	
 	_handles = [];
 	_nextHandleSpot = 0;
-	
+
 	{
 		switch(toUpper(_x select 0)) do {
 			case "ALL": {
@@ -101,9 +101,14 @@ if(isserver) then {
 
 waituntil{sleep .5; (!isnull player and iedsAdded)};
 player sidechat "Synching IEDs... You may experience lag for a few seconds";
+
+[] call ADD_DISARM_AND_PROJECTILE_DETECTION;
+
+
 //hint format["%1 ieds to synch", count eventHandlers];
 
-for "_i" from 0 to (count eventHandlers) -1 do{
+/*for "_i" from 0 to (count eventHandlers) -1 do{
 	call compile (eventHandlers select _i);
 	if(EPD_IED_debug) then {player sidechat (format["%1 synched", _i+1]);};
 };
+*/

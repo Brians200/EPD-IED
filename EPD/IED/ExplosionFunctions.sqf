@@ -1,21 +1,28 @@
 EXPLOSIVESEQUENCE_SMALL = {
 	_explosiveSequence = ["M_PG_AT","M_Zephyr","M_Titan_AA_long","M_PG_AT"]; 
-	[_this, _explosiveSequence] spawn PRIMARY_EXPLOSION;
+	[_this, _explosiveSequence, true] spawn PRIMARY_EXPLOSION;
 };
 
 EXPLOSIVESEQUENCE_MEDIUM = {
 	_explosiveSequence = ["M_PG_AT","M_Zephyr","M_Titan_AA_long","M_PG_AT"]; 
-	[_this, _explosiveSequence] spawn PRIMARY_EXPLOSION;
+	[_this, _explosiveSequence, true] spawn PRIMARY_EXPLOSION;
 };
 
 EXPLOSIVESEQUENCE_LARGE = {
 	_explosiveSequence = ["M_PG_AT","M_Zephyr","M_Titan_AA_long","M_PG_AT"]; 
-	[_this, _explosiveSequence] spawn PRIMARY_EXPLOSION;
+	[_this, _explosiveSequence, true] spawn PRIMARY_EXPLOSION;
 };
+
+EXPLOSIVESEQUENCE_DISARM = {
+	_explosiveSequence = ["Bo_GBU12_LGB_MI10","Bo_GBU12_LGB_MI10","M_PG_AT","R_80mm_HE"];
+	[_this, _explosiveSequence, true] spawn PRIMARY_EXPLOSION;
+};
+
 
 PRIMARY_EXPLOSION = {
 	_iedPosition = (_this select 0) call REMOVE_IED_ARRAY;
 	_explosiveSequence = (_this select 1);
+	_createSecondary = (_this select 2);
 	
 	[[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;	
 	[[_iedPosition] , "IED_SCREEN_EFFECTS", true, false] spawn BIS_fnc_MP;

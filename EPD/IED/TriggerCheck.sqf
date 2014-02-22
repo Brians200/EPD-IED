@@ -34,7 +34,7 @@ _validItemsInTrigger = 0;
 } foreach (_thisList);
 
 if(EPD_IED_debug && _validItemsInTrigger > 0) then {
-	hintSilent format["Trigger\nPeople/Vehicles in trigger = %1\nMax Speed = %2\nMin Height = %3\nDistance = %4", _validItemsInTrigger,_maxSpeed, _minHeight,_minDistance];
+	//hintSilent format["Trigger\nPeople/Vehicles in trigger = %1\nMax Speed = %2\nMin Height = %3\nDistance = %4", _validItemsInTrigger,_maxSpeed, _minHeight,_minDistance];
 };	
 
 //fast walk forward without gear averages 44.6
