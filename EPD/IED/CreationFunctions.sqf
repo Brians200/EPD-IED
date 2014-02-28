@@ -137,29 +137,39 @@ CREATE_IED = {
 	_ied allowDamage false;
 	
 	_trigger = createTrigger["EmptyDetector", _iedPos];
-	[_sectionDictionary, _iedName, [_ied, _trigger, _side, _iedSize,_markerName]] call ADD_IED_TO_SECTION;
+	_scriptHandle = "";
+	if(allowExplosiveToTriggerIEDs) then {
+		_scriptHandle = [_ied, _sectionName, _iedName, _iedSize, _trigger] spawn PROJECTILE_DETECTION;
+	} else {
+		_scriptHandle = 0 spawn {};
+	};
+	[_sectionDictionary, _iedName, [_ied, _trigger, _side, _iedSize,_markerName, _scriptHandle]] call ADD_IED_TO_SECTION;
 	_trigger setTriggerArea[11,11,0,true];
 	_trigger setTriggerActivation ["any", "PRESENT", false];
 	_trigger setTriggerStatements [
 						'this && { ["' + _sectionName + '","' + _iedName +'", thisList] call TRIGGER_CHECK }',
-						'["' + _sectionName + '","' + _iedName +'"] call EXPLOSIVESEQUENCE_' + _iedSize + '; "' + _sectionName + '" call INCREMENT_EXPLOSION_COUNTER',
+						'["' + _sectionName + '","' + _iedName +'"] call EXPLOSIVESEQUENCE_' + _iedSize + ';',
 						""];
+	
+	
 	
 	if(EPD_IED_debug) then {			
 		createmarker [_markerName, _iedPos];
-		_markerName setMarkerTypeLocal "hd_warning";
-		_markerName setMarkerColorLocal "ColorRed";
-		_markerName setMarkerTextLocal _iedSize;
+		_markerName setMarkerType "hd_warning";
+		_markerName setMarkerColor "ColorRed";
+		_markerName setMarkerText _iedSize;
 	};
 	
 	if(iedsAdded) then { //initial ieds were added already and the game is in progress
 		publicVariable "iedDictionary";
 		[[_sectionName, _iedName],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
+		if(allowExplosiveToTriggerIEDs) then {
+			[[_sectionName, _iedName],"EXPLOSION_EVENT_HANDLER_ADDER", true, false] spawn BIS_fnc_MP;
+		};
 	};
 };
 
 CREATE_SECONDARY_IED = {
-	hint format["%1", _this];
 	_location = _this select 0;
 	_side = _this select 1;
 	_sectionName = _this select 2;
@@ -185,12 +195,18 @@ CREATE_SECONDARY_IED = {
 	_ied allowDamage false;
 	
 	_trigger = createTrigger["EmptyDetector", _iedPos];
-	[_sectionDictionary, _iedName, [_ied, _trigger, _side,"SECONDARY",_markerName]] call ADD_IED_TO_SECTION;
+	_scriptHandle = "";
+	if(allowExplosiveToTriggerIEDs) then {
+		_scriptHandle = [_ied, _sectionName, _iedName, "SECONDARY", _trigger] spawn PROJECTILE_DETECTION;
+	} else {
+		_scriptHandle = 0 spawn {};
+	};
+	[_sectionDictionary, _iedName, [_ied, _trigger, _side, "SECONDARY",_markerName, _scriptHandle]] call ADD_IED_TO_SECTION;
 	_trigger setTriggerArea[11,11,0,true];
 	_trigger setTriggerActivation ["any", "PRESENT", false];
 	_trigger setTriggerStatements [
 						'this && { ["' + _sectionName + '","' + _iedName +'", thisList] call TRIGGER_CHECK }',
-						'["' + _sectionName + '","' + _iedName +'"] call EXPLOSIVESEQUENCE_SECONDARY; "' + _sectionName + '" call INCREMENT_EXPLOSION_COUNTER',
+						'["' + _sectionName + '","' + _iedName +'"] call EXPLOSIVESEQUENCE_SECONDARY;',
 						""];
 	
 	if(EPD_IED_debug) then {			
@@ -202,6 +218,7 @@ CREATE_SECONDARY_IED = {
 	
 	publicVariable "iedDictionary";
 	[[_sectionName, _iedName],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
+	[[_sectionName, _iedName],"EXPLOSION_EVENT_HANDLER_ADDER", true, false] spawn BIS_fnc_MP;
 };
 
 /*

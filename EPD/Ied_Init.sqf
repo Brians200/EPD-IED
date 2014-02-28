@@ -11,6 +11,15 @@ if(isserver) then {
 	//publicVariable "eventHandlers";
 };
 
+ehExplosiveSuperClasses = ["RocketCore", "MissileCore", "SubmunitionCore", "GrenadeCore", "ShellCore"];
+publicVariable "ehExplosiveSuperClasses";
+
+explosiveSuperClasses = ["TimeBombCore","BombCore", "Grenade"];
+publicVariable "explosiveSuperClasses";
+
+projectilesToIgnore = ["SmokeShell", "FlareCore", "IRStrobeBase", "GrenadeHand_stone", "Smoke_120mm_AMOS_White", "TMR_R_DG32V_F"];
+publicVariable "projectilesToIgnore";
+
 call compile preprocessFileLineNumbers "EPD\Ied_Settings.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\ExplosionFunctions.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\CreationFunctions.sqf";
@@ -19,8 +28,7 @@ call compile preprocessFileLineNumbers "EPD\IED\CreationAuxiliaryFunctions.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\ExplosivesHandler.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\Disarm.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\DictionaryFunctions.sqf";
-IED = compile preprocessFileLineNumbers "EPD\IED\Ied.sqf";
-TRIGGER_CHECK = compile preprocessFileLineNumbers "EPD\IED\TriggerCheck.sqf";
+call compile preprocessFileLineNumbers "EPD\IED\TriggerCheck.sqf";
 
 
 iedSecondaryItemsCount = count iedSecondaryItems;
@@ -38,11 +46,6 @@ if(isserver) then {
 		_roads = ((_locationAndSize select 0) nearRoads (_locationAndSize select 1));
 		iedSafeRoads = (iedSafeRoads - _roads) + _roads; //removes duplicates first
 	} foreach iedSafeZones;
-	
-	//iedAllMapLocations
-	//iedCityMapLocations
-	//iedVillageMapLocations
-	//iedLocalMapLocations
 	
 	_handles = [];
 	_nextHandleSpot = 0;

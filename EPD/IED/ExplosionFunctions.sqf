@@ -22,24 +22,13 @@ EXPLOSIVESEQUENCE_DISARM = {
 PRIMARY_EXPLOSION = {
 	_iedArray = (_this select 0) call GET_IED_ARRAY;
 	_iedPosition = (_this select 0) call REMOVE_IED_ARRAY;
+	(_this select 0 select 0) call INCREMENT_EXPLOSION_COUNTER;
 	_explosiveSequence = (_this select 1);
 	_createSecondary = (_this select 2);
 	
 	[[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;	
 	[[_iedPosition] , "IED_SCREEN_EFFECTS", true, false] spawn BIS_fnc_MP;
 
-	//fragmentation
-	0 = _iedPosition spawn {
-		_pos = _this;
-		_pos set[2,.1 + random 1]; 
-		_numberOfFragments = 200;
-		for "_i" from 0 to _numberOfFragments - 1 do{
-			_bullet = "B_127x99_Ball_Tracer_Green" createVehicle _pos;
-			_angle = random 360;
-			_speed = 450 + random 100;
-			_bullet setVelocity [_speed*cos(_angle), _speed*sin(_angle), random 2];
-		};
-	};
 	for "_i" from 0 to (count _explosiveSequence) -1 do{
 		[[_iedPosition] , "IED_ROCKS", true, false] spawn BIS_fnc_MP;
 		_explosive = (_explosiveSequence select _i);
@@ -51,6 +40,19 @@ PRIMARY_EXPLOSION = {
 			addCamShake[1+random 5, 1+random 3, 5+random 15];
 		};
 		sleep .01;
+	};
+	
+	//fragmentation
+	0 = _iedPosition spawn {
+		_pos = _this;
+		_pos set[2,.1 + random 1]; 
+		_numberOfFragments = 200;
+		for "_i" from 0 to _numberOfFragments - 1 do{
+			_bullet = "B_127x99_Ball_Tracer_Green" createVehicle _pos;
+			_angle = random 360;
+			_speed = 450 + random 100;
+			_bullet setVelocity [_speed*cos(_angle), _speed*sin(_angle), random 2];
+		};
 	};
 	
 	if(_createSecondary) then {

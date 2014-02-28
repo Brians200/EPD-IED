@@ -24,6 +24,8 @@ REMOVE_IED_ARRAY = {
 	
 	deleteMarker (_iedArray select 4);
 	
+	terminate (_iedArray select 5);
+	
 	_position;
 };
 
@@ -80,7 +82,6 @@ CREATE_IED_SECTION_DICTIONARY = {
 };
 
 ADD_IED_TO_SECTION = {
-	//hint format["%1",_this];
 	_sectionDictionary = _this select 0;
 	_iedName = _this select 1;
 	_iedArray = _this select 2;
@@ -89,6 +90,7 @@ ADD_IED_TO_SECTION = {
 };
 
 ADD_DISARM_AND_PROJECTILE_DETECTION = {
+
 	if(count _this == 0) then {
 		_sectionKeys = iedDictionary call Dictionary_fnc_keys;
 		{
@@ -96,17 +98,33 @@ ADD_DISARM_AND_PROJECTILE_DETECTION = {
 			_sectionDictionary = [iedDictionary, _x] call Dictionary_fnc_get;
 			_iedsDictionary = [_sectionDictionary, "ieds"] call Dictionary_fnc_get;
 			_iedKeys = _iedsDictionary call Dictionary_fnc_keys;
-			{
-				[[_sectionName, _x],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
-			} foreach _iedKeys;		
+			
+			if(allowExplosiveToTriggerIEDs) then {
+				{
+					[[_sectionName, _x],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
+					[[_sectionName, _x],"EXPLOSION_EVENT_HANDLER_ADDER", true, false] spawn BIS_fnc_MP;
+				} foreach _iedKeys;	
+			} else {
+				{
+					[[_sectionName, _x],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
+				} foreach _iedKeys;	
+			};
 		} foreach _sectionKeys;
 	} else {
 		
 		_sectionDictionary = [iedDictionary, _this] call Dictionary_fnc_get;
 		_iedsDictionary = [_sectionDictionary, "ieds"] call Dictionary_fnc_get;
 		_iedKeys = _iedsDictionary call Dictionary_fnc_keys;
-		{
-			[[_this, _x],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
-		} foreach _iedKeys;	
+		if(allowExplosiveToTriggerIEDs) then {
+			{
+				[[_this, _x],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
+				[[_this, _x],"EXPLOSION_EVENT_HANDLER_ADDER", true, false] spawn BIS_fnc_MP;
+			} foreach _iedKeys;	
+		} else {
+			{
+				[[_this, _x],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
+			} foreach _iedKeys;	
+
+		};
 	};
 };
