@@ -138,11 +138,7 @@ EXPLOSION_EVENT_HANDLER = {
 					call compile format['["%2", "%3" ] call EXPLOSIVESEQUENCE_%1', _iedSize, _sectionName,_iedName ];
 				//};
 			};
-		};
-		
-		
-		
-		
+		};		
 	};
 };
 

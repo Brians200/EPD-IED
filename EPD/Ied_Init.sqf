@@ -107,11 +107,3 @@ player sidechat "Synching IEDs... You may experience lag for a few seconds";
 
 [] call ADD_DISARM_AND_PROJECTILE_DETECTION;
 
-
-//hint format["%1 ieds to synch", count eventHandlers];
-
-/*for "_i" from 0 to (count eventHandlers) -1 do{
-	call compile (eventHandlers select _i);
-	if(EPD_IED_debug) then {player sidechat (format["%1 synched", _i+1]);};
-};
-*/
