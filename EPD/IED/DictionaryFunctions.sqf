@@ -81,6 +81,34 @@ CREATE_IED_SECTION_DICTIONARY = {
 	
 };
 
+REMOVE_IED_SECTION = {
+	_sectionDictionary = [iedDictionary, _this] call Dictionary_fnc_get;
+	_iedsDictionary = [_sectionDictionary, "ieds"] call Dictionary_fnc_get;
+	_iedKeys = _iedsDictionary call Dictionary_fnc_keys;
+
+	{
+		[_this, _x] call REMOVE_IED_ARRAY;
+	} foreach _iedKeys;	
+	
+	_fakesDictionary = [_sectionDictionary, "fake"] call Dictionary_fnc_get;
+	_fakeKeys = _fakesDictionary call Dictionary_fnc_keys;
+	{
+		_fakeArr = [_fakesDictionary, _x] call Dictionary_fnc_get;
+		deleteVehicle (_fakeArr select 0);
+		deleteMarker (_fakeArr select 1);
+		[_fakesDictionary, _x] call Dictionary_fnc_remove;
+	} foreach _fakeKeys;	
+	
+	_cleanUp = [_sectionDictionary, "cleanUp"] call Dictionary_fnc_get;
+	
+	{
+		deleteVehicle _x;
+	} foreach _cleanUp;
+	
+	[iedDictionary, _this] call Dictionary_fnc_remove;
+
+};
+
 ADD_IED_TO_SECTION = {
 	_sectionDictionary = _this select 0;
 	_iedName = _this select 1;

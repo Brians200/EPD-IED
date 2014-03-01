@@ -29,18 +29,6 @@ PRIMARY_EXPLOSION = {
 	[[_iedPosition] , "IED_SCREEN_EFFECTS", true, false] spawn BIS_fnc_MP;
 	[[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;	
 
-	for "_i" from 0 to (count _explosiveSequence) -1 do{
-		[[_iedPosition] , "IED_ROCKS", true, false] spawn BIS_fnc_MP;
-		_explosive = (_explosiveSequence select _i);
-		_xCoord = (random 4)-2;
-		_yCoord = (random 4)-2;
-		_ied = _explosive createVehicle _iedPosition;
-		_ied setPos [(_iedPosition select 0)+_xCoord,(_iedPosition select 1)+_yCoord, 0];
-		if(((position player) distanceSqr getPos _ied) < 40000) then {  //less than 200 meters away
-			addCamShake[1+random 5, 1+random 3, 5+random 15];
-		};
-		sleep .01;
-	};
 	
 	//fragmentation
 	0 = _iedPosition spawn {
@@ -54,6 +42,21 @@ PRIMARY_EXPLOSION = {
 			_bullet setVelocity [_speed*cos(_angle), _speed*sin(_angle), random 2];
 		};
 	};
+	
+	for "_i" from 0 to (count _explosiveSequence) -1 do{
+		[[_iedPosition] , "IED_ROCKS", true, false] spawn BIS_fnc_MP;
+		_explosive = (_explosiveSequence select _i);
+		_xCoord = (random 4)-2;
+		_yCoord = (random 4)-2;
+		_ied = _explosive createVehicle _iedPosition;
+		_ied setPos [(_iedPosition select 0)+_xCoord,(_iedPosition select 1)+_yCoord, 0];
+		if(((position player) distanceSqr getPos _ied) < 40000) then {  //less than 200 meters away
+			addCamShake[1+random 5, 1+random 3, 5+random 15];
+		};
+		sleep .01;
+	};
+	
+	
 	
 	if(_createSecondary) then {
 		if(random 100 < secondaryChance) then {
