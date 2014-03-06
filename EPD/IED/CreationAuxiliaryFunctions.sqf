@@ -85,13 +85,28 @@ FIND_LOCATION_BY_ROAD = {
 };
 
 GET_SIZE_AND_TYPE = {
+
+	_smallChance = 0;
+	_mediumChance = 0;
+	_largeChance = 0;
+
+	if( typename _this == "ARRAY") then {
+		_smallChance = _this select 0;
+		_mediumChance = _this select 1;
+		_largeChance = _this select 2;
+	} else {
+		_smallChance = smallChance;
+		_mediumChance = mediumChance;
+		_largeChance = largeChance;
+	};
+
 	_size = "SMALL";
-	 r = floor random (smallChance+mediumChance+largeChance);
-	 if(r>smallChance) then {
+	 r = floor random (_smallChance+_mediumChance+_largeChance);
+	 if(r>_smallChance) then {
 		_size = "MEDIUM";
 	 };
 	 
-	 if(r>smallChance+mediumChance) then {
+	 if(r>_smallChance+_mediumChance) then {
 		_size = "LARGE";
 	 };
 
@@ -152,8 +167,14 @@ GET_CENTER_LOCATION_AND_SIZE = {
 				_centerPos = getMarkerPos _origin;
 				_sizeArray = getMarkerSize _origin;
 				_size = ((_sizeArray select 0) + (_sizeArray select 1))/2;
-				if(hideIedMarker) then {
-					(_origin) setMarkerAlpha 0;
+				if(_origin in iedSafeZones) then {
+					if(hideSafeZoneMarkers) then {
+						(_origin) setMarkerAlpha 0;
+					};
+				} else {				
+					if(hideIedSectionMarkers) then {
+						(_origin) setMarkerAlpha 0;
+					};
 				};
 			} else {
 				//check if it is in the predefined array

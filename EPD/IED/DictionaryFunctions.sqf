@@ -6,6 +6,15 @@ GET_IED_ARRAY = {
 	[_ieds, _iedName] call Dictionary_fnc_get;
 };
 
+GET_REMAINING_IED_COUNT = {
+	_sectionName = _this;
+	_sectionDictionary = [iedDictionary, _sectionName] call Dictionary_fnc_get;
+	_ieds = [_sectionDictionary, "ieds"] call Dictionary_fnc_get;
+	_keys = _ieds call Dictionary_fnc_keys;
+	
+	count _keys;
+};
+
 REMOVE_IED_ARRAY = {
 	_sectionName = _this select 0;
 	_iedName = _this select 1;

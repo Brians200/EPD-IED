@@ -55,7 +55,7 @@ CREATE_SPECIFIC_IED = {
 	_parameters = _this select 3;
 	_side = _parameters select ((count _parameters)-1);
 	
-	_sizeAndType = call GET_SIZE_AND_TYPE;
+	_sizeAndType = "" call GET_SIZE_AND_TYPE;
 	_chance = 100;
 	if(count _parameters == 3) then { _chance = _parameters select 1; };
 	
@@ -77,6 +77,8 @@ CREATE_RANDOM_IEDS = {
 	_iedsToPlace = 0;
 	_junkToPlace = 0;
 	
+	_chances = "";
+	
 	switch (count _parameters) do
 	{
 		case 2: {
@@ -90,24 +92,40 @@ CREATE_RANDOM_IEDS = {
 					_side = _parameters select 2;
 				};
 		case 4: {
-					_iedsToPlace = _parameters select 1;
-					_junkToPlace = _parameters select 2;
-					_side = _parameters select 3;
+		
+					if(typename( _parameters select 2) == "ARRAY") then {
+						_max = _parameters select 1;
+						_fakeChance = _parameters select 2 select 0;
+						for "_i" from 0 to _max -1 do{
+							if(random 100 < _fakeChance) then {
+								_junkToPlace = _junkToPlace + 1;
+							} else {
+								_iedsToPlace = _iedsToPlace + 1;
+							};
+						};
+						_chances = [_parameters select 2 select 1, _parameters select 2 select 2, _parameters select 2 select 3];
+						
+					} else {
+						_iedsToPlace = _parameters select 1;
+						_junkToPlace = _parameters select 2;
+						_side = _parameters select 3;
+					};
 				};
 	};
+	
 	
 	_roads = (_origin nearRoads _distance) - iedSafeRoads;
 	_roadCount = count _roads;
 	if(_roadCount > 0) then {
 
 		for "_i" from 0 to _iedsToPlace -1 do{
-			_sizeAndType = call GET_SIZE_AND_TYPE;
+			_sizeAndType = _chances call GET_SIZE_AND_TYPE;
 			_iedPos = [_roads, _roadCount] call FIND_LOCATION_BY_ROAD;
 			[_iedPos, _sizeAndType select 0, _sizeAndType select 1, _side, _dictionary, _sectionName] call CREATE_IED;
 		};
 		
 		for "_i" from 0 to _junkToPlace -1 do{
-			_sizeAndType = call GET_SIZE_AND_TYPE;
+			_sizeAndType = _chances call GET_SIZE_AND_TYPE;
 			_junkPosition = [_roads, _roadCount] call FIND_LOCATION_BY_ROAD;
 			[_junkPosition, _sizeAndType select 1, _dictionary] call CREATE_FAKE;
 		};
