@@ -1,7 +1,7 @@
 /***************SETTINGS***********************/
 EPD_IED_debug = true;
 hideIedSectionMarkers = true;  //sets the alpha to 0 after spawning IEDs at a section
-hideSafeZoneMarkers = false;  //sets the alpha to 0 of a safezone
+hideSafeZoneMarkers = true;  //sets the alpha to 0 of a safezone
 
 itemsRequiredToDisarm = ["ToolKit"];   //"MineDetector" or "ToolKit" for example
 betterDisarmers = ["B_soldier_exp_F", "B_engineer_F", "B_diver_exp_F", "B_recon_exp_F"]; // people who are better at disarming
@@ -64,7 +64,7 @@ allowExplosiveToTriggerIEDs = true;
 //http://community.bistudio.com/wiki/side
 
 iedInitialArray = [
-	/*["AllCities","West"],
+	["AllCities","West"],
 	["AllVillages","West"],
 	["AltisRandom1",6,"West"],
 	["AltisRandom2",6,"West"],
@@ -81,11 +81,11 @@ iedInitialArray = [
 	["AltisRandom13",6,"West"],
 	["AltisRandom14",6,"West"],
 	["AltisRandom15",6,"West"],
-	["AltisRandom16",6,"West"],*/
-	["Gravia", 10, [50, 25, 20, 5], "West" ],
-	["Lakka", 2, 8,  ["West","East"] ],
-	["OreoKastro", "West"],
-	["Athira", 2, "West" ],
+	["AltisRandom16",6,"West"],
+	//["Gravia", 10, [50, 25, 20, 5], "West" ],
+	//["Lakka", 2, 8,  ["West","East"] ],
+	//["OreoKastro", "West"],
+	//["Athira", 2, "West" ],
 	["IEDSINGLE1", ["West","East"]],
 	["IEDSINGLE2", 100,"West"],
 	["IEDSINGLE3", 100, "West"]
