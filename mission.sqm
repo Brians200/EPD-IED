@@ -63,6 +63,7 @@ class Mission
 					id=0;
 					side="WEST";
 					vehicle="B_soldier_exp_F";
+					player="PLAY CDG";
 					leader=1;
 					rank="LIEUTENANT";
 					skill=0.60000002;
@@ -147,6 +148,7 @@ class Mission
 					id=8;
 					side="WEST";
 					vehicle="B_soldier_exp_F";
+					player="PLAY CDG";
 					skill=0.60000002;
 				};
 			};
@@ -166,6 +168,7 @@ class Mission
 					player="PLAYER COMMANDER";
 					leader=1;
 					skill=0.60000002;
+					init="this allowdamage false";
 				};
 			};
 		};

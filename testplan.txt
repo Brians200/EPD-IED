@@ -1,13 +1,17 @@
-trigger main IED										cj	
-trigger secondary IED									cj	
-disarm main IED											cj
-disarm secondary IED									cj	
+trigger main IED						cj					
+trigger secondary IED					cj					
+disarm main IED							cj			
+disarm secondary IED					cj				
 JIP ^^^
 
-HandGrenade/planted explosives main IED					cj
-HandGrenade/planted explosives secondary IED			cj
+HandGrenade/planted explosives main IED			cj	
+HandGrenade/planted explosives secondary IED	cj	
 JIP^^^
 
-Shell/Grenade/Missile/Explosive Bullet main IED			cj	
-Shell/Grenade/Missile/Explosive Bullet secondary IED	cj	
+Shell/Grenade/Missile/Explosive Bullet main IED		cj		
+Shell/Grenade/Missile/Explosive Bullet secondary IED	cj
 JIP^^^
+
+Trigger created ied section				cj
+
+disarm created ied section				cj
