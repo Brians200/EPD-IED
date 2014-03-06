@@ -6,8 +6,6 @@ GET_IED_ARRAY = {
 	[_ieds, _iedName] call Dictionary_fnc_get;
 };
 
-
-
 REMOVE_IED_ARRAY = {
 	_sectionName = _this select 0;
 	_iedName = _this select 1;
@@ -127,32 +125,26 @@ ADD_DISARM_AND_PROJECTILE_DETECTION = {
 			_iedsDictionary = [_sectionDictionary, "ieds"] call Dictionary_fnc_get;
 			_iedKeys = _iedsDictionary call Dictionary_fnc_keys;
 			
-			if(allowExplosiveToTriggerIEDs) then {
-				{
-					[[_sectionName, _x],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
-					[[_sectionName, _x],"EXPLOSION_EVENT_HANDLER_ADDER", true, false] spawn BIS_fnc_MP;
-				} foreach _iedKeys;	
-			} else {
-				{
-					[[_sectionName, _x],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
-				} foreach _iedKeys;	
-			};
+			{
+				[_sectionName, _x] spawn DISARM_ADD_ACTION;
+				if(allowExplosiveToTriggerIEDs) then {
+					[_sectionName, _x] spawn EXPLOSION_EVENT_HANDLER_ADDER;
+				};
+			} foreach _iedKeys;	
+
 		} foreach _sectionKeys;
 	} else {
 		
 		_sectionDictionary = [iedDictionary, _this] call Dictionary_fnc_get;
 		_iedsDictionary = [_sectionDictionary, "ieds"] call Dictionary_fnc_get;
 		_iedKeys = _iedsDictionary call Dictionary_fnc_keys;
-		if(allowExplosiveToTriggerIEDs) then {
+		
 			{
-				[[_this, _x],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
-				[[_this, _x],"EXPLOSION_EVENT_HANDLER_ADDER", true, false] spawn BIS_fnc_MP;
+				[_this,_x] spawn DISARM_ADD_ACTION;
+				if(allowExplosiveToTriggerIEDs) then {
+					[_this,_x] spawn EXPLOSION_EVENT_HANDLER_ADDER;
+				};
 			} foreach _iedKeys;	
-		} else {
-			{
-				[[_this, _x],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
-			} foreach _iedKeys;	
-
-		};
+		
 	};
 };

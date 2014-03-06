@@ -1,21 +1,31 @@
 EXPLOSIVESEQUENCE_SMALL = {
 	_explosiveSequence = ["M_PG_AT","M_Zephyr","M_Titan_AA_long","M_PG_AT"]; 
-	[_this, _explosiveSequence, true] spawn PRIMARY_EXPLOSION;
+	[_this, _explosiveSequence, true, true] spawn PRIMARY_EXPLOSION;
 };
 
 EXPLOSIVESEQUENCE_MEDIUM = {
 	_explosiveSequence = ["M_PG_AT","M_Zephyr","M_Titan_AA_long","M_PG_AT"]; 
-	[_this, _explosiveSequence, true] spawn PRIMARY_EXPLOSION;
+	[_this, _explosiveSequence, true, true] spawn PRIMARY_EXPLOSION;
 };
 
 EXPLOSIVESEQUENCE_LARGE = {
 	_explosiveSequence = ["M_PG_AT","M_Zephyr","M_Titan_AA_long","M_PG_AT"]; 
-	[_this, _explosiveSequence, true] spawn PRIMARY_EXPLOSION;
+	[_this, _explosiveSequence, true, true] spawn PRIMARY_EXPLOSION;
 };
 
 EXPLOSIVESEQUENCE_DISARM = {
 	_explosiveSequence = ["Bo_GBU12_LGB_MI10","Bo_GBU12_LGB_MI10","M_PG_AT","R_80mm_HE"];
-	[_this, _explosiveSequence, true] spawn PRIMARY_EXPLOSION;
+	[_this, _explosiveSequence, true, true] spawn PRIMARY_EXPLOSION;
+};
+
+EXPLOSIVESEQUENCE_SECONDARY = {
+	_explosiveSequence = ["R_80mm_HE","M_PG_AT","M_PG_AT","R_80mm_HE","M_PG_AT","R_80mm_HE","M_PG_AT","M_PG_AT","M_PG_AT","R_80mm_HE"];
+	[_this, _explosiveSequence, false, false] spawn PRIMARY_EXPLOSION;
+};
+
+EXPLOSIVESEQUENCE_DISARM = {
+	_explosiveSequence = ["Bo_GBU12_LGB_MI10","Bo_GBU12_LGB_MI10","M_PG_AT","R_80mm_HE"];
+	[_this, _explosiveSequence, true, true] spawn PRIMARY_EXPLOSION;
 };
 
 
@@ -25,9 +35,13 @@ PRIMARY_EXPLOSION = {
 	(_this select 0 select 0) call INCREMENT_EXPLOSION_COUNTER;
 	_explosiveSequence = (_this select 1);
 	_createSecondary = (_this select 2);
+	_createSmoke = [_this, 3, true] call BIS_fnc_param;
 	
 	[[_iedPosition] , "IED_SCREEN_EFFECTS", true, false] spawn BIS_fnc_MP;
-	[[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;	
+	
+	if(_createSmoke) then {
+		[[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;
+	};
 
 	
 	//fragmentation
