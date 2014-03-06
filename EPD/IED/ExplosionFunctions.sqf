@@ -43,6 +43,8 @@ PRIMARY_EXPLOSION = {
 		[[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;
 	};
 
+	lastIedExplosion = _iedPosition;
+	publicVariable "lastIedExplosion";
 	
 	//fragmentation
 	0 = _iedPosition spawn {

@@ -7,8 +7,8 @@ if(isserver) then {
 	iedDictionary = call Dictionary_fnc_new;
 	publicVariable "iedDictionary";
 	
-	eventHandlers = [];
-	//publicVariable "eventHandlers";
+	lastIedExplosion = [0,0,0];
+	publicVariable "lastIedExplosion";
 };
 
 ehExplosiveSuperClasses = ["RocketCore", "MissileCore", "SubmunitionCore", "GrenadeCore", "ShellCore"];
