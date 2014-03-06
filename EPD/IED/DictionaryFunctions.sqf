@@ -15,6 +15,13 @@ GET_REMAINING_IED_COUNT = {
 	count _keys;
 };
 
+GET_IED_SECTION_INFORMATION = {
+	_sectionName = _this;
+	_sectionDictionary = [iedDictionary, _sectionName] call Dictionary_fnc_get;
+	
+	[_sectionDictionary, "infos"] call Dictionary_fnc_get;
+};
+
 REMOVE_IED_ARRAY = {
 	_sectionName = _this select 0;
 	_iedName = _this select 1;
