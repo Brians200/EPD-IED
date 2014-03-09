@@ -4,12 +4,12 @@ EXPLOSIVESEQUENCE_SMALL = {
 };
 
 EXPLOSIVESEQUENCE_MEDIUM = {
-	_explosiveSequence = ["M_PG_AT","M_Zephyr","M_Titan_AA_long","M_PG_AT"]; 
+	_explosiveSequence = ["M_Titan_AA_long","HelicopterExploSmall","M_PG_AT","M_Titan_AT"];
 	[_this, _explosiveSequence, true, true] spawn PRIMARY_EXPLOSION;
 };
 
 EXPLOSIVESEQUENCE_LARGE = {
-	_explosiveSequence = ["M_PG_AT","M_Zephyr","M_Titan_AA_long","M_PG_AT"]; 
+	_explosiveSequence = ["Bo_GBU12_LGB_MI10","M_Titan_AA_long","HelicopterExploSmall","M_Titan_AA_long", "M_PG_AT","M_Titan_AT"]; 
 	[_this, _explosiveSequence, true, true] spawn PRIMARY_EXPLOSION;
 };
 
@@ -22,12 +22,6 @@ EXPLOSIVESEQUENCE_SECONDARY = {
 	_explosiveSequence = ["R_80mm_HE","M_PG_AT","M_PG_AT","R_80mm_HE","M_PG_AT","R_80mm_HE","M_PG_AT","M_PG_AT","M_PG_AT","R_80mm_HE"];
 	[_this, _explosiveSequence, false, false] spawn PRIMARY_EXPLOSION;
 };
-
-EXPLOSIVESEQUENCE_DISARM = {
-	_explosiveSequence = ["Bo_GBU12_LGB_MI10","Bo_GBU12_LGB_MI10","M_PG_AT","R_80mm_HE"];
-	[_this, _explosiveSequence, true, true] spawn PRIMARY_EXPLOSION;
-};
-
 
 PRIMARY_EXPLOSION = {
 	_iedArray = (_this select 0) call GET_IED_ARRAY;
