@@ -104,12 +104,12 @@ CREATE_RANDOM_IEDS = {
 							};
 						};
 						_chances = [_parameters select 2 select 1, _parameters select 2 select 2, _parameters select 2 select 3];
-						
 					} else {
 						_iedsToPlace = _parameters select 1;
 						_junkToPlace = _parameters select 2;
-						_side = _parameters select 3;
 					};
+					
+					_side = _parameters select 3;
 				};
 	};
 	
