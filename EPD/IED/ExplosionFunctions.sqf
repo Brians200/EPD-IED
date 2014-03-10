@@ -14,8 +14,8 @@ EXPLOSIVESEQUENCE_LARGE = {
 };
 
 EXPLOSIVESEQUENCE_DISARM = {
-	_explosiveSequence = ["Bo_GBU12_LGB_MI10","Bo_GBU12_LGB_MI10","M_PG_AT","R_80mm_HE"];
-	[_this, _explosiveSequence, true, true] spawn PRIMARY_EXPLOSION;
+	_explosiveSequence = ["Bo_GBU12_LGB_MI10","Bo_GBU12_LGB_MI10"];
+	[_this, _explosiveSequence, false, true] spawn PRIMARY_EXPLOSION;
 };
 
 EXPLOSIVESEQUENCE_SECONDARY = {
@@ -43,9 +43,9 @@ PRIMARY_EXPLOSION = {
 	//fragmentation
 	0 = _iedPosition spawn {
 		_pos = _this;
-		_pos set[2,.1 + random 1]; 
 		_numberOfFragments = 200;
 		for "_i" from 0 to _numberOfFragments - 1 do{
+			_pos set[2,.1 + random 3.5]; 
 			_bullet = "B_127x99_Ball_Tracer_Green" createVehicle _pos;
 			_angle = random 360;
 			_speed = 450 + random 100;
