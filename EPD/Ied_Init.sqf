@@ -95,11 +95,12 @@ if(isserver) then {
 	waituntil{sleep .5; [_handles] call CHECK_ARRAY;};
 	
 	//_script = iedArray call IED;
+	publicVariable "iedDictionary";
 	
 	iedsAdded = true;
 	publicVariable "iedsAdded";
 	
-	publicVariable "iedDictionary";
+	
 };
 
 waituntil{sleep .5; (!isnull player and iedsAdded)};
