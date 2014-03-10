@@ -45,11 +45,11 @@ PRIMARY_EXPLOSION = {
 		_pos = _this;
 		_numberOfFragments = 200;
 		for "_i" from 0 to _numberOfFragments - 1 do{
-			_pos set[2,.1 + random 3.5]; 
-			_bullet = "B_127x99_Ball_Tracer_Green" createVehicle _pos;
+			_pos set[2,.1 + random 2]; 
+			_bullet = "B_408_Ball" createVehicle _pos;
 			_angle = random 360;
 			_speed = 450 + random 100;
-			_bullet setVelocity [_speed*cos(_angle), _speed*sin(_angle), random 2];
+			_bullet setVelocity [_speed*cos(_angle), _speed*sin(_angle), -1*(random 4)];
 		};
 	};
 	
