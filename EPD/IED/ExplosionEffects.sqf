@@ -69,7 +69,7 @@ IED_ROCKS = {
 
 
 	_rocks = [_rocks1,_rocks2, _rocks3];
-	sleep .5;
+	sleep .125;
 	{
 		deletevehicle _x;
 	} foreach _rocks;
@@ -220,39 +220,39 @@ CREATE_RING = {
 	_smoke1 = "#particlesource" createVehicle _aslLoc;
 	_smoke1 setposasl _aslLoc;
 	_smoke1 setParticleCircle [0, [0, 0, 0]];
-	_smoke1 setParticleRandom [0, [5, 5, 0], [8, 8, 1], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
+	_smoke1 setParticleRandom [0, [5, 5, 0], [11, 11, 1], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 	_smoke1 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 30, [0, 0, 0], [0, 0, 0], 0, 10, 7.85, .375, [8, 12, 16], [[0, 0, 0, 1], [0.35, 0.35, 0.35, 0.95], [0.35, 0.35, 0.35, 0]], [0.08], 1, 0, "", "", _aslLoc];
-	_smoke1 setDropInterval .01;
+	_smoke1 setDropInterval .02;
 	
 	_smoke2 = "#particlesource" createVehicle _aslLoc;
 	_smoke2 setposasl _aslLoc;
 	_smoke2 setParticleCircle [0, [0, 0, 0]];
-	_smoke2 setParticleRandom [0, [5, 5, 0], [8, 8, 1], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
+	_smoke2 setParticleRandom [0, [5, 5, 0], [11, 11, 1], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 	_smoke2 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 30, [0, 0, 0], [0, 0, 0], 0, 10, 7.85, .375, [8, 12, 16], [[.78, .76, .71, 1], [.35, .35, .35, 0.8], [0.35, 0.35, 0.35, 0]], [0.08], 1, 0, "", "", _aslLoc];
-	_smoke2 setDropInterval .01;
+	_smoke2 setDropInterval .02;
 	
 	_smoke3 = "#particlesource" createVehicle _aslLoc;
 	_smoke3 setposasl _aslLoc;
 	_smoke3 setParticleCircle [0, [0, 0, 0]];
-	_smoke3 setParticleRandom [0, [5, 5, 0], [8, 8, 1], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
+	_smoke3 setParticleRandom [0, [5, 5, 0], [11, 11, 1], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 	_smoke3 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 30, [0, 0, 0], [0, 0, 0], 0, 10, 7.85, .375, [8, 12, 16], [[.55, .47, .37, 1], [.35, .35, .35, 0.95], [0.35, 0.35, 0.35, 0]], [0.08], 1, 0, "", "", _aslLoc];
-	_smoke3 setDropInterval .01;
+	_smoke3 setDropInterval .02;
 	
 	_smoke4 = "#particlesource" createVehicle _aslLoc;
 	_smoke4 setposasl _aslLoc;
 	_smoke4 setParticleCircle [0, [0, 0, 0]];
-	_smoke4 setParticleRandom [0, [5, 5, 0], [8, 8, 1], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
+	_smoke4 setParticleRandom [0, [5, 5, 0], [11, 11, 1], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 	_smoke4 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 30, [0, 0, 0], [0, 0, 0], 0, 10, 7.85, .375, [8, 12, 16], [[.1, .1, .1, 1], [.2, .2, .2, 0.9], [0.35, 0.35, 0.35, 0]], [0.08], 1, 0, "", "", _aslLoc];
-	_smoke4 setDropInterval .01;
+	_smoke4 setDropInterval .02;
 	
 	_smokes = [_smoke1,_smoke2, _smoke3,_smoke4];
 	
 	sleep 1.5;
 	
-	_smoke1 setDropInterval .05;
-	_smoke2 setDropInterval .05;
-	_smoke3 setDropInterval .05;
-	_smoke4 setDropInterval .05;
+	_smoke1 setDropInterval .1;
+	_smoke2 setDropInterval .1;
+	_smoke3 setDropInterval .1;
+	_smoke4 setDropInterval .1;
 	
 	_smoke1 setParticleRandom [0, [9, 9, 0], [7, 7, 1], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 	_smoke2 setParticleRandom [0, [9, 9, 0], [7, 7, 1], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
