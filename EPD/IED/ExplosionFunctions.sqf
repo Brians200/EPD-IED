@@ -25,7 +25,7 @@ EXPLOSIVESEQUENCE_SECONDARY = {
 
 PRIMARY_EXPLOSION = {
 	_iedArray = (_this select 0) call GET_IED_ARRAY;
-	_iedPosition = (_this select 0) call REMOVE_IED_ARRAY;
+	_iedPosition = getpos (_iedArray select 0);
 	(_this select 0 select 0) call INCREMENT_EXPLOSION_COUNTER;
 	_explosiveSequence = (_this select 1);
 	_createSecondary = (_this select 2);
@@ -34,6 +34,40 @@ PRIMARY_EXPLOSION = {
 	_numberOfFragments = 150;
 	
 	[[_iedPosition] , "IED_SCREEN_EFFECTS", true, false] spawn BIS_fnc_MP;
+	
+	lastIedExplosion = _iedPosition;
+	publicVariable "lastIedExplosion";
+	
+	0 = [_iedPosition, _explosiveSequence] spawn {
+		_iedPosition = _this select 0;
+		_explosiveSequence = _this select 1;
+		
+		for "_i" from 0 to (count _explosiveSequence) -1 do{
+			[[_iedPosition] , "IED_ROCKS", true, false] spawn BIS_fnc_MP;
+			_explosive = (_explosiveSequence select _i);
+			_xCoord = (random 4)-2;
+			_yCoord = (random 4)-2;
+			_ied = _explosive createVehicle _iedPosition;
+			_ied setPos [(_iedPosition select 0)+_xCoord,(_iedPosition select 1)+_yCoord, 0];
+			if(((position player) distanceSqr getPos _ied) < 40000) then {  //less than 200 meters away
+				addCamShake[1+random 5, 1+random 3, 5+random 15];
+			};
+			sleep .01;
+		};
+	};
+	
+	//fragmentation
+	0 = [_iedPosition, _numberOfFragments] spawn {
+		_pos = _this select 0;
+		_numberOfFragments = _this select 1;
+		for "_i" from 0 to _numberOfFragments - 1 do{
+			_pos set[2,.1 + random 2]; 
+			_bullet = "B_408_Ball" createVehicle _pos;
+			_angle = random 360;
+			_speed = 450 + random 100;
+			_bullet setVelocity [_speed*cos(_angle), _speed*sin(_angle), -1*(random 4)];
+		};
+	};
 	
 	if(_createSmoke) then {
 		if(_size == "large") then {
@@ -51,37 +85,9 @@ PRIMARY_EXPLOSION = {
 			};
 		};
 	};
-
-	lastIedExplosion = _iedPosition;
-	publicVariable "lastIedExplosion";
 	
-	//fragmentation
-	0 = [_iedPosition, _numberOfFragments] spawn {
-		_pos = _this select 0;
-		_numberOfFragments = _this select 1;
-		for "_i" from 0 to _numberOfFragments - 1 do{
-			_pos set[2,.1 + random 2]; 
-			_bullet = "B_408_Ball" createVehicle _pos;
-			_angle = random 360;
-			_speed = 450 + random 100;
-			_bullet setVelocity [_speed*cos(_angle), _speed*sin(_angle), -1*(random 4)];
-		};
-	};
-	
-	for "_i" from 0 to (count _explosiveSequence) -1 do{
-		[[_iedPosition] , "IED_ROCKS", true, false] spawn BIS_fnc_MP;
-		_explosive = (_explosiveSequence select _i);
-		_xCoord = (random 4)-2;
-		_yCoord = (random 4)-2;
-		_ied = _explosive createVehicle _iedPosition;
-		_ied setPos [(_iedPosition select 0)+_xCoord,(_iedPosition select 1)+_yCoord, 0];
-		if(((position player) distanceSqr getPos _ied) < 40000) then {  //less than 200 meters away
-			addCamShake[1+random 5, 1+random 3, 5+random 15];
-		};
-		sleep .01;
-	};
-	
-	
+	sleep .5;
+	(_this select 0) call REMOVE_IED_ARRAY;
 	
 	if(_createSecondary) then {
 		if(random 100 < secondaryChance) then {
