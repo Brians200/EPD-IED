@@ -5,7 +5,7 @@ EXPLOSIVESEQUENCE_SMALL = {
 
 EXPLOSIVESEQUENCE_MEDIUM = {
 	_explosiveSequence = ["HelicopterExploBig","M_PG_AT","M_Titan_AT"];
-	[_this, _explosiveSequence, true, true] spawn PRIMARY_EXPLOSION;
+	[_this, _explosiveSequence, true, true, "medium"] spawn PRIMARY_EXPLOSION;
 };
 
 EXPLOSIVESEQUENCE_LARGE = {
@@ -40,6 +40,10 @@ PRIMARY_EXPLOSION = {
 		} else {
 			if(_size == "small") then {
 				[[_iedPosition] , "IED_SMOKE_SMALL", true, false] spawn BIS_fnc_MP;
+			} else {
+				if(_size == "medium") then {
+					[[_iedPosition] , "IED_SMOKE_MEDIUM", true, false] spawn BIS_fnc_MP;
+				};
 			};
 		};
 	};
