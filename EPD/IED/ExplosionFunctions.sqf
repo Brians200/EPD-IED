@@ -1,5 +1,5 @@
 EXPLOSIVESEQUENCE_SMALL = {
-	_explosiveSequence = ["M_PG_AT"]; 
+	_explosiveSequence = ["M_Titan_AP"]; 
 	[_this, _explosiveSequence, true, true, "small"] spawn PRIMARY_EXPLOSION;
 };
 
@@ -31,18 +31,22 @@ PRIMARY_EXPLOSION = {
 	_createSecondary = (_this select 2);
 	_createSmoke = [_this, 3, true] call BIS_fnc_param;
 	_size = [_this, 4, "large"] call BIS_fnc_param;
+	_numberOfFragments = 150;
 	
 	[[_iedPosition] , "IED_SCREEN_EFFECTS", true, false] spawn BIS_fnc_MP;
 	
 	if(_createSmoke) then {
 		if(_size == "large") then {
 			[[_iedPosition] , "IED_SMOKE_LARGE", true, false] spawn BIS_fnc_MP;
+			_numberOfFragments = 300;
 		} else {
 			if(_size == "small") then {
 				[[_iedPosition] , "IED_SMOKE_SMALL", true, false] spawn BIS_fnc_MP;
+				_numberOfFragments = 100;
 			} else {
 				if(_size == "medium") then {
 					[[_iedPosition] , "IED_SMOKE_MEDIUM", true, false] spawn BIS_fnc_MP;
+					_numberOfFragments = 200;
 				};
 			};
 		};
@@ -52,9 +56,9 @@ PRIMARY_EXPLOSION = {
 	publicVariable "lastIedExplosion";
 	
 	//fragmentation
-	0 = _iedPosition spawn {
-		_pos = _this;
-		_numberOfFragments = 200;
+	0 = [_iedPosition, _numberOfFragments] spawn {
+		_pos = _this select 0;
+		_numberOfFragments = _this select 1;
 		for "_i" from 0 to _numberOfFragments - 1 do{
 			_pos set[2,.1 + random 2]; 
 			_bullet = "B_408_Ball" createVehicle _pos;
