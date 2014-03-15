@@ -1,6 +1,6 @@
 EXPLOSIVESEQUENCE_SMALL = {
 	_explosiveSequence = ["M_PG_AT"]; 
-	[_this, _explosiveSequence, true, true] spawn PRIMARY_EXPLOSION;
+	[_this, _explosiveSequence, true, true, "small"] spawn PRIMARY_EXPLOSION;
 };
 
 EXPLOSIVESEQUENCE_MEDIUM = {
@@ -10,7 +10,7 @@ EXPLOSIVESEQUENCE_MEDIUM = {
 
 EXPLOSIVESEQUENCE_LARGE = {
 	_explosiveSequence = ["Bo_GBU12_LGB_MI10", "HelicopterExploSmall"];
-	[_this, _explosiveSequence, true, true] spawn PRIMARY_EXPLOSION;
+	[_this, _explosiveSequence, true, true, "large"] spawn PRIMARY_EXPLOSION;
 };
 
 EXPLOSIVESEQUENCE_DISARM = {
@@ -30,11 +30,18 @@ PRIMARY_EXPLOSION = {
 	_explosiveSequence = (_this select 1);
 	_createSecondary = (_this select 2);
 	_createSmoke = [_this, 3, true] call BIS_fnc_param;
+	_size = [_this, 4, "large"] call BIS_fnc_param;
 	
 	[[_iedPosition] , "IED_SCREEN_EFFECTS", true, false] spawn BIS_fnc_MP;
 	
 	if(_createSmoke) then {
-		[[_iedPosition] , "IED_SMOKE", true, false] spawn BIS_fnc_MP;
+		if(_size == "large") then {
+			[[_iedPosition] , "IED_SMOKE_LARGE", true, false] spawn BIS_fnc_MP;
+		} else {
+			if(_size == "small") then {
+				[[_iedPosition] , "IED_SMOKE_SMALL", true, false] spawn BIS_fnc_MP;
+			};
+		};
 	};
 
 	lastIedExplosion = _iedPosition;
