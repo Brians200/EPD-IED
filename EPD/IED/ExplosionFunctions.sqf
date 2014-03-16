@@ -1,10 +1,10 @@
 EXPLOSIVESEQUENCE_SMALL = {
-	_explosiveSequence = ["M_Titan_AP"]; 
+	_explosiveSequence = ["M_Titan_AP","M_Titan_AP"]; 
 	[_this, _explosiveSequence, true, true, "small"] spawn PRIMARY_EXPLOSION;
 };
 
 EXPLOSIVESEQUENCE_MEDIUM = {
-	_explosiveSequence = ["HelicopterExploBig","M_PG_AT","M_Titan_AT"];
+	_explosiveSequence = ["HelicopterExploBig","M_PG_AT","M_Titan_AT","M_Titan_AP"];
 	[_this, _explosiveSequence, true, true, "medium"] spawn PRIMARY_EXPLOSION;
 };
 
