@@ -26,6 +26,8 @@ EXPLOSIVESEQUENCE_SECONDARY = {
 PRIMARY_EXPLOSION = {
 	_iedArray = (_this select 0) call GET_IED_ARRAY;
 	_iedPosition = getpos (_iedArray select 0);
+	terminate (_iedArray select 5);	//need to stop these so we don't get double explosions
+	deleteVehicle (_iedArray select 1);  //need to stop these so we don't get double explosions
 	(_this select 0 select 0) call INCREMENT_EXPLOSION_COUNTER;
 	_explosiveSequence = (_this select 1);
 	_createSecondary = (_this select 2);
@@ -100,7 +102,7 @@ PRIMARY_EXPLOSION = {
 		};
 	};
 	
-	
+	sleep 5;
 	publicVariable "iedDictionary";
 };
 
