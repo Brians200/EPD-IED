@@ -28,6 +28,7 @@ PRIMARY_EXPLOSION = {
 	_iedPosition = getpos (_iedArray select 0);
 	terminate (_iedArray select 5);	//need to stop these so we don't get double explosions
 	deleteVehicle (_iedArray select 1);  //need to stop these so we don't get double explosions
+	(_iedArray select 0) removeAllEventHandlers "HitPart";
 	(_this select 0 select 0) call INCREMENT_EXPLOSION_COUNTER;
 	_explosiveSequence = (_this select 1);
 	_createSecondary = (_this select 2);
@@ -93,7 +94,7 @@ PRIMARY_EXPLOSION = {
 	
 	if(_createSecondary) then {
 		if(random 100 < secondaryChance) then {
-			_sleepTime = 5;
+			_sleepTime = 10;
 			if(EPD_IED_debug) then {
 				hint format["Creating Secondary Explosive"];
 			};

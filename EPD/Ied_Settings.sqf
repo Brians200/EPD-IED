@@ -13,7 +13,7 @@ secondaryChance = 50; //Chance that a secondary IED will spawn.
 
 smallChance = 40; //Chance that a small IED will be chosen.
 mediumChance = 40; //Chance that a medium IED will be chosen.
-largeChance = 20; //Chance that a medium IED will be chosen.
+largeChance = 20; //Chance that a large IED will be chosen.
 
 iedSecondaryItems = ["Land_CanisterOil_F","Land_FMradio_F","Land_Canteen_F","Land_CerealsBox_F","Land_BottlePlastic_V1_F","Land_HandyCam_F","Land_PowderedMilk_F","Land_RiceBox_F","Land_TacticalBacon_F","Land_VitaminBottle_F","Land_BottlePlastic_V2_F"];
 
@@ -58,6 +58,7 @@ allowExplosiveToTriggerIEDs = true;
 /*********Marker size = 1**********************/
 //["marker", side]
 //["marker", chanceToBeReal, side]
+//["marker", [fakeChance, smallIedChance, mediumIedChance, largeIedChance] , side]
 
 //The side can be a single side, or an array of sides
 //Ex. "West"   or ["West,"East"]
@@ -82,13 +83,13 @@ iedInitialArray = [
 	["AltisRandom14",6,"West"],
 	["AltisRandom15",6,"West"],
 	["AltisRandom16",6,"West"],
-	//["Gravia", 20, [50, 30, 15, 5], "West" ],
+	//["Gravia", 20, [0, 30, 0, 0], "West" ],
 	//["Lakka", 2, 8,  ["West","East"] ],
 	//["OreoKastro", "West"],
 	//["Athira", 2, "West" ],
 	["IEDSINGLE1", ["West","East"]],
-	["IEDSINGLE2", 100,"West"],
-	["IEDSINGLE3", 100, "West"]
+	["IEDSINGLE2", 50 ,"West"],
+	["IEDSINGLE3", [0,0,0,100], "West"]
 	];
 	
 //Place the mapLocations, predefinedLocations, and markerNames of places you don't want any IEDs spawning

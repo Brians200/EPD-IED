@@ -373,6 +373,7 @@ class Mission
 		class Item22
 		{
 			position[]={14417.352,17.200153,18032.502};
+			azimut=135;
 			id=30;
 			side="EMPTY";
 			vehicle="B_Heli_Light_01_F";

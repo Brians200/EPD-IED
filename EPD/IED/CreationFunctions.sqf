@@ -57,7 +57,15 @@ CREATE_SPECIFIC_IED = {
 	
 	_sizeAndType = "" call GET_SIZE_AND_TYPE;
 	_chance = 100;
-	if(count _parameters == 3) then { _chance = _parameters select 1; };
+	if(count _parameters == 3) then { 
+		if(typename( _parameters select 1) == "ARRAY") then {
+			_chances =  _parameters select 1;
+			_chance = 100-(_chances select 0);
+			_sizeAndType = [_chances select 1, _chances select 2, _chances select 3] call GET_SIZE_AND_TYPE;
+		} else {
+			_chance = _parameters select 1; 
+		};
+	};
 	
 	if(random 100 < _chance) then {
 		[_origin, _sizeAndType select 0, _sizeAndType select 1, _side, _dictionary, _sectionName] call CREATE_IED;
