@@ -67,7 +67,7 @@ allowExplosiveToTriggerIEDs = true;
 iedInitialArray = [
 	["AllCities","West"],
 	["AllVillages","West"],
-	["AltisRandom1",6,"West"],
+	/*["AltisRandom1",6,"West"],
 	["AltisRandom2",6,"West"],
 	["AltisRandom3",6,"West"],
 	["AltisRandom4",6,"West"],
@@ -82,7 +82,7 @@ iedInitialArray = [
 	["AltisRandom13",6,"West"],
 	["AltisRandom14",6,"West"],
 	["AltisRandom15",6,"West"],
-	["AltisRandom16",6,"West"],
+	["AltisRandom16",6,"West"],*/
 	//["Gravia", 20, [0, 30, 0, 0], "West" ],
 	//["Lakka", 2, 8,  ["West","East"] ],
 	//["OreoKastro", "West"],
