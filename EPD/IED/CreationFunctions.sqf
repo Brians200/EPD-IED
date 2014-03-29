@@ -164,7 +164,7 @@ CREATE_IED = {
 	
 	_scriptHandle = "";
 	if(allowExplosiveToTriggerIEDs) then {
-		_scriptHandle = [_ied, _sectionName, _iedName, _iedSize, _trigger] spawn PROJECTILE_DETECTION;
+		_scriptHandle = [_ied, _sectionName, _iedName, _iedSize] spawn PROJECTILE_DETECTION;
 	} else {
 		_scriptHandle = 0 spawn {};
 	};
@@ -218,7 +218,7 @@ CREATE_SECONDARY_IED = {
 	
 	_scriptHandle = "";
 	if(allowExplosiveToTriggerIEDs) then {
-		_scriptHandle = [_ied, _sectionName, _iedName, "SECONDARY", _trigger] spawn PROJECTILE_DETECTION;
+		_scriptHandle = [_ied, _sectionName, _iedName, "SECONDARY"] spawn PROJECTILE_DETECTION;
 	} else {
 		_scriptHandle = 0 spawn {};
 	};
