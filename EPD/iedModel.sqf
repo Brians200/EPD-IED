@@ -7,7 +7,7 @@ sectionDictionary =   <infos, [iedsExploded, iedsDisarmed]>
 					| <fakes, fakesDictionary>
 					| <cleanUp, [disarmedobjects]>
 					
-iedsDictionary = <iedName, [ied, trigger, sides, size, markerName, projectileDetectionHandle]>
+iedsDictionary = <iedName, [ied, trigger, sides, size, markerName, projectileDetectionHandle, triggerStatusHandle]>
 
 fakesDictionary = <fakeName, [fake, fakeMarkerName]>
 

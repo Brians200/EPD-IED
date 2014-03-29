@@ -1,5 +1,41 @@
 TRIGGER_STATUS_LOOP = {
-
+	
+	_iedPosition = _this select 0;
+	_sectionDictionary = _this select 1;
+	_sectionName = _this select 2;
+	_iedName = _this select 3;
+	_iedSize = _this select 4;
+	
+	_triggerActive = false;
+	while{true} do {
+		_nearEntitiesCount = count (_iedPosition nearEntities [["CAManBase","LandVehicle"], 250]);
+		
+		if(! _triggerActive && {_nearEntitiesCount > 0}) then {
+			_triggerActive = true;
+			hint "Trigger Created";
+			
+			_trigger = createTrigger["EmptyDetector", _iedPosition];
+			_trigger setTriggerArea[11,11,0,true];
+			_trigger setTriggerActivation ["any", "PRESENT", false];
+			_trigger setTriggerStatements [
+						'this && { ["' + _sectionName + '","' + _iedName +'", thisList] call TRIGGER_CHECK }',
+						'["' + _sectionName + '","' + _iedName +'"] call EXPLOSIVESEQUENCE_' + _iedSize + ';',
+						""];
+			
+			[_sectionDictionary, _iedName, _trigger] call ADD_TRIGGER_TO_IED;
+		}
+		else {
+			if(_triggerActive && {_nearEntitiesCount == 0}) then {
+				_triggerActive = false;
+				hint "Trigger deleted";
+				[_sectionDictionary, _iedName] call REMOVE_TRIGGER_FROM_IED;
+			};		
+		};
+	
+	
+	
+		sleep 5;
+	};
 };
 
 TRIGGER_CHECK = {
