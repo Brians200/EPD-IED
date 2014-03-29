@@ -1,3 +1,7 @@
+TRIGGER_STATUS_LOOP = {
+
+};
+
 TRIGGER_CHECK = {
 	_sectionName = _this select 0;
 	_iedName = _this select 1;

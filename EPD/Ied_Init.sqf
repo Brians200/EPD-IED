@@ -26,9 +26,9 @@ call compile preprocessFileLineNumbers "EPD\IED\CreationFunctions.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\ExplosionEffects.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\CreationAuxiliaryFunctions.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\ExplosivesHandler.sqf";
-call compile preprocessFileLineNumbers "EPD\IED\Disarm.sqf";
+call compile preprocessFileLineNumbers "EPD\IED\DisarmFunctions.sqf";
 call compile preprocessFileLineNumbers "EPD\IED\DictionaryFunctions.sqf";
-call compile preprocessFileLineNumbers "EPD\IED\TriggerCheck.sqf";
+call compile preprocessFileLineNumbers "EPD\IED\TriggerFunctions.sqf";
 
 
 iedSecondaryItemsCount = count iedSecondaryItems;
