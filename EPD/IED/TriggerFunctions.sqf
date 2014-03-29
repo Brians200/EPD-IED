@@ -12,7 +12,7 @@ TRIGGER_STATUS_LOOP = {
 		
 		if(! _triggerActive && {_nearEntitiesCount > 0}) then {
 			_triggerActive = true;
-			hint "Trigger Created";
+			if(EPD_IED_debug) then { hintSilent "Trigger Created" };
 			
 			_trigger = createTrigger["EmptyDetector", _iedPosition];
 			_trigger setTriggerArea[11,11,0,true];
@@ -27,7 +27,7 @@ TRIGGER_STATUS_LOOP = {
 		else {
 			if(_triggerActive && {_nearEntitiesCount == 0}) then {
 				_triggerActive = false;
-				hint "Trigger deleted";
+				if(EPD_IED_debug) then { hintSilent "Trigger deleted"; };
 				[_sectionDictionary, _iedName] call REMOVE_TRIGGER_FROM_IED;
 			};		
 		};
