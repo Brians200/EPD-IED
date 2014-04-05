@@ -1,16 +1,16 @@
 EXPLOSIVESEQUENCE_SMALL = {
 	_explosiveSequence = ["M_Titan_AP","M_Titan_AP"]; 
-	[_this, _explosiveSequence, true, true, "small"] spawn PRIMARY_EXPLOSION;
+	[_this, _explosiveSequence, true, true, "small", floor random 15] spawn PRIMARY_EXPLOSION;
 };
 
 EXPLOSIVESEQUENCE_MEDIUM = {
 	_explosiveSequence = ["HelicopterExploBig","M_PG_AT","M_Titan_AT","M_Titan_AP"];
-	[_this, _explosiveSequence, true, true, "medium"] spawn PRIMARY_EXPLOSION;
+	[_this, _explosiveSequence, true, true, "medium", 10+floor random 30] spawn PRIMARY_EXPLOSION;
 };
 
 EXPLOSIVESEQUENCE_LARGE = {
 	_explosiveSequence = ["Bo_GBU12_LGB_MI10", "HelicopterExploSmall"];
-	[_this, _explosiveSequence, true, true, "large"] spawn PRIMARY_EXPLOSION;
+	[_this, _explosiveSequence, true, true, "large", 20+floor random 30] spawn PRIMARY_EXPLOSION;
 };
 
 EXPLOSIVESEQUENCE_DISARM = {
@@ -38,6 +38,65 @@ PRIMARY_EXPLOSION = {
 		_createSecondary = (_this select 2);
 		_createSmoke = [_this, 3, true] call BIS_fnc_param;
 		_size = [_this, 4, "large"] call BIS_fnc_param;
+		_numberOfPlumes = [_this,5,0] call BIS_fnc_param;
+		
+		_upwards = 200;
+		_horizontal = 1200;
+		
+		0 = [_numberOfPlumes, _iedPosition, _horizontal, _upwards ] spawn {
+			_numberOfPlumes = _this select 0;
+			_loc = _this select 1;
+			_horizontal = _this select 2;
+			_upwards = _this select 3;
+			
+			_aslLoc = [_loc select 0, _loc select 1, getTerrainHeightASL [_loc select 0, _loc select 1]];
+			
+			for "_i" from 0 to _numberOfPlumes - 1 do{
+				0 = [_loc, _aslLoc, _horizontal, _upwards] spawn {
+					_loc = _this select 0;
+					_aslLoc = _this select 1;
+					_horizontal = _this select 2;
+					_upwards = _this select 3;
+					
+					_thingToFling = "Land_Bucket_F" createVehicle [0,0,0];
+					hideObject _thingToFling;
+					hideObjectGlobal _thingToFling;
+					_thingToFling allowDamage false;
+					_thingToFling setPos [_loc select 0, _loc select 1, 1];
+					
+					
+					_r = floor random 3;
+					switch(_r) do
+					{
+						case 0:
+						{
+							[_thingToFling, _aslLoc] spawn {call SAND_TRAIL_SMOKE;};
+						};
+						case 1: 
+						{
+							[_thingToFling, _aslLoc] spawn {call GRAY_TRAIL_SMOKE;};
+						};
+						case 2:
+						{
+							[_thingToFling, _aslLoc] spawn {call BROWN_TRAIL_SMOKE;};
+						};
+					};	
+					sleep .001;
+					
+					_hor1 = (random _horizontal)-(_horizontal/2);
+					_hor2 = (random _horizontal)-(_horizontal/2);
+					_ver = 1+(random _upwards);
+					_thingToFling setVelocity [_hor1, _hor2, _ver ];
+					
+					sleep ( random .5);
+					
+					_thingToFling setpos [0,0,0];
+					deletevehicle _thingToFling;
+			
+				};
+			};
+		};
+		
 		_numberOfFragments = 150;
 		
 		[[_iedPosition] , "IED_SCREEN_EFFECTS", true, false] spawn BIS_fnc_MP;
