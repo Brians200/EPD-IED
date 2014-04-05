@@ -137,8 +137,8 @@ CREATE_PLUMES = {
 			_upwards = _this select 3;
 			
 			_thingToFling = "Land_Bucket_F" createVehicle [0,0,0];
-			//hideObject _thingToFling;
-			//hideObjectGlobal _thingToFling;
+			hideObject _thingToFling;
+			hideObjectGlobal _thingToFling;
 			_thingToFling allowDamage false;
 			_thingToFling setPos [_loc select 0, _loc select 1, 1];
 			
