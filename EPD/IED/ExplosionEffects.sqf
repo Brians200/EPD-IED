@@ -46,21 +46,21 @@ IED_ROCKS = {
 	_c2 = _col select 1;
 	_c3 = _col select 2;
 
-	_rocks1 = "#particlesource" createVehicle _aslLoc;
+	_rocks1 = "#particlesource" createVehicleLocal _aslLoc;
 	_rocks1 setposasl _aslLoc;
 	_rocks1 setParticleParams [["\A3\data_f\ParticleEffects\Universal\Mud.p3d", 1, 0, 1], "", "SpaceObject", 1, 12.5, [0, 0, 0], [0, 0, 15], 5, 100, 7.9, 1, [.45, .45], [[0.1, 0.1, 0.1, 1], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0.08], 1, 0, "", "", _aslLoc,0,false,0.3];
 	_rocks1 setParticleRandom [0, [1, 1, 0], [20, 20, 15], 3, 0.25, [0, 0, 0, 0.1], 0, 0];
 	_rocks1 setDropInterval 0.01;
 	_rocks1 setParticleCircle [0, [0, 0, 0]];
 
-	_rocks2 = "#particlesource" createVehicle _aslLoc;
+	_rocks2 = "#particlesource" createVehicleLocal _aslLoc;
 	_rocks2 setposasl _aslLoc;
 	_rocks2 setParticleParams [["\A3\data_f\ParticleEffects\Universal\Mud.p3d", 1, 0, 1], "", "SpaceObject", 1, 12.5, [0, 0, 0], [0, 0, 15], 5, 100, 7.9, 1, [.27, .27], [[0.1, 0.1, 0.1, 1], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0.08], 1, 0, "", "", _aslLoc,0,false,0.3];
 	_rocks2 setParticleRandom [0, [1, 1, 0], [25, 25, 15], 3, 0.25, [0, 0, 0, 0.1], 0, 0];
 	_rocks2 setDropInterval 0.01;
 	_rocks2 setParticleCircle [0, [0, 0, 0]];
 
-	_rocks3 = "#particlesource" createVehicle _aslLoc;
+	_rocks3 = "#particlesource" createVehicleLocal _aslLoc;
 	_rocks3 setposasl _aslLoc;
 	_rocks3 setParticleParams [["\A3\data_f\ParticleEffects\Universal\Mud.p3d", 1, 0, 1], "", "SpaceObject", 1, 12.5, [0, 0, 0], [0, 0, 15], 5, 100, 7.9, 1, [.09, .09], [[0.1, 0.1, 0.1, 1], [0.25, 0.25, 0.25, 0.5], [0.5, 0.5, 0.5, 0]], [0.08], 1, 0, "", "", _aslLoc,0,false,0.3];
 	_rocks3 setParticleRandom [0, [1, 1, 0], [30, 30, 15], 3, 0.25, [0, 0, 0, 0.1], 0, 0];
@@ -77,102 +77,117 @@ IED_ROCKS = {
 
 /******************SMOKE EFFECTS*********************/
 SAND_TRAIL_SMOKE = {
-	_thingToFling = _this select 0;
+	_loc = _this select 0;
 	_aslLoc = _this select 1;
-	hideObject _thingToFling;
-	
-	_size = 1 + random 1.5;
-	
-	_smoke = "#particlesource" createVehicle _aslLoc;
+	_horizontal = _this select 2;
+	_upwards = _this select 3;
+
+	_size = 1 + random 3;
+
+	_thingToFling = "Land_Bucket_F" createVehicleLocal [0,0,0];
+	_thingToFling hideObject true;
+	_thingToFling setPos _loc;
+	_smoke = "#particlesource" createVehicleLocal _aslLoc;
 	_smoke setposasl _aslLoc;
 	_smoke setParticleCircle [0, [0, 0, 0]];
-	_smoke setParticleRandom [0, [0, 0, 0], [0, 0, 0], 0, 1, [0, 0, 0, 0.1], 0, 0];
+	_smoke setParticleRandom [0, [0.25, 0.25, 0], [0, 0, 0], 0, 1, [0, 0, 0, 0.1], 0, 0];
 	_smoke setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 10, [0, 0, 2], [0, 0, 0], 0, 10, 7.85, 0.375, [_size,2*_size], [[.55, .47, .37, .75], [0.78, 0.76, 0.71, 0]], [0.08], 1, 0, "", "", _thingToFling];
-	_smoke setDropInterval 0.002;
-	
-	[_thingToFling, _size, _smoke] spawn SAND_TRAIL_SMOKE_LOOP;
-};
+	_smoke setDropInterval 0.005;
 
-SAND_TRAIL_SMOKE_LOOP = {
-	_thingToFling = _this select 0;
-	_size = _this select 1;
-	_smoke = _this select 2;
-	
-	while {!isNull _thingToFling} do {
+	_thingToFling setVelocity [(random _horizontal)-(_horizontal/2), (random _horizontal)-(_horizontal/2), 5+(random _upwards)];
+	_thingToFling allowDamage false;
+	_sleepTime = (random .5);
+	_currentTime = 0;
+
+	while { _currentTime < _sleepTime and _size > 0} do {
 		//_thingToFling hideObject true;
 		_smoke setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 10, [0, 0, 2], [0, 0, 0], 0, 10, 7.85, 0.375, [_size,2*_size], [[.55, .47, .37, .75], [0.78, 0.76, 0.71, 0]], [0.08], 1, 0, "", "", _thingToFling];
-		
-		_sleep = random .005;
-		_size = 0.0001 max (_size - ((25+random 25)*_sleep));
+
+		_sleep = random .05;
+		_size = _size - (6*_sleep);
+		_currentTime = _currentTime + _sleep;
 		sleep _sleep;
 	};
-	
+
+	_thingToFling setpos [0,0,0];
 	deletevehicle _smoke;
+	deletevehicle _thingToFling;
 };
 
 GRAY_TRAIL_SMOKE = {
-	_thingToFling = _this select 0;
+	_loc = _this select 0;
 	_aslLoc = _this select 1;
-	hideObject _thingToFling;
-	
-	_size = 1 + random 1.5;
-	
-	_smoke = "#particlesource" createVehicle _aslLoc;
+	_horizontal = _this select 2;
+	_upwards = _this select 3;
+
+	_size = 1 + random 3;
+
+	_thingToFling = "Land_Bucket_F" createVehicleLocal [0,0,0];
+	_thingToFling hideObject true;
+	_thingToFling setPos _loc;
+	_smoke = "#particlesource" createVehicleLocal _aslLoc;
 	_smoke setposasl _aslLoc;
 	_smoke setParticleCircle [0, [0, 0, 0]];
-	_smoke setParticleRandom [0, [0, 0, 0], [0, 0, 0], 0, 1, [0, 0, 0, 0.1], 0, 0];
+	_smoke setParticleRandom [0, [0.25, 0.25, 0], [0, 0, 0], 0, 1, [0, 0, 0, 0.1], 0, 0];
 	_smoke setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 10, [0, 0, 2], [0, 0, 0], 0, 10, 7.85, 0.375, [_size,2*_size], [[.1, .1, .1, .75], [0.78, 0.76, 0.71, 0]], [0.08], 1, 0, "", "", _thingToFling];
-	_smoke setDropInterval 0.002;
-	
-	[_thingToFling, _size, _smoke] spawn GRAY_TRAIL_SMOKE_LOOP;
-};
+	_smoke setDropInterval 0.005;
 
-GRAY_TRAIL_SMOKE_LOOP = {
-	_thingToFling = _this select 0;
-	_size = _this select 1;
-	_smoke = _this select 2;
-	
-	while {!isNull _thingToFling} do {
+	_thingToFling setVelocity [(random _horizontal)-(_horizontal/2), (random _horizontal)-(_horizontal/2), 5+(random _upwards)];
+	_thingToFling allowDamage false;
+	_sleepTime = (random .5);
+	_currentTime = 0;
+
+	while { _currentTime < _sleepTime and _size > 0} do {
+		//_thingToFling hideObject true;
 		_smoke setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 10, [0, 0, 2], [0, 0, 0], 0, 10, 7.85, 0.375, [_size,2*_size], [[.1, .1, .1, .75], [0.78, 0.76, 0.71, 0]], [0.08], 1, 0, "", "", _thingToFling];
-		
-		_sleep = random .005;
-		_size = 0.0001 max (_size - ((25+random 25)*_sleep));
+
+		_sleep = random .05;
+		_size = _size - (6*_sleep);
+		_currentTime = _currentTime + _sleep;
 		sleep _sleep;
 	};
+
+	_thingToFling setpos [0,0,0];
 	deletevehicle _smoke;
+	deletevehicle _thingToFling;
 };
 
 BROWN_TRAIL_SMOKE = {
-	_thingToFling = _this select 0;
+	_loc = _this select 0;
 	_aslLoc = _this select 1;
-	hideObject _thingToFling;
-	
-	_size = 1 + random 1.5;
-	
-	_smoke = "#particlesource" createVehicle _aslLoc;
+	_horizontal = _this select 2;
+	_upwards = _this select 3;
+
+	_size = 1 + random 3;
+
+	_thingToFling = "Land_Bucket_F" createVehicleLocal [0,0,0];
+	_thingToFling hideObject true;
+	_thingToFling setPos _loc;
+	_smoke = "#particlesource" createVehicleLocal _aslLoc;
 	_smoke setposasl _aslLoc;
 	_smoke setParticleCircle [0, [0, 0, 0]];
-	_smoke setParticleRandom [0, [0, 0, 0], [0, 0, 0], 0, 1, [0, 0, 0, 0.1], 0, 0];
+	_smoke setParticleRandom [0, [0.25, 0.25, 0], [0, 0, 0], 0, 1, [0, 0, 0, 0.1], 0, 0];
 	_smoke setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 10, [0, 0, 2], [0, 0, 0], 0, 10, 7.85, 0.375, [_size,2*_size], [[0.55, 0.41, 0.25, 1], [0.55, 0.41, 0.25, 0]], [0.08], 1, 0, "", "", _thingToFling];
-	_smoke setDropInterval 0.002;
-	
-	[_thingToFling, _size, _smoke] spawn BROWN_TRAIL_SMOKE_LOOP;
-};
+	_smoke setDropInterval 0.005;
 
-BROWN_TRAIL_SMOKE_LOOP = {
-	_thingToFling = _this select 0;
-	_size = _this select 1;
-	_smoke = _this select 2;
-	
-	while {!isNull _thingToFling} do {
-		_smoke setParticleRandom [0, [.25, .25, 0], [0, 0, 0], 0, 1, [0, 0, 0, 0.1], 0, 0];
+	_thingToFling setVelocity [(random _horizontal)-(_horizontal/2), (random _horizontal)-(_horizontal/2), 5+(random _upwards)];
+	_thingToFling allowDamage false;
+	_sleepTime = (random .5);
+	_currentTime = 0;
+
+	while { _currentTime < _sleepTime and _size > 0} do {
+		//_thingToFling hideObject true;
 		_smoke setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 10, [0, 0, 2], [0, 0, 0], 0, 10, 7.85, 0.375, [_size,2*_size], [[0.55, 0.41, 0.25, 1], [0.55, 0.41, 0.25, 0]], [0.08], 1, 0, "", "", _thingToFling];
-		
-		_sleep = random .005;
-		_size = 0.0001 max (_size - ((25+random 25)*_sleep));
+
+		_sleep = random .05;
+		_size = _size - (6*_sleep);
+		_currentTime = _currentTime + _sleep;
 		sleep _sleep;
 	};
-	deletevehicle _smoke;	
+
+	_thingToFling setpos [0,0,0];
+	deletevehicle _smoke;
+	deletevehicle _thingToFling;
 };
 
 IED_SMOKE_LARGE = {
@@ -180,33 +195,57 @@ IED_SMOKE_LARGE = {
 	_aslLoc = [_loc select 0, _loc select 1, getTerrainHeightASL [_loc select 0, _loc select 1]];
 	
 	0 = [_loc] spawn SHOCK_WAVE;
+	
+	0 = [_loc,_aslLoc] spawn {
+		_loc = _this select 0;
+		_aslLoc = _this select 1;
+		_numPlumes = 15+floor random 20;
+		for "_i" from 0 to _numPlumes -1 do{
+			_r = floor random 3;
+			switch(_r) do
+			{
+				case 0:
+				{
+					[_loc, _aslLoc, 500, 200] spawn {call SAND_TRAIL_SMOKE;};
+				};
+				case 1:
+				{
+					[_loc, _aslLoc, 500, 200] spawn {call GRAY_TRAIL_SMOKE;};
+				};
+				case 2:
+				{
+					[_loc, _aslLoc, 500, 200] spawn {call BROWN_TRAIL_SMOKE;};
+				};
+			};
+		};
+	};
 		
 	0 = _aslLoc spawn {
 	
 		_aslLoc = _this;
 		
-		_smoke1 = "#particlesource" createVehicle _aslLoc;
+		_smoke1 = "#particlesource" createVehicleLocal _aslLoc;
 		_smoke1 setposasl _aslLoc;
 		_smoke1 setParticleCircle [0, [0, 0, 0]];
 		_smoke1 setParticleRandom [0, [1.5 + random 3, 1.5 + random 3, 8], [8+random 5, 8+random 5, 15], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 		_smoke1 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 6, [0, 0, 0], [0, 0, 0], 0, 10, 7.85, .375, [6 + random 4, 10 + random 4, 14 + random 4], [[0, 0, 0, 1], [0.35, 0.35, 0.35, 0.35], [0.35, 0.35, 0.35, 0]], [0.08], 1, 0, "", "", _aslLoc];
 		_smoke1 setDropInterval .005;
 		
-		_smoke2 = "#particlesource" createVehicle _aslLoc;
+		_smoke2 = "#particlesource" createVehicleLocal _aslLoc;
 		_smoke2 setposasl _aslLoc;
 		_smoke2 setParticleCircle [0, [0, 0, 0]];
 		_smoke2 setParticleRandom [0, [1.5 + random 3, 1.5 + random 3, 8], [8+random 5, 8+random 5, 15], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 		_smoke2 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 6, [0, 0, 0], [0, 0, 0], 0, 10, 7.85, .375, [6 + random 4, 10 + random 4, 14 + random 4], [[.78, .76, .71, 1], [.35, .35, .35, 0.35], [0.35, 0.35, 0.35, 0]], [0.08], 1, 0, "", "", _aslLoc];
 		_smoke2 setDropInterval .005;
 		
-		_smoke3 = "#particlesource" createVehicle _aslLoc;
+		_smoke3 = "#particlesource" createVehicleLocal _aslLoc;
 		_smoke3 setposasl _aslLoc;
 		_smoke3 setParticleCircle [0, [0, 0, 0]];
 		_smoke3 setParticleRandom [0, [1.5 + random 3, 1.5 + random 3, 8], [8+random 5, 8+random 5, 15], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 		_smoke3 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 6, [0, 0, 0], [0, 0, 0], 0, 10, 7.85, .375, [6 + random 4, 10 + random 4, 14 + random 4], [[.55, .47, .37, 1], [.35, .35, .35, 0.35], [0.35, 0.35, 0.35, 0]], [0.08], 1, 0, "", "", _aslLoc];
 		_smoke3 setDropInterval .005;
 		
-		_smoke4 = "#particlesource" createVehicle _aslLoc;
+		_smoke4 = "#particlesource" createVehicleLocal _aslLoc;
 		_smoke4 setposasl _aslLoc;
 		_smoke4 setParticleCircle [0, [0, 0, 0]];
 		_smoke4 setParticleRandom [0, [1.5 + random 3, 1.5 + random 3, 8], [8+random 5, 8+random 5, 15], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
@@ -299,30 +338,54 @@ IED_SMOKE_MEDIUM = {
 	_loc = _this select 0;
 	_aslLoc = [_loc select 0, _loc select 1, getTerrainHeightASL [_loc select 0, _loc select 1]];
 	
+	0 = [_loc,_aslLoc] spawn {
+		_loc = _this select 0;
+		_aslLoc = _this select 1;
+		_numPlumes = 5 + floor random 15;
+		for "_i" from 0 to _numPlumes -1 do{
+			_r = floor random 3;
+			switch(_r) do
+			{
+				case 0:
+				{
+					[_loc, _aslLoc, 500, 200] spawn {call SAND_TRAIL_SMOKE;};
+				};
+				case 1:
+				{
+					[_loc, _aslLoc, 500, 200] spawn {call GRAY_TRAIL_SMOKE;};
+				};
+				case 2:
+				{
+					[_loc, _aslLoc, 500, 200] spawn {call BROWN_TRAIL_SMOKE;};
+				};
+			};
+		};
+	};
+	
 	0 = _aslLoc spawn {
 		_aslLoc = _this;
-		_smoke1 = "#particlesource" createVehicle _aslLoc;
+		_smoke1 = "#particlesource" createVehicleLocal _aslLoc;
 		_smoke1 setposasl _aslLoc;
 		_smoke1 setParticleCircle [0, [0, 0, 0]];
 		_smoke1 setParticleRandom [0, [1.5 + random 3, 1.5 + random 3, 8], [4+random 5, 4+random 5, 15], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 		_smoke1 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 6, [0, 0, 0], [0, 0, 0], 0, 10, 7.85, .375, [6 + random 4, 10 + random 4, 14 + random 4], [[0, 0, 0, 1], [0.35, 0.35, 0.35, 0.35], [0.35, 0.35, 0.35, 0]], [0.08], 1, 0, "", "", _aslLoc];
 		_smoke1 setDropInterval .005;
 		
-		_smoke2 = "#particlesource" createVehicle _aslLoc;
+		_smoke2 = "#particlesource" createVehicleLocal _aslLoc;
 		_smoke2 setposasl _aslLoc;
 		_smoke2 setParticleCircle [0, [0, 0, 0]];
 		_smoke2 setParticleRandom [0, [1.5 + random 3, 1.5 + random 3, 8], [4+random 5, 4+random 5, 15], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 		_smoke2 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 6, [0, 0, 0], [0, 0, 0], 0, 10, 7.85, .375, [6 + random 4, 10 + random 4, 14 + random 4], [[.78, .76, .71, 1], [.35, .35, .35, 0.35], [0.35, 0.35, 0.35, 0]], [0.08], 1, 0, "", "", _aslLoc];
 		_smoke2 setDropInterval .005;
 		
-		_smoke3 = "#particlesource" createVehicle _aslLoc;
+		_smoke3 = "#particlesource" createVehicleLocal _aslLoc;
 		_smoke3 setposasl _aslLoc;
 		_smoke3 setParticleCircle [0, [0, 0, 0]];
 		_smoke3 setParticleRandom [0, [1.5 + random 3, 1.5 + random 3, 8], [4+random 5, 4+random 5, 15], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 		_smoke3 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 6, [0, 0, 0], [0, 0, 0], 0, 10, 7.85, .375, [6 + random 4, 10 + random 4, 14 + random 4], [[.55, .47, .37, 1], [.35, .35, .35, 0.35], [0.35, 0.35, 0.35, 0]], [0.08], 1, 0, "", "", _aslLoc];
 		_smoke3 setDropInterval .005;
 		
-		_smoke4 = "#particlesource" createVehicle _aslLoc;
+		_smoke4 = "#particlesource" createVehicleLocal _aslLoc;
 		_smoke4 setposasl _aslLoc;
 		_smoke4 setParticleCircle [0, [0, 0, 0]];
 		_smoke4 setParticleRandom [0, [1.5 + random 3, 1.5 + random 3, 8], [4+random 5, 4+random 5, 15], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
@@ -414,31 +477,55 @@ IED_SMOKE_SMALL = {
 	_loc = _this select 0;
 	_aslLoc = [_loc select 0, _loc select 1, getTerrainHeightASL [_loc select 0, _loc select 1]];
 	
+	0 = [_loc,_aslLoc] spawn {
+		_loc = _this select 0;
+		_aslLoc = _this select 1;
+		_numPlumes = floor random 8;
+		for "_i" from 0 to _numPlumes -1 do{
+			_r = floor random 3;
+			switch(_r) do
+			{
+				case 0:
+				{
+					[_loc, _aslLoc, 500, 200] spawn {call SAND_TRAIL_SMOKE;};
+				};
+				case 1:
+				{
+					[_loc, _aslLoc, 500, 200] spawn {call GRAY_TRAIL_SMOKE;};
+				};
+				case 2:
+				{
+					[_loc, _aslLoc, 500, 200] spawn {call BROWN_TRAIL_SMOKE;};
+				};
+			};
+		};
+	};
+	
 	0 = _aslLoc spawn {
 		_aslLoc = _this;
 		//vertical
-		_smoke1 = "#particlesource" createVehicle _aslLoc;
+		_smoke1 = "#particlesource" createVehicleLocal _aslLoc;
 		_smoke1 setposasl _aslLoc;
 		_smoke1 setParticleCircle [0, [0, 0, 0]];
 		_smoke1 setParticleRandom [0, [1.5 + random 2, 1.5 + random 2, 8], [1+random 5, 1+random 5, 15], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 		_smoke1 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 6, [0, 0, 0], [0, 0, 0], 0, 10, 7.85, .375, [6 + random 4, 10 + random 4, 14 + random 4], [[0, 0, 0, 1], [0.35, 0.35, 0.35, 0.35], [0.35, 0.35, 0.35, 0]], [0.08], 1, 0, "", "", _aslLoc];
 		_smoke1 setDropInterval .01;
 		
-		_smoke2 = "#particlesource" createVehicle _aslLoc;
+		_smoke2 = "#particlesource" createVehicleLocal _aslLoc;
 		_smoke2 setposasl _aslLoc;
 		_smoke2 setParticleCircle [0, [0, 0, 0]];
 		_smoke2 setParticleRandom [0, [1.5 + random 2, 1.5 + random 2, 8], [1+random 5, 1+random 5, 15], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 		_smoke2 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 6, [0, 0, 0], [0, 0, 0], 0, 10, 7.85, .375, [6 + random 4, 10 + random 4, 14 + random 4], [[.78, .76, .71, 1], [.35, .35, .35, 0.35], [0.35, 0.35, 0.35, 0]], [0.08], 1, 0, "", "", _aslLoc];
 		_smoke2 setDropInterval .01;
 		
-		_smoke3 = "#particlesource" createVehicle _aslLoc;
+		_smoke3 = "#particlesource" createVehicleLocal _aslLoc;
 		_smoke3 setposasl _aslLoc;
 		_smoke3 setParticleCircle [0, [0, 0, 0]];
 		_smoke3 setParticleRandom [0, [1.5 + random 2, 1.5 + random 2, 8], [1+random 5, 1+random 5, 15], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 		_smoke3 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 6, [0, 0, 0], [0, 0, 0], 0, 10, 7.85, .375, [6 + random 4, 10 + random 4, 14 + random 4], [[.55, .47, .37, 1], [.35, .35, .35, 0.35], [0.35, 0.35, 0.35, 0]], [0.08], 1, 0, "", "", _aslLoc];
 		_smoke3 setDropInterval .01;
 		
-		_smoke4 = "#particlesource" createVehicle _aslLoc;
+		_smoke4 = "#particlesource" createVehicleLocal _aslLoc;
 		_smoke4 setposasl _aslLoc;
 		_smoke4 setParticleCircle [0, [0, 0, 0]];
 		_smoke4 setParticleRandom [0, [1.5 + random 2, 1.5 + random 2, 8], [1+random 5, 1+random 5, 15], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
@@ -512,28 +599,28 @@ SHOCK_WAVE = {
 	_loc = _this select 0;
 	_aslLoc = [_loc select 0, _loc select 1, getTerrainHeightASL [_loc select 0, _loc select 1]];
 	
-	_smoke1 = "#particlesource" createVehicle _aslLoc;
+	_smoke1 = "#particlesource" createVehicleLocal _aslLoc;
 	_smoke1 setposasl _aslLoc;
 	_smoke1 setParticleCircle [0, [0, 0, 0]];
 	_smoke1 setParticleRandom [0, [8, 8, 2], [300, 300, 0], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 	_smoke1 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 3, [0, 0, -1], [0, 0, -8], 0, 10, 7.85, .375, [6, 8, 10], [[0, 0, 0, 1], [0.35, 0.35, 0.35, 0.35], [0.35, 0.35, 0.35, 0]], [0.08], 1, 0, "", "", _aslLoc];
 	_smoke1 setDropInterval .0004;
 	
-	_smoke2 = "#particlesource" createVehicle _aslLoc;
+	_smoke2 = "#particlesource" createVehicleLocal _aslLoc;
 	_smoke2 setposasl _aslLoc;
 	_smoke2 setParticleCircle [0, [0, 0, 0]];
 	_smoke2 setParticleRandom [0, [8, 8, 2], [300, 300, 0], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 	_smoke2 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 3, [0, 0, -1], [0, 0, -8], 0, 10, 7.85, .375, [6, 8, 10], [[.78, .76, .71, 1], [.35, .35, .35, 0.35], [0.35, 0.35, 0.35, 0]], [0.08], 1, 0, "", "", _aslLoc];
 	_smoke2 setDropInterval .0004;
 	
-	_smoke3 = "#particlesource" createVehicle _aslLoc;
+	_smoke3 = "#particlesource" createVehicleLocal _aslLoc;
 	_smoke3 setposasl _aslLoc;
 	_smoke3 setParticleCircle [0, [0, 0, 0]];
 	_smoke3 setParticleRandom [0, [8, 8, 2], [300, 300, 0], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
 	_smoke3 setParticleParams [["\A3\data_f\cl_fireD", 1, 0, 1], "", "Billboard", 1, 3, [0, 0, -1], [0, 0, -8], 0, 10, 7.85, .375, [6, 8, 10], [[.55, .47, .37, 1], [.35, .35, .35, 0.35], [0.35, 0.35, 0.35, 0]], [0.08], 1, 0, "", "", _aslLoc];
 	_smoke3 setDropInterval .0004;
 	
-	_smoke4 = "#particlesource" createVehicle _aslLoc;
+	_smoke4 = "#particlesource" createVehicleLocal _aslLoc;
 	_smoke4 setposasl _aslLoc;
 	_smoke4 setParticleCircle [0, [0, 0, 0]];
 	_smoke4 setParticleRandom [0, [8, 8, 2], [300, 300, 0], 0, 0.25, [0.05, 0.05, 0.05, 0.1], 0, 0];
