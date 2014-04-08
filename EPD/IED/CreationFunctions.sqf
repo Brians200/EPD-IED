@@ -162,20 +162,16 @@ CREATE_IED = {
 	_ied enableSimulation false;
 	_ied allowDamage false;
 	
-	_trigger = createTrigger["EmptyDetector", _iedPos];
 	_scriptHandle = "";
 	if(allowExplosiveToTriggerIEDs) then {
-		_scriptHandle = [_ied, _sectionName, _iedName, _iedSize, _trigger] spawn PROJECTILE_DETECTION;
+		_scriptHandle = [_ied, _sectionName, _iedName, _iedSize] spawn PROJECTILE_DETECTION;
 	} else {
 		_scriptHandle = 0 spawn {};
 	};
-	[_sectionDictionary, _iedName, [_ied, _trigger, _side, _iedSize,_markerName, _scriptHandle]] call ADD_IED_TO_SECTION;
-	_trigger setTriggerArea[11,11,0,true];
-	_trigger setTriggerActivation ["any", "PRESENT", false];
-	_trigger setTriggerStatements [
-						'this && { ["' + _sectionName + '","' + _iedName +'", thisList] call TRIGGER_CHECK }',
-						'["' + _sectionName + '","' + _iedName +'"] call EXPLOSIVESEQUENCE_' + _iedSize + ';',
-						""];
+	
+	_triggerStatusHandle = [_iedPos, _sectionDictionary, _sectionName, _iedName, _iedSize] spawn TRIGGER_STATUS_LOOP;
+	
+	[_sectionDictionary, _iedName, [_ied, objNull, _side, _iedSize,_markerName, _scriptHandle, _triggerStatusHandle]] call ADD_IED_TO_SECTION;
 	
 	
 	
@@ -220,20 +216,16 @@ CREATE_SECONDARY_IED = {
 	_ied enableSimulation false;
 	_ied allowDamage false;
 	
-	_trigger = createTrigger["EmptyDetector", _iedPos];
 	_scriptHandle = "";
 	if(allowExplosiveToTriggerIEDs) then {
-		_scriptHandle = [_ied, _sectionName, _iedName, "SECONDARY", _trigger] spawn PROJECTILE_DETECTION;
+		_scriptHandle = [_ied, _sectionName, _iedName, "SECONDARY"] spawn PROJECTILE_DETECTION;
 	} else {
 		_scriptHandle = 0 spawn {};
 	};
-	[_sectionDictionary, _iedName, [_ied, _trigger, _side, "SECONDARY",_markerName, _scriptHandle]] call ADD_IED_TO_SECTION;
-	_trigger setTriggerArea[11,11,0,true];
-	_trigger setTriggerActivation ["any", "PRESENT", false];
-	_trigger setTriggerStatements [
-						'this && { ["' + _sectionName + '","' + _iedName +'", thisList] call TRIGGER_CHECK }',
-						'["' + _sectionName + '","' + _iedName +'"] call EXPLOSIVESEQUENCE_SECONDARY;',
-						""];
+	
+	_triggerStatusHandle = [_iedPos, _sectionDictionary, _sectionName, _iedName, "SECONDARY"] spawn TRIGGER_STATUS_LOOP;
+	[_sectionDictionary, _iedName, [_ied, objNull, _side, "SECONDARY",_markerName, _scriptHandle, _triggerStatusHandle]] call ADD_IED_TO_SECTION;
+	
 	
 	if(EPD_IED_debug) then {			
 		createmarker [_markerName, _iedPos];

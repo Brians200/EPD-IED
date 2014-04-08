@@ -9,13 +9,12 @@ DISARM_ADD_ACTION = {
 	
 	_iedArray = [_sectionName, _iedName] call GET_IED_ARRAY;
 	
-	if(not isNull (_iedArray select 1)) then {
-		_itemRequirement = "";
-		for "_i" from 0 to (count itemsRequiredToDisarm) -1 do{
-			_itemRequirement = _itemRequirement + format[" and ((items player) find ""%1"" > -1)", itemsRequiredToDisarm select _i];
-		};
-		(_iedArray select 0) addAction [("<t color=""#27EE1F"">") + ("Disarm") + "</t>", DISARM_ACTION, [_iedArray,[_sectionName, _iedName]], 10, false, true, "", format["(_target distance _this < 3) %1", _itemRequirement]];
+	_itemRequirement = "";
+	for "_i" from 0 to (count itemsRequiredToDisarm) -1 do{
+		_itemRequirement = _itemRequirement + format[" and ((items player) find ""%1"" > -1)", itemsRequiredToDisarm select _i];
 	};
+	
+	(_iedArray select 0) addAction [("<t color=""#27EE1F"">") + ("Disarm") + "</t>", DISARM_ACTION, [_iedArray,[_sectionName, _iedName]], 10, false, true, "", format["(_target distance _this < 3) %1", _itemRequirement]];
 };
 
 DISARM_ACTION = {

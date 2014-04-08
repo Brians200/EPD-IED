@@ -39,6 +39,7 @@ REMOVE_IED_ARRAY = {
 	deleteMarker (_iedArray select 4);
 	
 	terminate (_iedArray select 5);
+	terminate (_iedArray select 6);
 	
 	_position;
 };
@@ -56,6 +57,9 @@ PREPARE_IED_FOR_CLEANUP = {
 	deleteVehicle (_iedArray select 1); //trigger
 	[_ieds, _iedName] call Dictionary_fnc_remove;
 	deleteMarker (_iedArray select 4);
+	
+	terminate (_iedArray select 5);
+	terminate (_iedArray select 6);
 	
 	_arr = [_sectionDictionary, "cleanUp"] call Dictionary_fnc_get;
 	_arr set[count _arr, _iedArray select 0];
@@ -129,6 +133,27 @@ ADD_IED_TO_SECTION = {
 	_iedArray = _this select 2;
 	_iedsDictionary = [_sectionDictionary, "ieds"] call Dictionary_fnc_get;
 	[_iedsDictionary, _iedName, _iedArray] call Dictionary_fnc_set;
+};
+
+ADD_TRIGGER_TO_IED = {
+	_sectionDictionary = _this select 0;
+	_iedName = _this select 1;
+	_trigger = _this select 2;
+	_iedsDictionary = [_sectionDictionary, "ieds"] call Dictionary_fnc_get;
+	_iedArray = [_iedsDictionary, _iedName] call Dictionary_fnc_get;
+	_iedArray set [1, _trigger];
+};
+
+REMOVE_TRIGGER_FROM_IED = {
+	try{
+		_sectionDictionary = _this select 0;
+		_iedName = _this select 1;
+		_iedsDictionary = [_sectionDictionary, "ieds"] call Dictionary_fnc_get;
+		_iedArray = [_iedsDictionary, _iedName] call Dictionary_fnc_get;
+		_trigger = _iedArray select 1;
+		deleteVehicle _trigger;
+		_iedArray set [1, objNull];
+	} catch {};
 };
 
 ADD_DISARM_AND_PROJECTILE_DETECTION = {

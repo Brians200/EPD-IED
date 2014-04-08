@@ -9,10 +9,9 @@ PROJECTILE_DETECTION = {
 		_sectionName = _this select 1;
 		_iedName = _this select 2;
 		_iedSize = _this select 3;
-		_trigger = _this select 4;
 		
 		_fired = [];
-		while {alive _ied && alive _trigger} do 
+		while {alive _ied} do 
 		{
 			_nearProjectiles = (position _ied) nearObjects ["Default",_range]; //Default = superclass of ammo
 			if (count _nearProjectiles >=1) then 
@@ -20,7 +19,7 @@ PROJECTILE_DETECTION = {
 				_ammo = _nearProjectiles select 0;
 				if (!(_ammo in _fired)) then
 				{
-					[_ammo, _ied, _iedSize, typeof _ammo, getpos _ammo, _sectionName, _iedName, _trigger] spawn EXPLOSIVE_WATCHER;
+					[_ammo, _ied, _iedSize, typeof _ammo, getpos _ammo, _sectionName, _iedName] spawn EXPLOSIVE_WATCHER;
 					_fired = _fired + [_ammo];
 				};
 				
@@ -59,14 +58,14 @@ EXPLOSIVE_WATCHER = {
 		_updateInterval = .1;
 		_radiusSqr = 49;
 		
-		while{(alive _ammoToWatch) && !(isnull _ied) && !(isnull _trigger)} do {
+		while{(alive _ammoToWatch) && !(isnull _ied)} do {
 			_position = getpos _ammoToWatch;
 			sleep _updateInterval;
 		};
 		
 		_origin = getpos _ied;
 		if(EPD_IED_debug) then {player sidechat format["distance = %1", (_origin distance _position)]; };
-		if((_origin distancesqr _position < _radiusSqr) and !(isnull _ied) and !(isnull _trigger)) then {
+		if((_origin distancesqr _position < _radiusSqr) and !(isnull _ied)) then {
 			_chance = 100; //since this handles mostly giant explosions. Bombs, planted satchels...
 			if(_class iskindof "Grenade") then { _chance = 35; }; 
 			
