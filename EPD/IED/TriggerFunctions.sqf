@@ -5,10 +5,29 @@ TRIGGER_STATUS_LOOP = {
 	_sectionName = _this select 2;
 	_iedName = _this select 3;
 	_iedSize = _this select 4;
+	_ied = _this select 5;
+	
+	_disarmAdded = [];
+	
 	
 	_triggerActive = false;
 	while{true} do {
-		_nearEntitiesCount = count (_iedPosition nearEntities [["CAManBase","LandVehicle"], 250]);
+		_nearEntities = _iedPosition nearEntities [["CAManBase","LandVehicle"], 15];
+		_nearEntitiesCount = count (_nearEntities);
+				
+		{
+			if(isPlayer _x and !(_x in _disarmAdded)) then {
+				_disarmAdded set [count _disarmAdded, _x];
+				[[_sectionName, _iedName], "DISARM_ADD_ACTION", _x, false] spawn BIS_fnc_MP;
+			};
+		} foreach _nearEntities;
+		
+		_disarmToRemove = _disarmAdded - _nearEntities;
+		{
+			[_ied, "REMOVE_DISARM_ACTION", true, false] spawn BIS_fnc_MP;
+		} foreach _disarmToRemove;
+		
+		_disarmAdded = _disarmAdded - _disarmToRemove;
 		
 		if(! _triggerActive && {_nearEntitiesCount > 0}) then {
 			_triggerActive = true;

@@ -3,7 +3,7 @@
 /* Rewritten by Brian Sweeney - [EPD] Brian*/
 
 DISARM_ADD_ACTION = {
-
+	player sidechat "added";
 	_sectionName = _this select 0;
 	_iedName = _this select 1;
 	
@@ -68,4 +68,5 @@ DISARM_ACTION = {
 
 REMOVE_DISARM_ACTION = {
 	_this removeAction 0;
+	player sidechat "removed";
 };

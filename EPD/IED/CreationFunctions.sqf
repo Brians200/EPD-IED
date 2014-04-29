@@ -169,7 +169,7 @@ CREATE_IED = {
 		_scriptHandle = 0 spawn {};
 	};
 	
-	_triggerStatusHandle = [_iedPos, _sectionDictionary, _sectionName, _iedName, _iedSize] spawn TRIGGER_STATUS_LOOP;
+	_triggerStatusHandle = [_iedPos, _sectionDictionary, _sectionName, _iedName, _iedSize, _ied] spawn TRIGGER_STATUS_LOOP;
 	
 	[_sectionDictionary, _iedName, [_ied, objNull, _side, _iedSize,_markerName, _scriptHandle, _triggerStatusHandle]] call ADD_IED_TO_SECTION;
 	
@@ -184,7 +184,7 @@ CREATE_IED = {
 	
 	if(iedsAdded) then { //initial ieds were added already and the game is in progress
 		publicVariable "iedDictionary";
-		[[_sectionName, _iedName],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
+		//[[_sectionName, _iedName],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
 		if(allowExplosiveToTriggerIEDs) then {
 			[[_sectionName, _iedName],"EXPLOSION_EVENT_HANDLER_ADDER", true, false] spawn BIS_fnc_MP;
 		};
@@ -223,7 +223,7 @@ CREATE_SECONDARY_IED = {
 		_scriptHandle = 0 spawn {};
 	};
 	
-	_triggerStatusHandle = [_iedPos, _sectionDictionary, _sectionName, _iedName, "SECONDARY"] spawn TRIGGER_STATUS_LOOP;
+	_triggerStatusHandle = [_iedPos, _sectionDictionary, _sectionName, _iedName, "SECONDARY", _ied] spawn TRIGGER_STATUS_LOOP;
 	[_sectionDictionary, _iedName, [_ied, objNull, _side, "SECONDARY",_markerName, _scriptHandle, _triggerStatusHandle]] call ADD_IED_TO_SECTION;
 	
 	
@@ -235,6 +235,6 @@ CREATE_SECONDARY_IED = {
 	};
 	
 	publicVariable "iedDictionary";
-	[[_sectionName, _iedName],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
+	//[[_sectionName, _iedName],"DISARM_ADD_ACTION", true, false] spawn BIS_fnc_MP;
 	[[_sectionName, _iedName],"EXPLOSION_EVENT_HANDLER_ADDER", true, false] spawn BIS_fnc_MP;
 };

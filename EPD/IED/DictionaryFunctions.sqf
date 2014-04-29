@@ -167,7 +167,7 @@ ADD_DISARM_AND_PROJECTILE_DETECTION = {
 			_iedKeys = _iedsDictionary call Dictionary_fnc_keys;
 			
 			{
-				[_sectionName, _x] spawn DISARM_ADD_ACTION;
+				//[_sectionName, _x] spawn DISARM_ADD_ACTION;
 				if(allowExplosiveToTriggerIEDs) then {
 					[_sectionName, _x] spawn EXPLOSION_EVENT_HANDLER_ADDER;
 				};
@@ -181,7 +181,7 @@ ADD_DISARM_AND_PROJECTILE_DETECTION = {
 		_iedKeys = _iedsDictionary call Dictionary_fnc_keys;
 		
 			{
-				[_this,_x] spawn DISARM_ADD_ACTION;
+				//[_this,_x] spawn DISARM_ADD_ACTION;
 				if(allowExplosiveToTriggerIEDs) then {
 					[_this,_x] spawn EXPLOSION_EVENT_HANDLER_ADDER;
 				};

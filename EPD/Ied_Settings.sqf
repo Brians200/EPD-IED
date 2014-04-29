@@ -65,9 +65,9 @@ allowExplosiveToTriggerIEDs = true;
 //http://community.bistudio.com/wiki/side
 
 iedInitialArray = [
-	["AllCities","West"],
+	/*["AllCities","West"],
 	["AllVillages","West"],
-	/*["AltisRandom1",6,"West"],
+	["AltisRandom1",6,"West"],
 	["AltisRandom2",6,"West"],
 	["AltisRandom3",6,"West"],
 	["AltisRandom4",6,"West"],
@@ -87,8 +87,8 @@ iedInitialArray = [
 	//["Lakka", 2, 8,  ["West","East"] ],
 	//["OreoKastro", "West"],
 	//["Athira", 2, "West" ],
-	["IEDSINGLE1", ["West","East"]],
-	["IEDSINGLE2", 50 ,"West"],
+	["IEDSINGLE1", [0,100,0,0], ["West","East"]],
+	["IEDSINGLE2", [0,0,100,0], "West"],
 	["IEDSINGLE3", [0,0,0,100], "West"]
 	];
 	
