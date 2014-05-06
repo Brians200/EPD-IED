@@ -12,7 +12,7 @@ TRIGGER_STATUS_LOOP = {
 	
 	_triggerActive = false;
 	while{true} do {
-		_nearEntities = _iedPosition nearEntities [["CAManBase","LandVehicle"], 15];
+		_nearEntities = _iedPosition nearEntities [["CAManBase","LandVehicle"], 250];
 		_nearEntitiesCount = count (_nearEntities);
 				
 		{

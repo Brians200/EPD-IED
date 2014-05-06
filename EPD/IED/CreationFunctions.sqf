@@ -161,6 +161,7 @@ CREATE_IED = {
 	_ied setDir random 360;
 	_ied enableSimulation false;
 	_ied allowDamage false;
+	_ied setVariable ["_isIED", "brians200", true];
 	
 	_scriptHandle = "";
 	if(allowExplosiveToTriggerIEDs) then {
@@ -215,6 +216,7 @@ CREATE_SECONDARY_IED = {
 	_ied setDir random 360;
 	_ied enableSimulation false;
 	_ied allowDamage false;
+	_ied setVariable ["_isFake", "brians200", true];
 	
 	_scriptHandle = "";
 	if(allowExplosiveToTriggerIEDs) then {

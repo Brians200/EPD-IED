@@ -3,7 +3,6 @@
 /* Rewritten by Brian Sweeney - [EPD] Brian*/
 
 DISARM_ADD_ACTION = {
-	player sidechat "added";
 	_sectionName = _this select 0;
 	_iedName = _this select 1;
 	
@@ -45,6 +44,7 @@ DISARM_ACTION = {
 		sleep 6.545;
 		disableUserInput false;
 		[_iedArray select 0,"REMOVE_DISARM_ACTION", true, false] spawn BIS_fnc_MP;
+		(_iedArray select 0) setVariable ["_isIED", nil, true];
 		_this select 3 select 1 select 0 call INCREMENT_DISARM_COUNTER;
 		_this select 3 select 1 call PREPARE_IED_FOR_CLEANUP;
 		hint "Successfully Disarmed!";
@@ -68,5 +68,4 @@ DISARM_ACTION = {
 
 REMOVE_DISARM_ACTION = {
 	_this removeAction 0;
-	player sidechat "removed";
 };
