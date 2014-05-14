@@ -1,6 +1,6 @@
 /***************SETTINGS***********************/
 EPD_IED_debug = true;
-hideIedSectionMarkers = true;  //sets the alpha to 0 after spawning IEDs at a section
+hideIedSectionMarkers = false;  //sets the alpha to 0 after spawning IEDs at a section
 hideSafeZoneMarkers = true;  //sets the alpha to 0 of a safezone
 
 itemsRequiredToDisarm = ["ToolKit"];   //"MineDetector" or "ToolKit" for example
@@ -83,13 +83,14 @@ iedInitialArray = [
 	["AltisRandom14",6,"West"],
 	["AltisRandom15",6,"West"],
 	["AltisRandom16",6,"West"],*/
-	//["Gravia", 20, [0, 30, 0, 0], "West" ],
+	//["Gravia", 20, [0, 30, 0, 0], "West" ]
 	//["Lakka", 2, 8,  ["West","East"] ],
 	//["OreoKastro", "West"],
 	//["Athira", 2, "West" ],
-	["IEDSINGLE1", [0,100,0,0], ["West","East"]],
-	["IEDSINGLE2", [0,0,100,0], "West"],
-	["IEDSINGLE3", [0,0,0,100], "West"]
+	//["EllipseMarkerTest", 10, "West" ],
+	//["IEDSMALL", [0,100,0,0], ["West","East"]],
+	//["IEDMEDIUM", [0,0,100,0], "West"],
+	["IEDLARGE", [0,0,0,100], "West"]
 	];
 	
 //Place the mapLocations, predefinedLocations, and markerNames of places you don't want any IEDs spawning

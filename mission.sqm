@@ -626,7 +626,7 @@ class Mission
 	};
 	class Markers
 	{
-		items=5;
+		items=6;
 		class Item0
 		{
 			position[]={14398.555,17.128494,17996.691};
@@ -637,19 +637,19 @@ class Mission
 		class Item1
 		{
 			position[]={14474.255,19.478888,18011.574};
-			name="IEDSINGLE1";
+			name="IEDSMALL";
 			type="mil_objective";
 		};
 		class Item2
 		{
 			position[]={14448.803,18.64871,17982.51};
-			name="IEDSINGLE2";
+			name="IEDMEDIUM";
 			type="mil_objective";
 		};
 		class Item3
 		{
 			position[]={14431.705,18.514732,17957.805};
-			name="IEDSINGLE3";
+			name="IEDLARGE";
 			type="mil_objective";
 		};
 		class Item4
@@ -663,6 +663,16 @@ class Mission
 			fillName="DiagGrid";
 			a=900;
 			b=900;
+		};
+		class Item5
+		{
+			position[]={21086.477,35.503471,17118.598};
+			name="EllipseMarkerTest";
+			markerType="ELLIPSE";
+			type="Empty";
+			a=1000;
+			b=100;
+			angle=-380;
 		};
 	};
 };

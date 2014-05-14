@@ -21,15 +21,6 @@ projectilesToIgnore = ["SmokeShell", "FlareCore", "IRStrobeBase", "GrenadeHand_s
 publicVariable "projectilesToIgnore";
 
 call compile preprocessFileLineNumbers "EPD\Ied_Settings.sqf";
-call compile preprocessFileLineNumbers "EPD\IED\ExplosionFunctions.sqf";
-call compile preprocessFileLineNumbers "EPD\IED\CreationFunctions.sqf";
-call compile preprocessFileLineNumbers "EPD\IED\ExplosionEffects.sqf";
-call compile preprocessFileLineNumbers "EPD\IED\CreationAuxiliaryFunctions.sqf";
-call compile preprocessFileLineNumbers "EPD\IED\ExplosivesHandler.sqf";
-call compile preprocessFileLineNumbers "EPD\IED\DisarmFunctions.sqf";
-call compile preprocessFileLineNumbers "EPD\IED\DictionaryFunctions.sqf";
-call compile preprocessFileLineNumbers "EPD\IED\TriggerFunctions.sqf";
-
 
 iedSecondaryItemsCount = count iedSecondaryItems;
 iedSmallItemsCount = count iedSmallItems;
@@ -38,12 +29,29 @@ iedLargeItemsCount = count iedLargeItems;
 
 if(isserver) then {
 	
-	call GET_PLACES_OF_INTEREST;
+	call EpdIed_fnc_getPlacesOfInterest;
 	
 	iedSafeRoads = [];
 	{
-		_locationAndSize = (_x) call GET_CENTER_LOCATION_AND_SIZE;
-		_roads = ((_locationAndSize select 0) nearRoads (_locationAndSize select 1));
+		_locationAndSize = (_x) call EpdIed_fnc_getCenterLocationAndSize;
+		_radiusA = _locationAndSize select 1 select 0;
+		_radiusB = _locationAndSize select 1 select 1;
+		_angle = _locationAndSize select 1 select 2;
+		_center = _locationAndSize select 0;
+		
+		_maxRadius = _radiusA max _radiusB;
+		_roads = _center nearRoads _maxRadius;
+		_roadsCount = count _roads;
+		
+		for "_i" from 0 to (_roadsCount) -1 do{
+			_valid = [_angle, _radiusA, _radiusB, _center, getpos (_roads select _i) ] call EpdIed_fnc_checkPointEllipse;
+			if( !_valid) then {
+				_roads set [_i, "nil"];
+			};
+		};
+		
+		_roads = _roads - ["nil"];
+		
 		iedSafeRoads = (iedSafeRoads - _roads) + _roads; //removes duplicates first
 	} foreach iedSafeZones;
 	
@@ -56,7 +64,7 @@ if(isserver) then {
 					_keys = iedAllMapLocations call Dictionary_fnc_keys;
 					_side = _x select 1;
 					{
-						_handles set [_nextHandleSpot, [[_x,_side]] spawn CREATE_IED_SECTION];
+						_handles set [_nextHandleSpot, [[_x,_side]] spawn EpdIed_fnc_createIedSection];
 						_nextHandleSpot = _nextHandleSpot + 1;
 					} foreach _keys;
 				};
@@ -64,7 +72,7 @@ if(isserver) then {
 					_keys = iedCityMapLocations call Dictionary_fnc_keys;
 					_side = _x select 1;
 					{
-						_handles set [_nextHandleSpot, [[_x,_side]] spawn CREATE_IED_SECTION];
+						_handles set [_nextHandleSpot, [[_x,_side]] spawn EpdIed_fnc_createIedSection];
 						_nextHandleSpot = _nextHandleSpot + 1;
 					} foreach _keys;
 				};
@@ -72,7 +80,7 @@ if(isserver) then {
 					_keys = iedVillageMapLocations call Dictionary_fnc_keys;
 					_side = _x select 1;
 					{
-						_handles set [_nextHandleSpot, [[_x,_side]] spawn CREATE_IED_SECTION];
+						_handles set [_nextHandleSpot, [[_x,_side]] spawn EpdIed_fnc_createIedSection];
 						_nextHandleSpot = _nextHandleSpot + 1;
 					} foreach _keys;
 				};
@@ -80,19 +88,19 @@ if(isserver) then {
 					_keys = iedLocalMapLocations call Dictionary_fnc_keys;
 					_side = _x select 1;
 					{
-						_handles set [_nextHandleSpot, [[_x,_side]] spawn CREATE_IED_SECTION];
+						_handles set [_nextHandleSpot, [[_x,_side]] spawn EpdIed_fnc_createIedSection];
 						_nextHandleSpot = _nextHandleSpot + 1;
 					} foreach _keys;
 				};
 			default	{
-				_handles set [_nextHandleSpot, [_x] spawn CREATE_IED_SECTION];
+				_handles set [_nextHandleSpot, [_x] spawn EpdIed_fnc_createIedSection];
 				_nextHandleSpot = _nextHandleSpot + 1;
 			};
 		};
 		
 	} foreach iedInitialArray;
 	
-	waituntil{sleep .5; [_handles] call CHECK_ARRAY;};
+	waituntil{sleep .5; [_handles] call EpdIed_fnc_checkArray;};
 	
 	//_script = iedArray call IED;
 	publicVariable "iedDictionary";
@@ -105,6 +113,5 @@ if(isserver) then {
 
 waituntil{sleep .5; (!isnull player and iedsAdded)};
 player sidechat "Synching IEDs... You may experience lag for a few seconds";
-
-[] call ADD_DISARM_AND_PROJECTILE_DETECTION;
+[] call EpdIed_fnc_addDisarmAndProjectileDetection;
 
