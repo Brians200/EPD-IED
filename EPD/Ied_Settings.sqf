@@ -65,12 +65,12 @@ allowExplosiveToTriggerIEDs = true;
 //http://community.bistudio.com/wiki/side
 
 iedInitialArray = [
-	/*["AllCities","West"],
-	["AllVillages","West"],
+	//["AllCities","West"],
+	//["AllVillages","West"],
 	["AltisRandom1",6,"West"],
 	["AltisRandom2",6,"West"],
 	["AltisRandom3",6,"West"],
-	["AltisRandom4",6,"West"],
+	/*["AltisRandom4",6,"West"],
 	["AltisRandom5",6,"West"],
 	["AltisRandom6",6,"West"],
 	["AltisRandom7",6,"West"],

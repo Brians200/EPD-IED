@@ -4,8 +4,16 @@ _centerPos = [0,0,0];
 _size = 0;
 if(typename _origin == "ARRAY") then
 {
+	//TODO: FIGURE OUT IF THIS CODE IS EVEN USED?!
 	_centerPos = _origin select 0;
 	_size = _origin select 1;
+	if(typename _size != "ARRAY") then {
+		_size = [_size,_size, 0];  //If they only pass 1 number in, turn it into a circle
+	} else {
+		if(count _size < 3) then {
+			_size = _size + [0]; //give it a zero angle if they don't specify
+		};
+	};
 } else {
 	//check if it is a location defined in cfgWorlds
 	_dictLocation = [iedAllMapLocations,  toUpper(_origin)] call Dictionary_fnc_get;
@@ -40,6 +48,13 @@ if(typename _origin == "ARRAY") then
 			if(_predefinedLocationIndex > -1) then {
 				_centerPos = predefinedLocations select _predefinedLocationIndex select 1;
 				_size = predefinedLocations select _predefinedLocationIndex select 2;
+				if(typename _size != "ARRAY") then {
+					_size = [_size,_size, 0];  //If they only pass 1 number in, turn it into a circle
+				} else {
+					if(count _size < 3) then {
+						_size = _size + [0]; //give it a zero angle if they don't specify
+					};
+				};
 			};
 		};
 	};
